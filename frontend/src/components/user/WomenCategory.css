@@ -1,0 +1,28 @@
+.get_women_head{
+    display: flex;
+    
+     justify-content: center;
+     align-items: center;
+     width: 100vw;
+     
+     flex-direction: column;
+}
+.get_women_head .body{
+    background-color: white;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100vw;
+
+}
+.get_women_head .body .image{
+    height: 150px;
+    width: 150px;
+    
+}
+.get_women_head .body .card{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

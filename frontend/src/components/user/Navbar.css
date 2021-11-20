@@ -1,0 +1,60 @@
+.user_navbar{
+    width: 100vw;
+    height:20vh;
+    background-color: rgb(6, 6, 39); 
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    box-sizing: border-box;
+
+}
+.nav_top{
+    height: 50%;
+    width: 100%;
+    background-color: rgb(6, 6, 39);
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+.nav_bottom{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+}
+.nav_bottom button Link{
+    text-decoration: none;
+}
+.nav_bottom button{
+    width: 100px;
+    background-color: rgb(6, 6, 39);
+    color: white;
+}
+.nav_top button Link{
+    text-decoration: none;
+}
+.nav_top .right{
+    display: flex;
+    width: 50%;
+    justify-content: start;
+    
+}
+.nav_top .left .nav_icon{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.nav_top .left{
+    display: flex;
+    width: 50%;
+    justify-content:end;
+    margin-left: 10px;
+}
+.nav_bottom input{
+    width: 50%;
+    border-radius: 10px;
+    padding: 2px;
+}

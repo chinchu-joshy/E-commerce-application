@@ -1,0 +1,36 @@
+#image_product{
+    width: 100px;
+    height: auto;
+}
+.head{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main_head_product_view{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.main_head_product_view h1{
+    margin-top: 5vh;
+}
+.product_table{
+    width: 100vw;
+}
+.add_product{
+    background-color: rgb(236, 197, 197);
+    color:green;
+   padding: 3px;
+    border-radius: 10px;
+}
+.delete-product{
+    width:70px ;
+    border:none;
+    color: rgb(172, 18, 18);
+    display: flex;
+    justify-content: center;
+}

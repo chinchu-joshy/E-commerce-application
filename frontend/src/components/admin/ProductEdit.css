@@ -1,0 +1,22 @@
+#img1{
+    width: 30px;
+    height: 40px;
+}
+.product_edit_page{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+   
+    margin-top: 60px;
+}
+.product_edit_page form{
+    display: flex;
+    flex-direction: column;
+}
+.cancel_edit{
+    background-color: rgb(55, 107, 55);
+    margin: 8px;
+}

@@ -1,0 +1,57 @@
+.admin_main_page{
+    background-image: url('../../Images/shopping-in-trivendram-1280x720.jpg');
+  background-repeat: no-repeat;
+    object-fit: cover;
+    align-items: center;
+    position: relative;
+    justify-content: center;
+   display: flex;
+    position: fixed;
+    backdrop-filter: blur(10px);
+    overflow-y: hidden;
+    overflow-x: hidden;
+    width: 100vw;
+    height: 100vh;
+    background-position: center;
+    background-size: cover;
+    
+    
+}
+.admin_login_form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 30vw;
+    height: 40vh;
+    flex-direction: column;
+    position: absolute;
+    background-color: rgba(256 , 256,256,0.5);
+    backdrop-filter: blur(1px);
+    
+}
+.admin_login_form input{
+    margin: 8px;
+    border: none;
+    background-color: rgba(256 , 256,256,0.5);
+    padding: 8px;
+    border: 1px solid rgba(114, 104, 104, 0.671);
+    width: 70%;
+}
+.admin_login_form button{
+    border: none;
+    width: 30%;
+    margin-top: 8px;
+    border-radius: 10px;
+    background: black;
+    color: white;
+    font-weight: bold;
+    padding: 8px;
+    border: 1px solid rgba(82, 76, 76, 0.452);
+    position: relative;
+}
+.admin_login_form p{
+    bottom: 10px;
+    position: absolute;
+    color: rgb(180, 57, 35);
+}

@@ -1,0 +1,85 @@
+.admin_home_page{
+    display: flex;
+   
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+.sidebar{
+    height: 100vh;
+    width: 20vw;
+    background-color: rgb(6, 6, 39);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+
+}
+.sidebar p{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+.main_navbar{
+    width: 80vw;
+    height: 10vh;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    align-items: center;
+    justify-content: end;
+}
+
+.main_navbar{
+    background-color: rgb(6, 6, 39);
+    width: 100vw;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    /* position: fixed;
+    z-index: 10;
+    scroll-padding: 200px; */
+    
+}
+.custom-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  }
+  
+  .custom-toggler.navbar-toggler {
+    border-color: rgb(255,102,203);
+  } 
+  .navbar-light .navbar-toggler {
+    
+   border: none;
+    
+}
+.navbar-light .navbar-toggler-icon {
+    background-image: url("https://cdn-icons.flaticon.com/png/128/3007/premium/3007307.png?token=exp=1637297415~hmac=a65d7b4cea965bf541e37a12c4d53d4f");
+}
+.logout_button{
+    border: none;
+}
+.logout_button:hover{
+    background-color: rgba(6, 6, 39, 0.377);
+}
+.icons{
+    display: flex;
+    justify-content: end;
+}
+#Welcome_write{
+    color: white;
+}
+.offcanvas-end {
+    top: 0;
+    right: 0;
+    width: 20vw
+;
+    border-left: 1px
+ solid rgba(0,0,0,.2);
+    transform: translateX(100%);
+    display: flex;
+    align-items: center;
+   
+}

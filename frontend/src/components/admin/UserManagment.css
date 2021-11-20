@@ -1,0 +1,21 @@
+.user_management_head{
+    width: 100vw;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.user_managment .user_management_head{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: rgba(6, 6, 39, 0.932);
+}
+.user_management_head table{
+    width: 100%;
+}
+.unblock{
+color: rgb(7, 17, 17);
+}
