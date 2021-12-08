@@ -4,15 +4,18 @@
     justify-content: center;
     align-items: center;
     width: 100vw;
-    padding: 5%;
+    padding: 2%;
+    flex-direction: column;
+    
     }
-    .image{
+    .view_product_image{
         background-color: white;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 70vh;
         width: 50vw;
+        
 
     }
     .small_image{
@@ -24,11 +27,24 @@
         align-items: center;
 
     }
-    .small_image img{
-        width: 70px;
+    .view_product_sub_container{
+        box-shadow: 2px 2px 2px 2px rgb(199, 189, 189);
+        width: 100%;  
+        display: flex;
     }
-    .small_image p{
+    .small_image .small_image_view{
+        margin: 10px;
+        width: 70px;
+        height: 100px;
+    }
+    
+    .stock_left{
         color: red;
+    }
+    .add_to_bag_button{
+        margin: 10px;
+        background-color: var(--blue);
+        color: white;
     }
     .large_image{
         height: 70vh;
@@ -52,4 +68,55 @@
     }
     .content h5{
         color: tomato;
+    }
+    .second__container__view__products{
+       width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 3%;
+    }
+    .second__container__view__products__row{
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+       
+       
+
+    }
+    .similar__pic{
+        width: 100px;
+        margin-left: 2%;
+        border-radius: 45%;
+    }
+    .review__pic{
+        width: 50px;  
+    }
+    .image_review_profile{
+        display: flex;
+        justify-content: start;
+       margin-top: 2%;
+        flex-direction: column;
+    }
+    .image_review_profile .review__box p{
+        margin-left: 2%;
+    }
+    .review__box{
+        display: flex;
+        
+        align-items: center;
+
+    }
+    .size__select__option{
+        width: 10vw;
+    }
+    .view__page__para{
+        text-decoration: line-through;
+        color: black;
+        margin-right: 2%;
+    }
+    .check__if__offer__container{
+        display: flex;
+
     }

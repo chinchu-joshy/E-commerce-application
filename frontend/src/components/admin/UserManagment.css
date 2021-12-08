@@ -18,4 +18,32 @@
 }
 .unblock{
 color: rgb(7, 17, 17);
+width: 150px;
 }
+.block{
+    width: 150px; 
+}
+.spinner{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    color: var(--blue);
+  }
+  .search{
+      color: green;
+      width: 100%;
+  }
+  .search .product_form{
+display: flex;
+width: 20vw;
+
+
+  }
+  .search .product_form .input_product{
+      background-color: rgb(240, 243, 234);
+      border-color: var(--blue);
+      
+  }

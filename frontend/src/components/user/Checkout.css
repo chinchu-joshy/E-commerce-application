@@ -1,0 +1,42 @@
+.proceed__page__row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
+  height: 80vh;
+}
+.proceed__page__card {
+  width: 100%;
+  position: relative;
+}
+.proceed__page__card__body {
+  display: flex;
+  justify-content: center;
+
+  flex-direction: column;
+  width: 100%;
+}
+.checkout__head {
+  text-align: center;
+}
+.selection__adress {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    width: 30%;
+}
+.proceed__btn{
+    width: 20%;
+}
+.proceed__adress__show{
+    position: absolute;
+    right: 0;
+    margin-right: 10%;
+
+}
+.proceed__adress__show{
+    line-height: 2.5;
+}
+.add__new__adress{
+    background-color: black;
+    color: white;
+}

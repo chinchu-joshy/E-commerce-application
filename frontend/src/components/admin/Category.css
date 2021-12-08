@@ -38,7 +38,7 @@
 .add_category_head form button{
     background-color: rgb(10, 112, 52);
 }
-.add_category_head p{
+.add_category_head .closing_btn{
     position: absolute;
     top: 3px;
     right: 5px;
@@ -58,7 +58,7 @@
 .edit_category_head form button{
     background-color: rgb(10, 112, 52);
 }
-.edit_category_head p{
+.edit_category_head .category_head_err{
     position: absolute;
     top: 3px;
     right: 5px;
@@ -140,6 +140,12 @@
     
 
 }
+.add_subcategory_head .closing_btn{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+
+}
 .add_subcategory_head form input{
     margin-bottom: 10px;
 }
@@ -168,4 +174,20 @@
     top: 3px;
     right: 5px;
 
+}
+.category_selection_bar{
+    margin-bottom: 10px;
+    
+}
+#edit_subcategory_head .sub_edit_close{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+}
+.category__modal{
+    display: flex;
+    
+}
+.category__modal p{
+    margin-right: 10px;
 }

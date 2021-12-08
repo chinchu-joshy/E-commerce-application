@@ -5,6 +5,7 @@ function ProductShowPages() {
   return (
     <div>
       <ProductShowPage/>
+      
     </div>
   )
 }

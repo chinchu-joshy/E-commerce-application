@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+.card__main__cart{
+    border: none;
+}
+.close__cart{
+    margin-left: auto;
+    color:rgb(6, 6, 39);
+}
+.coupen__btn{
+    width: 50%;
+}
+.coupen__card__body{
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.card__coupen__cart{
+    width: 100%;
+}
+.list__checkout__product{
+    background-color: rgb(248, 246, 242);
+    border: none;
+    width: 100%;
+    color: rgb(74, 75, 80);
+}
+.list__checkout__discount{
+    background-color: rgb(248, 246, 242);
+    border: none;
+    width: 100%;
+    color: rgb(35, 83, 31);
+
+}
+.list__checkout__coupen{
+    background-color: rgb(248, 246, 242);
+    border: none;
+    width: 100%;
+    color: rgb(160, 64, 47);
+
+}
+.list__checkout__delivery{
+    background-color: rgb(248, 246, 242);
+    border: none;
+    width: 100%;
+    color: rgb(168, 166, 24);
+
+}
+.list__checkout__amount{
+    background-color: rgb(248, 246, 242);
+    border: none;
+    width: 100%;
+    font-weight: bold;
+}
+.selection__checkout{
+    margin-bottom: 4%;
+}
+.btn__wish__count__container{
+    display: flex;
+    justify-content: space-between;
+}
+.caart_main_container{
+    height: 100vh;
+}

@@ -10,23 +10,8 @@
   height: 100vh;
   position: relative;
 }
-.sidebar{
-  height: 100vh;
-  width: 20vw;
-  background-color: rgb(6, 6, 39);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
 
-}
-.sidebar p{
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-}
-.main_navbar{
+/* .main_navbar{
   width: 80vw;
   height: 10vh;
   display: flex;
@@ -34,9 +19,10 @@
   background-color: white;
   align-items: center;
   justify-content: end;
+  position: sticky;
   
-}
-.main_navbar button{
+} */
+/* .main_navbar button{
   width: 80px;
   background-color: rgb(6, 6, 39);
   color: white;
@@ -45,8 +31,11 @@
   padding: 3px;
   
   
-}
+} */
 .category_display{
   width: 100vw;
-  
+
+}
+*::-webkit-scrollbar {
+  display: none;
 }

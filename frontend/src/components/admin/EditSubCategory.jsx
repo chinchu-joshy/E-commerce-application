@@ -10,11 +10,13 @@ function EditSubCategory(props) {
   const Subcategory = props.value.subcategory;
   const change = props.changeState;
   const [state, setstate] = useState(false);
+  const [err, seterr] = useState('')
   const ref = useRef("");
   const val = useRef("");
   const getAllCategory = useContext(CategoryContext);
   const close = () => {
     change({ value: false, category: "" });
+    seterr('')
   };
   const editSubcategory = async (e) => {
     e.preventDefault();
@@ -24,11 +26,15 @@ function EditSubCategory(props) {
       category: category,
       oldsubcategory: Subcategory,
     };
-    if (!subcategory) return null;
+    if (!subcategory || !category) return seterr("Nothing entered to edit");
     await instanceAdmin.post("/editsubcategory", data).then((response) => {
-      change({});
-      setstate(!state);
-      setsubcategory("");
+      if(response){
+        change({});
+        setstate(!state);
+        seterr('')
+        setsubcategory("");
+      }
+      
     });
   };
   useEffect(() => {
@@ -53,9 +59,11 @@ function EditSubCategory(props) {
           defaultValue={Subcategory}
           onChange={(e) => {
             setsubcategory(e.target.value);
+            seterr('')
           }}
         />
         <button type="submit">edit</button>
+        {err && <p>{err}</p>}
       </form>
     </div>
   );

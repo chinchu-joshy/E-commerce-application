@@ -1,0 +1,39 @@
+.offer__head__style{
+    /* text-decoration: line-through; */
+}
+.date__error__offer{
+    color: red;
+}
+.fill__error__offer{
+    color: red; 
+    transition: .5s;
+}
+#select__subcategory__offer{
+    display: none;
+    visibility: hidden;
+}
+#select__subcategory__offer__visible{
+    display: block;
+    visibility: visible;
+}
+.container__offer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 2em;
+}
+.select__container__offer{
+    margin-bottom: 1em;
+    display: flex;
+   
+    
+
+}
+.btn-offer-select{
+    margin-left: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

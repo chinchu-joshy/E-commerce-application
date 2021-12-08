@@ -9,23 +9,29 @@
     align-items: center;
 }
 .main_head_product_view{
+    background-color: rgb(247, 242, 247);
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
 }
 .main_head_product_view h1{
+    background-color: rgb(247, 242, 247);
     margin-top: 5vh;
+    
 }
 .product_table{
-    width: 100vw;
+    width:100%;
 }
 .add_product{
     background-color: rgb(236, 197, 197);
-    color:green;
-   padding: 3px;
-    border-radius: 10px;
+    color:rgb(9, 12, 9);
+   padding: 8px;
+    border-radius: 20px;
+    margin: 10px;
 }
 .delete-product{
     width:70px ;
@@ -33,4 +39,37 @@
     color: rgb(172, 18, 18);
     display: flex;
     justify-content: center;
+}
+
+
+.searchs{
+    color: rgb(8, 12, 8);
+    font-weight: bold;
+    width: 100%;
+    background-color: rgb(247, 242, 247);
+    font-size: small;
+    
+}
+.searchs .product_form{
+display: flex;
+background-color: rgb(247, 242, 247);
+width: 20vw;
+
+
+}
+.searchs .product_form .input_product{
+    background-color:rgb(247, 242, 247);
+  border-radius: 30px;
+ 
+   
+    
+}
+.table_product_container{
+    width:80vw;
+    padding: 10px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

@@ -1,6 +1,26 @@
-#img1{
-    width: 30px;
-    height: 40px;
+#imgedit1{
+    margin: 10px;
+    display: block;
+    width: 100px;
+    height: auto;
+}
+#imgedit2{
+    margin: 10px;
+    display: block;
+    width: 100px;
+    height: auto;
+}
+#imgedit3{
+    margin: 10px;
+    display: block;
+    width: 100px;
+    height: auto;
+}
+#imgedit4{
+    margin: 10px;
+    display: block;
+    width: 100px;
+    height: auto;
 }
 .product_edit_page{
     display: flex;
@@ -19,4 +39,9 @@
 .cancel_edit{
     background-color: rgb(55, 107, 55);
     margin: 8px;
+}
+.edit_img_click{
+    margin: 10px;
+    background-color: var(--blue);
+    color: white;
 }

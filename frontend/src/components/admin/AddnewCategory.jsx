@@ -23,9 +23,13 @@ function AddnewCategory(props) {
         e.preventDefault()
         if(!categorys) return seterr("Please fill the empty field")
         await instanceAdmin.post('/addcategory',data).then((response)=>{
-            setstate(!state)
-            change(false)
-        setcategory('')
+            if(response){
+                setcategory('')
+                setstate(!state)
+                change(false)
+            }
+            
+        
         // setstate(!state)
             
         })
@@ -42,7 +46,7 @@ function AddnewCategory(props) {
     
     return (
         <div className={value===true ? "add_category_head":"add_category_head_none"}>
-             <p onClick={close}><HighlightOffIcon/></p>
+             <p className="closing_btn" onClick={close}><HighlightOffIcon/></p>
             <form action="" onSubmit={submitCategory}>
                
                 <input type="text" placeholder="Enter new category" value={categorys} onChange={addCategory}/>

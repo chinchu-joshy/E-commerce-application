@@ -23,7 +23,7 @@
     justify-content: center;
     
     width: 30vw;
-    height: 40vh;
+    height: 50vh;
     flex-direction: column;
     position: absolute;
     background-color: rgba(256 , 256,256,0.5);
@@ -54,4 +54,8 @@
     bottom: 10px;
     position: absolute;
     color: rgb(180, 57, 35);
+}
+.login_button{
+    background-color: black;
+    color: white;
 }

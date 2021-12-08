@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import "./ProductEdit.css";
 import { instanceAdmin } from "../../axios/axios";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Form, FormControl, FloatingLabel, Button } from "react-bootstrap";
+import { Form, FormControl, FloatingLabel, Button ,Spinner} from "react-bootstrap";
 import swal from 'sweetalert'
+import SpinContext from "../../context/spinnerContext";
 function ProductEdits(props) {
   const [files, setfiles] = useState([]);
   const [categorys, setcategorys] = useState([]);
@@ -28,6 +29,7 @@ function ProductEdits(props) {
   const [id, setid] = useState();
   const [del, setdel] = useState(false)
   const navigate = useNavigate();
+  const {spin,setspin} = useContext(SpinContext)
 
   const getAllCategory = async () => {
     const datas = await instanceAdmin.get("/getallcategory");
@@ -57,9 +59,9 @@ function ProductEdits(props) {
       setimage4(response.data[0].url[0].image4);
     });
   };
-  const uploadImage1 = async (e) => {
-    setImage(e.target.files[0]);
-    console.log(e.target.files[0]);
+  const uploadImage1 = async () => {
+   
+    
 
     const formData = new FormData();
 
@@ -69,8 +71,11 @@ function ProductEdits(props) {
     await instanceAdmin
       .post("/addeditedimage", formData)
       .then((response) => {
-        setimage1(response.data);
-        console.log(response.data);
+        if(response){
+          setimage1(response.data);
+      
+        }
+        
       })
       .catch((err) => {
         console.log(err);
@@ -78,57 +83,66 @@ function ProductEdits(props) {
   };
 
   const uploadImage2 = async (e) => {
-    setImage(e.target.files[0]);
-    console.log(e.target.files[0]);
+    
+   
+    
 
     const formData = new FormData();
 
     formData.append("image", Image);
 
-    console.log(formData);
+   
     await instanceAdmin
       .post("/addeditedimage", formData)
       .then((response) => {
-        setimage2(response.data);
-        console.log(response.data);
+        if(response){
+          setimage2(response.data);
+          
+        }
+       
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const uploadImage3 = async (e) => {
-    setImage(e.target.files[0]);
-    console.log(e.target.files[0]);
+    
+  
 
     const formData = new FormData();
 
     formData.append("image", Image);
 
-    console.log(formData);
+   
     await instanceAdmin
       .post("/addeditedimage", formData)
       .then((response) => {
-        setimage3(response.data);
-        console.log(response.data);
+        if(response){
+          setimage3(response.data);
+          
+        }
+       
       })
       .catch((err) => {
         console.log(err);
       });
   };
   const uploadImage4 = async (e) => {
-    setImage(e.target.files[0]);
-    console.log(e.target.files[0]);
+    
 
     const formData = new FormData();
 
     formData.append("image", Image);
 
-    console.log(formData);
+   
     await instanceAdmin
       .post("/addeditedimage", formData)
       .then((response) => {
-        setimage4(response.data);
-        console.log(response.data);
+        if(response){
+          setimage4(response.data);
+          
+        }
+        
       })
       .catch((err) => {
         console.log(err);
@@ -159,8 +173,10 @@ function ProductEdits(props) {
       image3,
     };
     await instanceAdmin.post("/editproduct", data).then((response) => {
+      setspin(true)
       if (response) {
         navigate("/admin/product");
+        setspin(false)
       }
     });
   };
@@ -169,6 +185,10 @@ function ProductEdits(props) {
     getAllCategory();
   }, []);
   return (
+    <>
+    {spin===true ?  <Spinner className="spinner" animation="border" role="status">
+  <span className="visually-hidden">Loading...</span>
+</Spinner>:
     <div className="product_edit_page">
       <h1>Edit product</h1>
       
@@ -196,7 +216,7 @@ function ProductEdits(props) {
             setcategory(e.target.value);
           }}
         >
-          <option selected>select category</option>
+          <option selected>Category :{category}</option>
           {categorys.map((data) => {
             return (
               <option
@@ -216,7 +236,7 @@ function ProductEdits(props) {
             setsubcategory(e.target.value);
           }}
         >
-          <option selected>select subcategory</option>
+          <option selected> Subcategory :{subcategory}</option>
           {categorys
             .filter((data) => {
               if (data.category === category) return data;
@@ -348,31 +368,57 @@ function ProductEdits(props) {
             setcolor(e.target.value);
           }}
         />
-        <img id="img1" src={image1}></img>
+        <img id="imgedit1" src={image1}></img>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>Main image</Form.Label>
-          <Form.Control type="file" name="image" onChange={uploadImage1} />
+          <Form.Control type="file" name="image" onChange={(e)=>{
+            setimage1(
+              URL.createObjectURL(e.target.files[0])
+           )
+           setImage(e.target.files[0]);
+          }} />
+          <Button className="edit_img_click" onClick={uploadImage1}>Upload</Button>
         </Form.Group>
-        <img id="img1" src={image2}></img>
+        <img id="imgedit2" src={image2}></img>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>Image 1</Form.Label>
-          <Form.Control type="file" name="image" onChange={uploadImage2} />
+          <Form.Control type="file" name="image" onChange={(e)=>{
+            setimage2(
+              URL.createObjectURL(e.target.files[0])
+           )
+           setImage(e.target.files[0]);
+          }} />
+          <Button className="edit_img_click" onClick={uploadImage2}>Upload</Button>
         </Form.Group>
-        <img id="img1" src={image3}></img>
+        <img id="imgedit3" src={image3}></img>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>Image 2</Form.Label>
-          <Form.Control type="file" name="image" onChange={uploadImage3} />
+          <Form.Control type="file" name="image" onChange={(e)=>{
+            setimage3(
+              URL.createObjectURL(e.target.files[0])
+           )
+           setImage(e.target.files[0]);
+          }} />
+          <Button className="edit_img_click" onClick={uploadImage3}>Upload</Button>
         </Form.Group>
-        <img id="img1" src={image3}></img>
+        <img id="imgedit4" src={image3}></img>
         <Form.Group controlId="formFile" className="mb-3">
           <Form.Label>Image 3</Form.Label>
-          <Form.Control type="file" name="image" onChange={uploadImage4} />
+          <Form.Control type="file" name="image" onChange={(e)=>{
+            setimage4(
+              URL.createObjectURL(e.target.files[0])
+           )
+           setImage(e.target.files[0]);
+          }} />
+          <Button className="edit_img_click" onClick={uploadImage4}>Upload</Button>
         </Form.Group>
         <Button variant="primary" type="submit">
           Submit
         </Button>
       </Form>
     </div>
+    }
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import { CategoryContext } from './CategoryManagment'
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 function EditCategory(props) {
     const [categorys, setcategorys] = useState('')
+    const [err, seterr] = useState('')
     const category=props.value.category
     const value=props.value.value
     const change=props.changeState
@@ -14,22 +15,30 @@ function EditCategory(props) {
     const close=()=>{
         change({value:false,
             category:''})
+            seterr('')
     }
     const editValue=async(e)=>{
         e.preventDefault()
-
-        console.log(categorys)
-        if(!categorys) return null
-            const data={
-                newcategory:categorys,
-                oldcategory:category
-            }
+        const data={
+            newcategory:categorys,
+            oldcategory:category
+        }
+        if(!categorys) return seterr("No value entered")
+        
+           
            
        instanceAdmin.post('/editcategory',data).then((response)=>{
-        change({value:false,
-            category:''})
-            setcategorys('')
-            setstate(!state)
+          
+           if(response){
+               
+            
+            change({value:false,
+                category:''})
+                seterr('')
+                setstate(!state)
+                setcategorys(" ")
+           }
+       
        }) 
         
     }
@@ -39,12 +48,14 @@ function EditCategory(props) {
     }, [state])
     return (
         <div className={value===true ? "edit_category_head":"edit_category_head_none"}>
-             <p onClick={close}><HighlightOffIcon/></p>
+             <p className="category_head_err" onClick={close}><HighlightOffIcon/></p>
             <form action="" onSubmit={editValue}>
-                <input type="text" defaultValue={categorys} onChange={(e)=>{
+                <input type="text" value={categorys}  defaultValue={category}  onChange={(e)=>{
 setcategorys(e.target.value)
+seterr('')
                 }}/>
                 <button type="submit">edit</button>
+                {err && <p>{err}</p>}
             </form>
         </div>
     )

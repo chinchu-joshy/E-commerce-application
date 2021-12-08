@@ -1,0 +1,23 @@
+.footer__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--blue);
+    
+   
+    width: 100vw;
+}
+.contact__footer{
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+   
+
+}
+.footer__container h5{
+    color: white;
+}
+.footer__container  a{
+    text-decoration: none;
+    color: wheat;
+}

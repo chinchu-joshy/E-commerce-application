@@ -5,7 +5,9 @@ const userloginSchema=new mongoose.Schema({
     username:{type:String,required:true},
     phone:{type:String,require:true},
     DOB:{type:String,require:true},
-    state:{type:Boolean,require:true,default:true}
+    state:{type:Boolean,require:true,default:true},
+    adress:{type:Array},
+    image:{type:String}
 
 }, {timestamps:true});
 

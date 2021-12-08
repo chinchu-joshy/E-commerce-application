@@ -46,4 +46,44 @@
 .form_container{
     padding: 100px;
 }
+#img1{
+    margin: 10px;
+    display: block;
+    width: 100px;
+    height: auto;
+}
+#img2{
+    margin: 10px;
+    display: block;
+    width: 100px;
+    height: auto;
+}
+#img3{
+    margin: 10px;
+    display: block;
+    width: 100px;
+    height: auto;
+}
+#img4{
+    margin: 10px;
+    display: block;
+    width: 100px;
+    height: auto;
+}
+.color__container{
+    display: flex;
+   width: 100%;
+   margin-left: 2%;
+   border-radius: 50%;
+    
+}
+.add__color__main__div{
+    text-align: center;
+    border-radius: 5%;
+    width: 50%;
+    padding: 2%;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
  

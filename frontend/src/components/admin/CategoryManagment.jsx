@@ -14,20 +14,24 @@ import Editsubcatagory from "./EditSubCategory";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AuthContext from "../../context/Context";
-import { Button } from "react-bootstrap";
+import { Button ,Modal} from "react-bootstrap";
 import swal from 'sweetalert'
-
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 export const CategoryContext = createContext();
 function CategoryManagment() {
   const [confirm, setconfirm] = useState({
     show:false
   })
+  const [modalcategory, setmodalcategory] = useState([])
+  const [show, setshow] = useState(false)
   const [addcatagory, setaddcatagory] = useState(false);
   const [addsubcatagory, setsubaddcatagory] = useState(false);
   const [editcatagory, seteditcatagory] = useState({
     value: false,
     category: "",
   });
+
   const [editsubcatagory, seteditsubcatagory] = useState({
     value: false,
     category: "",
@@ -36,6 +40,7 @@ function CategoryManagment() {
   const [fulldata, setfulldata] = useState([]);
   const [state, setstate] = useState(false);
   const ref = useRef("");
+  const handleClose=()=>setshow(false)
   const addCategory = () => {
     setaddcatagory(!addcatagory);
   };
@@ -46,7 +51,7 @@ function CategoryManagment() {
     seteditcatagory({ value: true, category: data });
   };
   const editSubCategory = (category, subcategory) => {
-    console.log(category, subcategory);
+   
     seteditsubcatagory({
       value: true,
       category: category,
@@ -55,7 +60,7 @@ function CategoryManagment() {
   };
   const getAllCategory = async () => {
     const datas = await instanceAdmin.get("/getallcategory");
-    console.log(datas.data);
+    
     setfulldata(datas.data);
   };
   const deleteCategory = async (value) => {
@@ -74,6 +79,7 @@ function CategoryManagment() {
     };
     await instanceAdmin.post("/deletesubcategory", data).then((response) => {
       setstate(!state);
+      setshow(false)
     });
   };
 
@@ -99,15 +105,16 @@ function CategoryManagment() {
           </div>
           <div className="add_category">
             <Button onClick={addCategory}>Add new Category</Button>
-            <Button onClick={addSubCategory}>Add new Sub Category</Button>
+            
           </div>
           <div className="table">
          
      
-            <Table striped bordered hover variant="light">
+            <Table striped bordered hover variant="light" responsive>
               <tr>
                 <th>Category</th>
                 <th>Sub Category</th>
+                <th>Add subcategory</th>
               </tr>
               {/* {userdata.map((user)=>{
               console.log(user)
@@ -120,17 +127,11 @@ function CategoryManagment() {
                         <li>
                           <div>
                             <p>{data.category}</p>
-
-                            <Button
-                              className="edit_category"
+                           <EditIcon  className=""
                               onClick={() => {
                                 editCategory(data.category);
-                              }}
-                            >
-                              Edit
-                            </Button>
-                            <Button
-                              className="delete_category"
+                              }}/>
+                           <DeleteIcon className=""
                               onClick={() => {
                                 swal({
                                   title: "Are you sure?",
@@ -143,6 +144,7 @@ function CategoryManagment() {
                                     deleteCategory(data.category);
                                     swal(
                                       "Poof! Your category has been deleted!",
+                                     
                                       {}
                                     );
                                   } else {
@@ -150,17 +152,25 @@ function CategoryManagment() {
                                   }
                                 });
                                 
-                              }}
-                            >
-                              Delete
-                            </Button>
+                              }}/>
+                            
                           </div>
                         </li>
                       </ul>
                     </td>
                     <td>
-                      <ol>
-                        {data.subcategory.map((value) => {
+                      {/* =================================sub category modal ======================*/}
+                      <a id="view__subcategory" onClick={()=>{
+                        
+                        setmodalcategory(data)
+                        console.log(data)
+                        setshow(true)
+
+                      }}>View subcategory</a>
+                     
+
+                        {/* =========================subcategory================================================================== */}
+                        {/* {data.subcategory.map((value) => {
                           return (
                             <li>
                               <div>
@@ -169,6 +179,7 @@ function CategoryManagment() {
                                   className="edit_category"
                                   onClick={() => {
                                     editSubCategory(data.category, value);
+                                    
                                   }}
                                 >
                                   Edit
@@ -201,9 +212,12 @@ function CategoryManagment() {
                               </div>
                             </li>
                           );
-                        })}
-                      </ol>
+                        })} */}
+                      
                     </td>
+                    <td><a id="add__new__subcategory" onClick={()=>{
+                      addSubCategory(data.category)
+                    }}>Add new Sub Category</a></td>
                   </tr>
                 );
               })}
@@ -230,6 +244,69 @@ function CategoryManagment() {
           changeState={seteditsubcatagory}
         ></Editsubcatagory>
       </CategoryContext.Provider>
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Enter new password</Modal.Title>
+          
+        </Modal.Header>
+        <Modal.Body>
+          
+           <ol>
+          {modalcategory.category && console.log(modalcategory.category)}
+          {modalcategory.category && modalcategory.subcategory.map((value)=>{
+            return(
+              <li>
+                              <div className="category__modal">
+                                <p>{value}</p>
+                                <EditIcon onClick={() => {
+                                    editSubCategory(modalcategory.category, value);
+                                    setshow(false)
+                                    
+                                  }}/>
+                                <DeleteIcon  onClick={() => {
+                                    swal({
+                                      title: "Are you sure?",
+                                      text: "Once deleted, you will not be able to recover!",
+                                      
+                                      buttons: true,
+                                      dangerMode: true,
+                                    }).then((willDelete) => {
+                                      if (willDelete) {
+                                        deleteSubCategory(modalcategory.category, value);
+                                        swal(
+                                          "Poof! Your sub category has been deleted!",
+                                          {}
+                                        );
+                                      } else {
+                                        swal("Your content is safe!");
+                                      }
+                                    });
+                                    
+                                  }}/>
+                                
+                              </div>
+                            </li>
+            
+            )
+          })}
+                          
+                            
+                         
+             </ol>   
+          
+        </Modal.Body>
+        <Modal.Footer>
+        
+         
+        </Modal.Footer>
+      </Modal>
+      
     </div>
   );
 }

@@ -1,0 +1,30 @@
+.table__order{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.table__order .edit_satatus{
+background-color: rgb(197, 190, 190);
+color: black;
+font-size: 10px;
+}
+.table__order .order__form{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    flex-direction: column;
+}
+#edit__order__status{
+    font-size: 15px;  
+    font-weight: bold;
+    margin-left: 2px;
+
+}
+.completed {
+ 
+   
+}
+.delivered{
+    color: green;
+
+}

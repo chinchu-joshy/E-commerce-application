@@ -25,18 +25,20 @@ function AddnewSubcategory(props) {
             subcategory:subcategory
         }
         e.preventDefault()
-        if(!category || !subcategory) return seterr("Please fill the empty field")
+        if(!selection || !subcategory) return seterr("Please fill the empty field")
         await instanceAdmin.post('/addsubcategory',data).then((response)=>{
             change(false)
             setselection('')
             setcategory([])
             setsubcategory('')
+           
 
         })
 
     }
     const close=()=>{
         change(false)
+        seterr('')
     }
     
 
@@ -48,13 +50,14 @@ function AddnewSubcategory(props) {
 
   return (
     <div className={value===true ? "add_subcategory_head":"add_subcategory_head_none"}>
-     <p onClick={close}><HighlightOffIcon/></p>
+     <p className="closing_btn" onClick={close}><HighlightOffIcon/></p>
       <form action="" onSubmit={addSubcategory}>
          
         <label for="cars">Choose a category:</label>
 
-        <select  value={selection}  onChange={(e)=>{
+        <select className="category_selection_bar"  value={selection}  onChange={(e)=>{
             setselection(e.target.value)
+            seterr('')
         }}>
               <option selected>select category</option>
             {category.map((value)=>{
@@ -65,8 +68,9 @@ function AddnewSubcategory(props) {
             })}
           
         </select>
-        <input type="text" placeholder="Enter new category" onChange={(e)=>{
+        <input type="text" value={subcategory} placeholder="Enter new category" onChange={(e)=>{
             setsubcategory(e.target.value)
+            seterr('')
         }}/>
         <button>add</button>
         {err && <p>{err}</p>}

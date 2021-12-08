@@ -33,3 +33,23 @@
 .delete_category{
     background-color: rgb(155, 26, 4);
 }
+#view__subcategory{
+   background-color: var(--blue);
+   color: white;
+   cursor: pointer;
+   border-radius: 10px;
+}
+#view__subcategory:hover{
+    background-color: rgb(218, 203, 203);
+    color: var(--blue);
+}
+#add__new__subcategory{
+    background-color: var(--blue);
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+#add__new__subcategory:hover{
+    background-color: rgb(218, 203, 203);
+    color: var(--blue);
+}

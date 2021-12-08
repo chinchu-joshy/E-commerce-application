@@ -15,3 +15,33 @@
       background-position: center;
       background-size: cover;
 }
+.user_register_form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  width: 30vw;
+  height: 85vh;
+  flex-direction: column;
+  position: absolute;
+  background-color: rgba(256 , 256,256,0.5);
+  backdrop-filter: blur(1px);
+}
+.user_register_form input{
+  margin: 8px;
+  border: none;
+  background-color: rgba(256 , 256,256,0.5);
+  padding: 8px;
+  border: 1px solid rgba(114, 104, 104, 0.671);
+  width: 70%;
+}
+.user_register_form p{
+  
+  
+  color: rgb(180, 57, 35);
+}
+#mark{
+  color: rgb(70, 63, 63);
+  margin: 3%;
+  font-size: smaller;
+}

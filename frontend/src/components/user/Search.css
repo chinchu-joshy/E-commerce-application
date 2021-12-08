@@ -1,0 +1,30 @@
+.search_image{
+    width: 15vw;
+    height: 30vh;
+}
+
+.search_container_banner{
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+   
+    
+}
+.search_card{
+    margin: 10px;
+    color: var(--blue);
+    box-shadow: 2px 2px 2px 2px rgb(199, 189, 189);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15vw;
+    
+    height: 50vh;
+}
+.price_search{
+    font-weight: bold;
+}
+.search_description{
+    color: rgb(121, 118, 114);
+}

@@ -1,22 +1,18 @@
 var express = require("express");
 var router = express.Router();
 
-const Admin= require("../model/adminModel");
+const Admin = require("../model/adminModel");
 const adminHelper = require("../helpers/adminHelpers");
 const jwt = require("jsonwebtoken");
 const adminMiddleware = require("../middleware/adminMiddleware");
 const userHelpers = require("../helpers/userHelpers");
 const adminHelpers = require("../helpers/adminHelpers");
-const multer  = require('multer')
-const shortid=require('shortid')
-const {cloudinary}=require('../cloudinary/cloudinary')
+const multer = require("multer");
+const shortid = require("shortid");
+const { cloudinary } = require("../cloudinary/cloudinary");
 // const upload = multer({ dest: 'public/images' })
 
-
-
-
-
-var storage = multer.diskStorage([])
+var storage = multer.diskStorage([]);
 
 var upload = multer({ storage: storage });
 
@@ -63,161 +59,133 @@ router.get("/logged", async (req, res) => {
   }
 });
 router.post("/blockUser", (req, res) => {
-  
   adminHelpers.userBlock(req.body).then((response) => {
-    
     res.send(response);
   });
 });
 router.get("/getuser", async (req, res) => {
   const userDetails = await adminHelpers.getUser();
-  
 
   res.send(userDetails);
 });
-router.post('/addcategory',(req,res)=>{
-adminHelpers.addCategory(req.body).then((response)=>{
-res.send(response)
-})
-})
-router.get('/getcategory',async(req,res)=>{
-  let data=await adminHelpers.findCategory()
-  res.send(data)
+router.get("/getuserpage/:id", async (req, res) => {
+  console.log(req.params.id);
+  const userData = await adminHelpers.getUserbyPage(req.params.id);
+  console.log(userData);
+  res.send(userData);
+});
+router.post("/addcategory", (req, res) => {
+  adminHelpers.addCategory(req.body).then((response) => {
+    res.send(response);
+  });
+});
+router.get("/getcategory", async (req, res) => {
+  let data = await adminHelpers.findCategory();
+  res.send(data);
+});
+router.post("/addsubcategory", (req, res) => {
+  adminHelpers.addSubcategory(req.body).then((response) => {
+    res.send(response);
+  });
+});
+router.get("/getallcategory", async (req, res) => {
+  let response = await adminHelpers.getAllCategory();
+  res.send(response);
+});
+router.post("/editcategory", (req, res) => {
+  adminHelpers.updateCategory(req.body).then((response) => {
+    res.send(response);
+  });
+});
+router.post("/deletecategory", (req, res) => {
+  adminHelpers.deleteCategory(req.body).then((response) => {
+    res.send(response);
+  });
+});
+router.post("/editsubcategory", (req, res) => {
+  adminHelpers.editSubCategory(req.body).then((response) => {
+    res.send(response);
+  });
+});
+router.post("/deletesubcategory", (req, res) => {
+  console.log(req.body);
+  adminHelpers.deleteSubCategory(req.body).then((response) => {
+    res.send(response);
+  });
+});
+router.post("/addproduct", (req, res) => {
+  const secret = shortid.generate();
+  adminHelpers.addProduct(req.body, secret).then((response) => {
+    res.send(response);
+  });
+});
+router.post("/getproduct", upload.array("image", 3), async (req, res) => {
+  const products = await adminHelpers.getProduct(req.body);
+  res.send(products);
+});
+router.post("/addimage", upload.array("image", 4), async (req, res) => {
+  const files = req.files;
+  const urls = [];
+  const object = {};
+  for (let file of files) {
+    const uploadResult = await cloudinary.uploader.upload(`${file.path}`, {
+      upload_presets: "cwbd4hh7",
+    });
+    object.image1 = uploadResult.secure_url;
+    urls.push(object.image1);
+  }
+  console.log(urls);
+  res.send(urls);
 
-
-})
-router.post('/addsubcategory',(req,res)=>{
-  adminHelpers.addSubcategory(req.body).then((response)=>{
-    res.send(response)
-  })
-})
-router.get('/getallcategory',async(req,res)=>{
-  let response=await adminHelpers.getAllCategory()
-  res.send(response)
-
-})
-router.post('/editcategory',(req,res)=>{
-adminHelpers.updateCategory(req.body).then((response)=>{
-  res.send(response)
-})
-})
-router.post('/deletecategory',(req,res)=>{
-  adminHelpers.deleteCategory(req.body).then((response)=>{
-    res.send(response)
-  })
-})
-router.post('/editsubcategory',(req,res)=>{
-  adminHelpers.editSubCategory(req.body).then((response)=>{
-    res.send(response)
-  })
-
-})
-router.post('/deletesubcategory',(req,res)=>{
-  console.log(req.body)
-  adminHelpers.deleteSubCategory(req.body).then((response)=>{
-    
-    res.send(response)
-  })
-})
-router.post('/addproduct',(req,res)=>{
-  console.log(req.body)
-  const secret=shortid.generate()
-  adminHelpers.addProduct(req.body,secret).then((response)=>{
-    res.send(response)
-  })
-})
-router.post('/getproduct',upload.array("image", 3),async(req,res)=>{
- const products=await adminHelpers.getProduct(req.body)
-    res.send(products)
- 
-})
-router.post('/addimage',upload.array("image", 4),async(req,res)=>{
-  
-  
-
-  const files=req.files;
-  const urls=[];
-  const object={}
-   for(let file of files){
-   
-
-  const uploadResult=await cloudinary.uploader.upload(`${file.path}`,{
-    upload_presets:"cwbd4hh7"
-  })
-  object.image1=uploadResult.secure_url
-  urls.push(object.image1)
- 
-
-}
-console.log(urls)
-res.send(urls)
-  
-  
   // var reader = new FileReader();
-  //   reader.readAsDataURL(req.body.files.file[0]); 
+  //   reader.readAsDataURL(req.body.files.file[0]);
   //   reader.onloadend = function() {
-  //     var base64data = reader.result;                
+  //     var base64data = reader.result;
   //     console.log(base64data);
   //   }
-  
-  
-})
-router.get('/editproducts/:id',(req,res)=>{
-  adminHelpers.getEditProduct(req.params.id).then((response)=>{
-    console.log(response)
-    
-    res.send(response)
-  })
-})
-router.get('/gettallproducts',async(req,res)=>{
-  const product=await adminHelper.getProduct()
-  res.send(product)
-})
-router.post('/deleteproduct',(req,res)=>{
- console.log(req.body)
-  adminHelpers.deleteProduct(req.body).then((response)=>{
-    res.send(response)
-  })
-})
-router.post('/addeditedimage',upload.single("image"),async(req,res)=>{
+});
+router.get("/editproducts/:id", (req, res) => {
+  adminHelpers.getEditProduct(req.params.id).then((response) => {
+    res.send(response);
+  });
+});
+router.get("/gettallproducts", async (req, res) => {
+  const product = await adminHelper.getProduct();
+  res.send(product);
+});
+router.get("/getproductpage/:id", async (req, res) => {
+  const product = await adminHelpers.getproductbypage(req.params.id);
+  res.send(product);
+});
+router.post("/deleteproduct", (req, res) => {
+  adminHelpers.deleteProduct(req.body).then((response) => {
+    res.send(response);
+  });
+});
+router.post("/addeditedimage", upload.single("image"), async (req, res) => {
+  const file = req.file;
 
-  const file=req.file;
-  
-   console.log(file)
+  const uploadResult = await cloudinary.uploader.upload(`${file.path}`, {
+    upload_presets: "cwbd4hh7",
+  });
 
-  const uploadResult=await cloudinary.uploader.upload(`${file.path}`,{
-    upload_presets:"cwbd4hh7"
-  })
-  
- 
-
-
-console.log(uploadResult.secure_url)
-res.send(uploadResult.secure_url)
-
-})
-router.post('/editproduct',(req,res)=>{
-  console.log(req.body)
-  adminHelpers.editProduct(req.body).then((response)=>{
-    res.send(response)
-  })
-
-})
-router.get('/getmen',(req,res)=>{
-  
-    adminHelpers.findMen().then((response)=>{
-      res.send(response)
-    
-  })
-})
-router.get('/getwomen',(req,res)=>{
- 
-    adminHelpers.findWomen().then((response)=>{
-      res.send(response)
-      
-    
-  })
-})
+  res.send(uploadResult.secure_url);
+});
+router.post("/editproduct", (req, res) => {
+  adminHelpers.editProduct(req.body).then((response) => {
+    res.send(response);
+  });
+});
+router.get("/getmen", (req, res) => {
+  adminHelpers.findMen().then((response) => {
+    res.send(response);
+  });
+});
+router.get("/getwomen", (req, res) => {
+  adminHelpers.findWomen().then((response) => {
+    res.send(response);
+  });
+});
 router.get("/logout", async (req, res) => {
   res
     .cookie("admintoken", "", {
@@ -226,5 +194,106 @@ router.get("/logout", async (req, res) => {
     })
     .send({ status: true });
 });
+router.get('/allorders/:id',async(req,res)=>{
+  try{
+    const orders=await adminHelpers.getOrders(req.params)
+    res.send(orders)
+
+  }catch(err){
+
+  }
+})
+router.post('/changestatus',(req,res)=>{
+  try{
+    
+    adminHelpers.updateOrderStatus(req.body).then((response)=>{
+      res.send(response)
+    })
+
+  }catch(err){
+
+  }
+})
+router.post('/addoffer',(req,res)=>{
+  try{
+   
+    adminHelpers.addOffer(req.body).then((response)=>{
+      res.status(200).send(response)
+    })
+
+  }catch(err){
+
+  }
+})
+router.get('/getoffer/:id',async(req,res)=>{
+  
+  try{
+   const offer=await adminHelpers.getOffer(req.params.id)
+   res.status(200).send(offer)
+
+  }catch(err){
+
+  }
+})
+router.get('/getoffercategory/:id',async(req,res)=>{
+  try{
+  const data=await adminHelpers.getSubcategoryOffer(req.params.id)
+  res.status(200).send(data)
+  console.log(data)
+
+  }catch(err){
+
+  }
+})
+router.post('/addoffercategory',(req,res)=>{
+  try{
+    adminHelpers.addofferCategory(req.body).then((response)=>{
+      res.status(200).send(response)
+    })
+
+  }catch(err){
+
+  }
+})
+router.post('/editoffer',(req,res)=>{
+  try{
+    
+
+adminHelpers.editOfferproduct(req.body.editoffer).then((response)=>{
+  
+  res.send(response)
+})
+  }catch(err){
+  }
+})
+router.post('/editcategoryoffer',(req,res)=>{
+  try{
+
+  }catch(err){
+    
+  }
+})
+router.get('/subcategorylist/:id',async(req,res)=>{
+  try{
+   const data=await adminHelpers.getSubcategoryToadd(req.params.id)
+  res.send(data)
+
+  }catch(err){
+
+  }
+})
+router.post('/deleteoffer',(req,res)=>{
+  try{
+   adminHelpers.deleteOffer(req.body).then((response)=>{
+     res.send(response)
+   })
+   
+ 
+   }catch(err){
+ 
+   }
+
+})
+
 
 module.exports = router;
