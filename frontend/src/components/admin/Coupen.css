@@ -1,0 +1,12 @@
+.coupen_heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.coupen_search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}

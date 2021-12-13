@@ -15,6 +15,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import SpinContext from "../../context/spinnerContext";
+import SalesReport from "./SalesReport";
 function Order() {
   const [search, setsearch] = useState("");
   const [orderdata, setorderdata] = useState([]);
@@ -242,9 +243,7 @@ function Order() {
                       return (
                         <>
                           <tr className={data.products.orderStatus==="Delivered" || data.products.orderStatus==="Cancel" ? "completed" :"not_completed"} >
-                             
                             <td>{data.role[0].username}</td>
-
                             <td >{data.productdetails.productname}</td>
                             <td>{data.date}</td>
                             <td>Rs.{data.products.price}</td>
@@ -296,6 +295,7 @@ function Order() {
                     })}
                   </tbody>
                 </Table>
+               
               </div>
               {!orderdata[0] && <p>No orders found</p>}
 

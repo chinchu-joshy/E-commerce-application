@@ -1,6 +1,6 @@
 const User = require("../model/userModel");
 const bcrypt = require("bcrypt");
-
+const shortId = require("shortid");
 var mongoose = require("mongoose");
 const Product = require("../model/productModel");
 const Category = require("../model/categoryModel");
@@ -9,21 +9,35 @@ const Cart = require("../model/cartModel");
 const Order = require("../model/orderModel");
 const moment = require("moment");
 var Objid = mongoose.Types.ObjectId;
-const Razorpay =require('razorpay')
-const paypal = require('paypal-rest-sdk');
+const Razorpay = require("razorpay");
+const paypal = require("paypal-rest-sdk");
+const Coupen = require("../model/coupenModel");
 var instance = new Razorpay({
-  key_id: 'rzp_test_OyHJLEVWBe3X4E',
-  key_secret: 'c8Y2ceJAh6fnimfCw3JnIZ2D',
+  key_id: "rzp_test_OyHJLEVWBe3X4E",
+  key_secret: "c8Y2ceJAh6fnimfCw3JnIZ2D",
 });
 paypal.configure({
-  'mode': 'sandbox', //sandbox or live
-  'client_id': 'AfpqY_fO1YK43C3Et4TeelvSlkBeafKP3qJChFUt31LtTNkwhvePZbSTmCwFR1_5rpIyQB_5froO6_lk',
-  'client_secret': 'EHk7F3pvs5N2AD-6ivaLWjcKp4xea565ZysI2h2Pr_LPxglkLv2cI5KRUzq3wXH4TkazzuHtrhi_3uwd'
+  mode: "sandbox", //sandbox or live
+  client_id:
+    "AfpqY_fO1YK43C3Et4TeelvSlkBeafKP3qJChFUt31LtTNkwhvePZbSTmCwFR1_5rpIyQB_5froO6_lk",
+  client_secret:
+    "EHk7F3pvs5N2AD-6ivaLWjcKp4xea565ZysI2h2Pr_LPxglkLv2cI5KRUzq3wXH4TkazzuHtrhi_3uwd",
 });
 module.exports = {
   registerUser: (data) => {
     return new Promise(async (resolve, reject) => {
       try {
+         if (data.referal) {
+          User.updateOne(
+            { referal: data.referal },
+            { $inc: { wallet: 20 } }
+          ).then((response) => {
+            wallet = 50;
+          });
+        } else {
+          wallet = 0;
+        }
+        const secret = shortId.generate();
         const salt = await bcrypt.genSalt();
         const val = await bcrypt.hash(data.password, salt);
         console.log(val);
@@ -34,6 +48,8 @@ module.exports = {
           DOB: data.dob,
           phone: data.phone,
           state: data.state,
+          referal: secret,
+          wallet: wallet,
         });
         const saveUser = await userdata.save();
         resolve(saveUser);
@@ -102,7 +118,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       const data = await User.findOne({ _id: Objid(id) });
       if (data.state === false) return resolve({ status: false });
-      return resolve({ status: true ,user:data});
+      return resolve({ status: true, user: data });
     });
   },
   userFind: (id) => {
@@ -328,7 +344,7 @@ module.exports = {
     });
   },
   addToCart: (data, secret, userId) => {
-    const  result=parseInt(data.price-data.offer)
+    const result = parseInt(data.price - data.offer);
     const value = {
       productId: Objid(data.id),
       quantity: data.quantity,
@@ -338,7 +354,7 @@ module.exports = {
       orderStatus: "Placed",
 
       price: data.price,
-      offer:result
+      offer: result,
     };
 
     return new Promise(async (resolve, reject) => {
@@ -398,6 +414,7 @@ module.exports = {
             $addFields: {
               quantitys: { $sum: "$products.quantity" },
               totalprice: { $sum: "$productdetails.price" },
+              totaloffer: { $sum: "$productdetails.offer" },
             },
           },
           {
@@ -405,9 +422,14 @@ module.exports = {
               totalamount: { $multiply: ["$quantitys", "$totalprice"] },
             },
           },
+          {
+            $addFields: {
+              totaloffamount: { $multiply: ["$quantitys", "$totaloffer"] },
+            },
+          },
           { $project: { quantitys: 0, totalprice: 0 } },
         ]);
-        console.log(products)
+        console.log(products);
 
         resolve(products);
       } catch (err) {}
@@ -465,16 +487,16 @@ module.exports = {
       try {
         const date = new Date();
 
-// if(data.payment==="COD"){
-//   pay.check="Placed"
-// }
-// else {
-//   pay.check="Pending"
-// }
-// const pay={
-//   check:""
-// }
-//         date.setDate(date.getDate() + 7);
+        // if(data.payment==="COD"){
+        //   pay.check="Placed"
+        // }
+        // else {
+        //   pay.check="Pending"
+        // }
+        // const pay={
+        //   check:""
+        // }
+        //         date.setDate(date.getDate() + 7);
         var newdate = moment(date).format("YYYY-MM-DD");
 
         const order = new Order({
@@ -487,8 +509,10 @@ module.exports = {
           date: newdate,
           secret: secret,
           products: data.products,
+         
         });
         const saveOrder = await order.save();
+
         if (saveOrder) {
           Cart.updateOne(
             { userId: userId },
@@ -509,7 +533,6 @@ module.exports = {
                   update
                 ).then((response) => {
                   resolve(saveOrder);
-                 
                 });
               }
             }
@@ -571,11 +594,19 @@ module.exports = {
   cancelOrderByUser: (data) => {
     return new Promise(async (resolve, reject) => {
       try {
-         Order.updateOne({_id:Objid(data.id),"products":{$elemMatch:{"productId":data.productId,"size":data.size}}},{
-            $set:{"products.$.orderStatus":"Cancelled"}}).then((response)=>{
-              resolve(response);
-
-            })
+        Order.updateOne(
+          {
+            _id: Objid(data.id),
+            products: {
+              $elemMatch: { productId: data.productId, size: data.size },
+            },
+          },
+          {
+            $set: { "products.$.orderStatus": "Cancelled" },
+          }
+        ).then((response) => {
+          resolve(response);
+        });
         // const count = await Order.aggregate([
         //   { $match: { _id: Objid(data.id) } },
         //   { $project: { count: { $size: "$products" } } },
@@ -615,83 +646,140 @@ module.exports = {
       }
     });
   },
-  addUserImage:(data,id)=>{
-    return new Promise((resolve,reject)=>{
-      try{
-        User.updateOne({_id:Objid(id)},{$set:{"image":data}}).then((response)=>{
-          resolve(response)
-        })
-
-      }catch(err){
-
-      }
-    })
-  },
-  generateRazorpay:(id,price)=>{
-    
-    return new Promise((resolve,reject)=>{
-      console.log(id)
-    console.log(price)
-    const money=parseInt(price)
-      try{
-        const options={
-          amount:money,
-          currency: "INR", 
-           receipt: id,
-        }
-        instance.orders.create(options,function(err,order){
-          if(err){
-            console.log(err)
-          }else{
-           
-            resolve(order)
+  addUserImage: (data, id) => {
+    return new Promise((resolve, reject) => {
+      try {
+        User.updateOne({ _id: Objid(id) }, { $set: { image: data } }).then(
+          (response) => {
+            resolve(response);
           }
+        );
+      } catch (err) {}
+    });
+  },
+  generateRazorpay: (id, price) => {
+    return new Promise((resolve, reject) => {
+      console.log(id);
+      console.log(price);
+      const money = parseInt(price);
+      try {
+        const options = {
+          amount: money,
+          currency: "INR",
+          receipt: id,
+        };
+        instance.orders.create(options, function (err, order) {
+          if (err) {
+            console.log(err);
+          } else {
+            resolve(order);
+          }
+        });
+      } catch (err) {}
+    });
+  },
+  verifyPayment: (data) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const crypto = require("crypto");
+        let hmac = crypto.createHmac("sha256", "c8Y2ceJAh6fnimfCw3JnIZ2D");
+
+        hmac.update(
+          data.payment.razorpay_order_id +
+            "|" +
+            data.payment.razorpay_payment_id
+        );
+        hmac = hmac.digest("hex");
+
+        if (hmac === data.payment.razorpay_signature) {
+          resolve({ status: true });
+        } else {
+          reject();
+        }
+      } catch (err) {}
+    });
+  },
+  updateOrderPaymentStatus: (data) => {
+    console.log("udating");
+    console.log(data);
+    return new Promise((resolve, reject) => {
+      try {
+        Order.updateOne(
+          { _id: Objid(data) },
+          {
+            $set: { orderStatus: "Paid" },
+          }
+        ).then((response) => {
+          resolve({ status: true });
+          console.log("updated");
+        });
+      } catch (err) {}
+    });
+  },
+
+  checkReferal: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const value = data.referal;
+        const user = await User.findOne({ referal: value });
+        if (!user) {
+          resolve({ status: false });
+        }
+      } catch (err) {}
+    });
+  },
+  getCoupen:()=>{
+    console.log("coupen djhdbhm")
+    return new Promise(async (resolve, reject) => {
+      try {
+        const coupen = await Coupen.find();
+       
+        if (coupen) {
+          resolve(coupen);
+        }
+      } catch (err) {}
+    });
+  },
+  checkCoupen:(user,coupen)=>{
+    return new Promise(async (resolve, reject) => {
+      try {
+        const coupen = await Coupen.find({});
+       
+        if (coupen) {
+          resolve(coupen);
+        }
+      } catch (err) {}
+    });
+
+  },
+  updateTheDiscount:(id,data)=>{
+    return new Promise(async (resolve, reject) => {
+      try {
+       if(data.wallet){
+         console.log("wallet ok")
+         const val=parseInt(data.wallet*-1)
+         console.log(val)
+         User.updateOne({_id:Objid(id)},
+          {$inc:{"wallet":val}}
+         ).then((response)=>{
+           console.log(response)
+          resolve({status:true})
+         })
+       }
+       if(data.coupen){
+        console.log("coupen ok")
+        User.updateOne({_id:Objid(id)},{
+           $addToSet: { "coupen": data.coupen } 
+        }).then((response)=>{
+          console.log(response)
+          resolve({status:true})
         })
-
-      }catch(err){
-
       }
-    })
-  },
-  verifyPayment:(data)=>{
-    return new Promise((resolve,reject)=>{
-      try{
-       
-       
-        const crypto=require('crypto')
-        let hmac=crypto.createHmac('sha256','c8Y2ceJAh6fnimfCw3JnIZ2D')
-        
-        hmac.update(data.payment.razorpay_order_id+'|'+data.payment.razorpay_payment_id)
-hmac=hmac.digest('hex')
+    
+      } catch (err) {}
+    });
 
-if(hmac===data.payment.razorpay_signature){
-  
-  resolve({status:true})
-}else{
-  reject()
-}
-      }catch(err){
-
-      }
-    })
-  },
-  updateOrderPaymentStatus:(data)=>{
-    console.log("udating")
-    console.log(data)
-    return new Promise((resolve,reject)=>{
-      try{
-        Order.updateOne({_id:Objid(data)},{
-          $set:{"orderStatus":"Paid"}}).then((response)=>{
-            resolve({status:true});
-            console.log("updated")
-
-          })
-
-      }catch(err){
-
-      }
-    })
-  },
+  }
   // generatePaypal:(secret,data)=>{
   //   return new Promise((resolve,reject)=>{
   //     try{
@@ -721,19 +809,19 @@ if(hmac===data.payment.razorpay_signature){
   //             "description": "Thank you for the purchase"
   //         }]
   //     };
-      
+
   //     paypal.payment.create(create_payment_json, function (error, payment) {
   //       if (error) {
   //           console.log(error)
   //       } else {
   //           for(let i = 0;i < payment.links.length;i++){
   //             if(payment.links[i].rel === 'approval_url'){
-               
+
   //               resolve(payment.links[i].href)
   //             }
   //           }
   //           console.log(payment)
-            
+
   //       }
   //     });
 

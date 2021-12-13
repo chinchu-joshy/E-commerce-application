@@ -28,6 +28,9 @@ import "cropperjs/dist/cropper.min.css";
 import AuthUserContext from "../../context/UserContext";
 import ReactCrop from "react-image-crop";
 import AddIcon from '@material-ui/icons/Add';
+import Wallet from "./Wallet";
+import Coupen from "./Coupen";
+
 
 function UserProfile() {
   const [showimg, setshowimg] = useState(false)
@@ -44,7 +47,9 @@ function UserProfile() {
   const [crop, setcrop] = useState("");
   const [detail, setdetail] = useState(true);
   const [err, seterr] = useState("");
+  const [wallet, setwallet] = useState(false)
   const [confirmerr, setconfirmerr] = useState("");
+  const [coupen, setcoupen] = useState(false)
   const inputEl = useRef(null);
   const ref = useRef();
   const canvasref = useRef();
@@ -237,6 +242,8 @@ function UserProfile() {
                   setorder(false);
                   setdetail(true);
                   setpassword(false);
+                  setwallet(false)
+                  setcoupen(false)
                 }}
               >
                 My details
@@ -248,6 +255,8 @@ function UserProfile() {
                     setorder(false);
                     setdetail(false);
                     setpassword(false);
+                    setwallet(false)
+                    setcoupen(false)
                   }}
                 >
                   Adress Book
@@ -267,11 +276,28 @@ function UserProfile() {
                   setdetail(false);
                   setorder(true);
                   setpassword(false);
+                  setwallet(false)
+                  setcoupen(false)
                 }}
               >
                 My orders
               </ListGroup.Item>
-              <ListGroup.Item>Coupens</ListGroup.Item>
+              <ListGroup.Item  onClick={() => {
+                  setadress(false);
+                  setdetail(false);
+                  setorder(false);
+                  setpassword(false);
+                  setwallet(false)
+                  setcoupen(true)
+                }}>Coupens</ListGroup.Item>
+              <ListGroup.Item  onClick={() => {
+                  setadress(false);
+                  setdetail(false);
+                  setorder(false);
+                  setpassword(false);
+                  setwallet(true)
+                  setcoupen(false)
+                }}>Wallet</ListGroup.Item>
               <ListGroup.Item>Wishlist</ListGroup.Item>
               <ListGroup.Item>View your reviews</ListGroup.Item>
             </ListGroup>
@@ -282,6 +308,8 @@ function UserProfile() {
                 {order && <OrderView />}
                 {adress && <AdressBook />}
                 {detail && <Details />}
+                {wallet && <Wallet value={username.referal} wallet={username.wallet}/>}
+                {coupen &&<Coupen/>}
               </div>
             </Container>
           </Col>

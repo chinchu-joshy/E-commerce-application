@@ -275,7 +275,7 @@ function ProductOffer() {
                       }));
                     }}
                   ></Form.Control>
-                  <Form.Label>Offer price</Form.Label>
+                  <Form.Label>Offer percentage</Form.Label>
 
                   <Form.Control
                     type="number"

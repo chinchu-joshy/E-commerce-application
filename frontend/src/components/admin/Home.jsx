@@ -58,10 +58,10 @@ function Home() {
               <Nav.Link href="/admin/category">Category</Nav.Link>
               <Nav.Link href="/admin/order">Orders</Nav.Link>
               <Nav.Link href="/admin/offer">Offers</Nav.Link>
-              <Nav.Link href="#action2">Coupen</Nav.Link>
+              <Nav.Link href="/admin/coupen">Coupen</Nav.Link>
               <Nav.Link href="#action2">Feedback</Nav.Link>
               <Nav.Link href="#">Chats</Nav.Link>
-              <Nav.Link href="#action2">Sales Report</Nav.Link>
+              <Nav.Link href="/admin/sales">Sales Report</Nav.Link>
               {/* <NavDropdown title="Dropdown" id="offcanvasNavbarDropdown">
             <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
             <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>

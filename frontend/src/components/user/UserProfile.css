@@ -177,16 +177,7 @@ line-height: 2;
    border-bottom-left-radius: 10px;
 
 }
-/* .shipped::before { 
-    content: "Read this -";
-    background-color: yellow;
-    color: red;
-    font-weight: bold;
-  } */
-  /* #filefield{
-      display:none;
-      visibility: hidden;
-  } */
+
   .crop_img{
       max-width: 100%;
       display: block;
@@ -199,3 +190,90 @@ line-height: 2;
       float: left;
       margin-left: 10px;
   }
+  .main__wallet__box{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 50vh;
+  }
+  .row__wallet{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+     
+  }
+  .content__wallet{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .all__icons{
+   
+
+  }
+  .display__copy{
+      position: absolute;
+
+  }
+  .wallet__invite_btn{
+      margin-top: 1em;
+  }
+  .copy{
+      color: var(--blue);
+  }
+  #icon{
+      margin-left: 2%;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
+}
+.image__coupen {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    font-size: small;
+    
+}
+.image__coupen p{
+    margin: 2%;
+}
+.image__coupen img{
+    width: 50px;
+    height: 50px;
+}
+.main__coupen{
+    width: 100%;
+    padding: 5%;
+    
+}
+.main__coupen ul{
+    font-size: small;
+}
+.img__coupen__row{
+    border: 2px solid black;
+    box-sizing: border-box;
+    padding: 4%;
+}
+.price__main{
+    text-decoration: line-through;
+    color: red;
+}
+.sub__total{
+    text-decoration: line-through;
+    color: red;
+
+}
+.bottom__coupen{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}

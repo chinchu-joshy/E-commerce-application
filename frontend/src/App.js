@@ -34,6 +34,8 @@ import NotFound from './pages/User/NotFound';
 import AdminOrderPage from './pages/Admin/AdminOrderPage';
 import OfferPage from './pages/Admin/OfferPage';
 import Success from "./components/user/Success"
+import CoupenPage from './pages/Admin/CoupenPage';
+import SalesReportPage from './pages/Admin/SalesReportPage';
 function App() {
   const [state, setstate] = useState('')
   const {logged} =useContext(AuthContext)
@@ -48,7 +50,8 @@ function App() {
       <Route  path='/login' element= {userlogged===true ? <Navigate to="/" /> : <UserLoginPage></UserLoginPage>}></Route>
       <Route  path='/checkout/:id/:amount' element= {userlogged===false ? <Navigate to="/login"/>  :<CheckoutPage/>}></Route>
       <Route  path='/account' element= {userlogged===false ? <Navigate to="/login"/>  :<UserProfilePage/>}></Route>
-      <Route  path='/success' element={logged===true ?<AdminHome/>:<Success/>}></Route>
+      <Route  path='/success' element={userlogged===true ?<AdminHome/>:<Success/>}></Route>
+      <Route  path='admin/sales' element={logged===false ?<AdminHome/>:<SalesReportPage/>}></Route>
       {/* <Route  path='/men' element= {<MenCategoryPage></MenCategoryPage>}></Route>
       <Route  path='/women' element= { <WomenCategoryPage></WomenCategoryPage>}></Route> */}
       <Route  path='/viewproduct/:id' element= {<ViewProductPage/> }></Route>
@@ -66,6 +69,7 @@ function App() {
       <Route  path='admin/order' element={logged===false ? <Navigate to="/admin" />:<AdminOrderPage/>}></Route>
       <Route path='/addtobag' element={userlogged===false ? <Navigate to="/login"/>  :<UsercartPage/>}/>
       <Route  path='admin/addoffer' element={logged===false ? <Navigate to="/admin" />:<CategoryManagmentPage/>}></Route>
+      <Route  path='admin/coupen' element={logged===false ? <Navigate to="/admin" />:<CoupenPage/>}></Route>
       <Route path="/showsearch/:id" element={<SearchPage/>}></Route>
 
       {/* <Route  path="/*" element={<NotFound/>}></Route>       */}

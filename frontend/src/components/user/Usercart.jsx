@@ -21,6 +21,7 @@ function Usercart() {
   const [amount, setamount] = useState()
   const [delivery, setdelivery] = useState(0)
    const [err, seterr] = useState("")
+   const [reduction, setreduction] = useState()
   const deleteCartProduct=async(id)=>{
     try{
       instance.get(`/deletecartitem/${id}`).then((response)=>{
@@ -37,10 +38,12 @@ function Usercart() {
   const getProducts=async()=>{
     try{
       const cart=await instance.get('/getcartproduct')
-      console.log(cart.data)
+      console.log("lllllllllllllllllllllllllllllllllllllllll")
+      console.log(cart.data.product[0].productdetails[0].price)
       if(cart.data.product){
         setproducts(cart.data.product)
         setamount(cart.data.amount)
+        setreduction(cart.data.reduction)
         
       }
 
@@ -123,7 +126,8 @@ function Usercart() {
                     </Figure>
 
                     <p>Size : {details.products.size} </p>
-                    <p>Price :{details.productdetails[0].price*details.products.quantity}</p>
+                    <p className={details.productdetails[0].offer ? "price__main":"no__offer__price"}>₹{details.productdetails[0].price*details.products.quantity}</p>
+                    <p>{details.productdetails[0].offer ?"₹":null}{details.productdetails[0].offer ? details.productdetails[0].price*details.products.quantity-details.productdetails[0].offer*details.products.quantity:null}</p>
                     <div className="btn__wish__count__container">
                       <Button className="add__to__bag__btn">
                         Add to wishlist
@@ -153,7 +157,9 @@ function Usercart() {
                 <Card className="d-flex m-2 p-2 card__main__cart align-items-center">
                   <Card.Body className="d-flex   p-2 justify-content-center flex-column">
                     <h1>Price details</h1>
-                    <h3>Sub total : Rs.{amount && amount} </h3>
+                    <h3 >Sub total :<span className={reduction ? "sub__total":"no__offer"}> ₹{amount && amount}</span> </h3>
+                    <h3><span>{reduction && "₹"}{reduction && amount-reduction}</span></h3>
+
                     
                     <br />
                     

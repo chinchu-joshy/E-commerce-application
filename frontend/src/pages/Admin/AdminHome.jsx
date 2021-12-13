@@ -1,4 +1,5 @@
 import React from 'react'
+import Dashboard from '../../components/admin/Dashboard'
 import Home from '../../components/admin/Home'
 import NavbarAdmin from '../../components/admin/NavbarAdmin'
 
@@ -7,7 +8,7 @@ function AdminHome() {
         <div>
             <Home/>
           
-       Admin dashboard
+     <Dashboard/>
         </div>
     )
 }

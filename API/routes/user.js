@@ -6,6 +6,7 @@ const userHelper = require("../helpers/userHelpers");
 const shortid = require("shortid");
 const { cloudinary } = require("../cloudinary/cloudinary");
 
+
 /* GET home page. */
 
 router.get("/logged", async (req, res) => {
@@ -204,8 +205,14 @@ router.get("/getcartproduct", async (req, res) => {
     const reducer = total.reduce((previousValue, currentValue) => {
       return previousValue + currentValue;
     }, 0);
+    const sum = products.map((item) => item.totaloffamount);
+    const offer = sum.reduce((previousValue, currentValue) => {
+      return previousValue + currentValue;
+    }, 0);
+    const totaloffer=Math.trunc(offer)
+    console.log(offer)
     console.log(reducer);
-    res.json({ product: products, amount: reducer });
+    res.json({ product: products, amount: reducer ,reduction:totaloffer});
   } catch (err) {}
 });
 router.get("/updatequantity/:id", (req, res) => {
@@ -254,7 +261,8 @@ router.post('/placeorder',(req,res)=>{
     console.log(req.body)
     userHelpers.placeOrder(userId,req.body,secret).then((response)=>{
       if(req.body.payment==="COD"){
-        res.send({response:response})
+       
+        res.send({response:response,method:"cod"})
       }else if(req.body.payment==="Razorpay"){
         userHelpers.generateRazorpay(secret,req.body.price).then((result)=>{
           
@@ -386,5 +394,52 @@ router.get('/getpaypal',(req,res)=>{
   const data="AYbFwlKTKFDURTefOs4wn0Kv9rJort0nCSVA8iAGMo9MHcJfbUjX_v2haOoLeirBd6K6YEzlRfxPQWXl"
   res.send({id:data})
 })
+router.post('/validatereferal',(req,res)=>{
+  try{
+    userHelpers.checkReferal(req.body).then((response)=>{
+      res.send(response)
+    })
+  }catch(err){
 
+  }
+})
+// =============================================================Coupen========================================================
+router.get('/showcoupen',async(req,res)=>{
+  try{
+    const data=await userHelpers.getCoupen()
+    console.log(data)
+    res.send(data)
+    
+  }catch(err){
+
+  }
+
+})
+router.get('/checkcoupen/:id',(req,res)=>{
+  const token = req.cookies.usertoken;
+    const verify = jwt.verify(token, process.env.jwt_PASSWORD_USER);
+    userId = verify.client.id;
+  try{
+    userHelpers.checkCoupen(userId,req.params.id).then((response)=>{
+
+    })
+
+  }catch(err){
+
+  }
+})
+router.post('/updatestatus',(req,res)=>{
+  console.log(req.body)
+  const token = req.cookies.usertoken;
+    const verify = jwt.verify(token, process.env.jwt_PASSWORD_USER);
+    userId = verify.client.id;
+  try{
+    userHelpers.updateTheDiscount(userId,req.body).then((response)=>{
+      res.send(response)
+    })
+
+  }catch(err){
+
+  }
+})
 module.exports = router;

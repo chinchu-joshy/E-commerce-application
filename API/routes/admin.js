@@ -194,106 +194,283 @@ router.get("/logout", async (req, res) => {
     })
     .send({ status: true });
 });
-router.get('/allorders/:id',async(req,res)=>{
+router.get("/allorders/:id", async (req, res) => {
+  try {
+    const orders = await adminHelpers.getOrders(req.params);
+    res.send(orders);
+  } catch (err) {}
+});
+router.post("/changestatus", (req, res) => {
+  try {
+    adminHelpers.updateOrderStatus(req.body).then((response) => {
+      res.send(response);
+    });
+  } catch (err) {}
+});
+router.post("/addoffer", (req, res) => {
+  try {
+    adminHelpers.addOffer(req.body).then((response) => {
+      res.status(200).send(response);
+    });
+  } catch (err) {}
+});
+router.get("/getoffer/:id", async (req, res) => {
+  try {
+    const offer = await adminHelpers.getOffer(req.params.id);
+    res.status(200).send(offer);
+  } catch (err) {}
+});
+router.get("/getoffercategory/:id", async (req, res) => {
+  try {
+    const data = await adminHelpers.getSubcategoryOffer(req.params.id);
+    res.status(200).send(data);
+    console.log(data);
+  } catch (err) {}
+});
+router.post("/addoffercategory", (req, res) => {
+  try {
+    adminHelpers.addofferCategory(req.body).then((response) => {
+      res.status(200).send(response);
+    });
+  } catch (err) {}
+});
+router.post("/editoffer", (req, res) => {
+  try {
+    adminHelpers.editOfferproduct(req.body.editoffer).then((response) => {
+      res.send(response);
+    });
+  } catch (err) {}
+});
+
+router.get("/subcategorylist/:id", async (req, res) => {
+  try {
+    const data = await adminHelpers.getSubcategoryToadd(req.params.id);
+    res.send(data);
+  } catch (err) {}
+});
+router.post("/deleteoffer", (req, res) => {
+  try {
+    adminHelpers.deleteOffer(req.body).then((response) => {
+      res.send(response);
+    });
+  } catch (err) {}
+});
+router.post("/editoffercategory", (req, res) => {
+  console.log(req.body);
+  try {
+    adminHelpers
+      .editOfferCategory(req.body.editoffercategory)
+      .then((response) => {
+        res.send(response);
+      });
+  } catch (err) {}
+});
+router.post("/deletecategoryoffer", (req, res) => {
+  try {
+    adminHelpers.deleteCategoryOffer(req.body).then((response) => {
+      res.send(response);
+    });
+  } catch (err) {}
+});
+// *********************************************COUPEN*********************************************************
+router.post('/addcoupen',(req,res)=>{
+ 
   try{
-    const orders=await adminHelpers.getOrders(req.params)
-    res.send(orders)
+    adminHelpers.addCoupen(req.body.addcoupen).then((response) => {
+      res.send(response);
+    });
 
   }catch(err){
 
   }
 })
-router.post('/changestatus',(req,res)=>{
+router.post('/editcoupen',(req,res)=>{
   try{
-    
-    adminHelpers.updateOrderStatus(req.body).then((response)=>{
-      res.send(response)
-    })
+    console.log(req.body)
+    adminHelpers.editCoupen(req.body.editcoupen).then((response) => {
+      res.send(response);
+    });
 
   }catch(err){
 
   }
 })
-router.post('/addoffer',(req,res)=>{
+router.post('/deletecoupen',(req,res)=>{
+  try{
+    adminHelpers.deleteCoupen(req.body).then((response) => {
+      res.send(response);
+    });
+
+  }catch(err){
+
+  }
+})
+router.get('/getcoupen/:id',(req,res)=>{
+  try{
+    adminHelpers.getCoupen(req.params.id).then((response) => {
+      res.send(response);
+    });
+
+  }catch(err){
+
+  }
+})
+
+// *********************************************COUPEN*********************************************************
+// ===========================================SALES REPORT=================================================
+router.get('/singledayorders/:id',async(req,res)=>{
   try{
    
-    adminHelpers.addOffer(req.body).then((response)=>{
-      res.status(200).send(response)
-    })
-
-  }catch(err){
-
-  }
-})
-router.get('/getoffer/:id',async(req,res)=>{
-  
-  try{
-   const offer=await adminHelpers.getOffer(req.params.id)
-   res.status(200).send(offer)
-
-  }catch(err){
-
-  }
-})
-router.get('/getoffercategory/:id',async(req,res)=>{
-  try{
-  const data=await adminHelpers.getSubcategoryOffer(req.params.id)
-  res.status(200).send(data)
-  console.log(data)
-
-  }catch(err){
-
-  }
-})
-router.post('/addoffercategory',(req,res)=>{
-  try{
-    adminHelpers.addofferCategory(req.body).then((response)=>{
-      res.status(200).send(response)
-    })
-
-  }catch(err){
-
-  }
-})
-router.post('/editoffer',(req,res)=>{
-  try{
-    
-
-adminHelpers.editOfferproduct(req.body.editoffer).then((response)=>{
-  
-  res.send(response)
-})
-  }catch(err){
-  }
-})
-router.post('/editcategoryoffer',(req,res)=>{
-  try{
-
-  }catch(err){
-    
-  }
-})
-router.get('/subcategorylist/:id',async(req,res)=>{
-  try{
-   const data=await adminHelpers.getSubcategoryToadd(req.params.id)
-  res.send(data)
-
-  }catch(err){
-
-  }
-})
-router.post('/deleteoffer',(req,res)=>{
-  try{
-   adminHelpers.deleteOffer(req.body).then((response)=>{
-     res.send(response)
-   })
-   
- 
-   }catch(err){
- 
+   const data= await adminHelpers.getQuickSortOneDay(req.params.id)
+   if(data){
+     
+     res.send(data)
    }
 
-})
+  }catch(err){
 
+  }
+})
+router.get('/weeklyorders/:id',async(req,res)=>{
+  try{
+    
+   const data= await adminHelpers.getQuickSortWeek(req.params.id)
+   if(data){
+    //  console.log(data)
+     res.send(data)
+   }
+
+  }catch(err){
+
+  }
+
+})
+router.get('/monthlyorders/:id',async(req,res)=>{
+  try{
+   
+   const data= await adminHelpers.getQuickSortMonth(req.params.id)
+   if(data){
+    //  console.log(data)
+     res.send(data)
+   }
+
+  }catch(err){
+
+  }
+
+})
+router.get('/yearlyorders/:id',async(req,res)=>{
+  try{
+    console.log("reached yearly order")
+   const data= await adminHelpers.getQuickSortYear(req.params.id)
+   if(data){
+    //  console.log(data)
+     res.send(data)
+   }
+
+  }catch(err){
+
+  }
+
+})
+router.get('/rangeorders/:id/:start/:end',async(req,res)=>{
+  try{
+   
+   const data= await adminHelpers.getOrderByRange(req.params.id,req.params.start,req.params.end)
+   
+   if(data){
+    
+     res.send(data)
+   }
+  }catch(err){
+
+  }
+
+})
+// ==============================================CHART============================================================
+router.get('/activeusers',async(req,res)=>{
+  try{
+   const data=await adminHelpers.findUserStatus()
+   res.status(200).send(data)
+
+  }catch(err){
+
+  }
+})
+router.get('/monthlyorder',async(req,res)=>{
+  try{
+    const data=await adminHelpers.getDatabyMonth()
+    const day=[]
+    const count=[]
+    if(data){
+      // for(let i=0;i<data.length;i++){
+      //   day.labels.push(data[i]._id.day);
+      //   count.push(data[i].count);
+      //   console.log(data[i])
+      //   console.log("jhdfdgfhj fbhjfj bjdhbfjkhuk")
+      // }
+      // console.log(day)
+      // console.log(count)
+      for(let i=0;i<data.length;i++){
+       
+day.push(data[i]._id.day)
+count.push(data[i].count)
+
+
+      }
+      console.log(day)
+      console.log(count)
+     
+      res.status(200).send({day,count})
+    }
+  }catch(err){
+
+  }
+
+})
+// =============================rs=========================HOME CARD================================================
+router.get('/getinfo',async(req,res)=>{
+  try{
+    
+    const data=await adminHelpers.getInfo()
+    if(data){
+      console.log(data)
+      res.send(data)
+    }
+
+  }catch(err){
+
+  }
+})
+router.get('/latestorders',async(req,res)=>{
+  try{
+    
+    const data=await adminHelpers.getrecentOrder()
+    if(data){
+    
+      res.send(data)
+    }
+
+  }catch(err){
+
+  }
+
+})
+router.get('/trending',async(req,res)=>{
+  try{
+    
+    const data=await adminHelpers.topSellingProduct()
+   
+    if(data){
+      console.log(data)
+    
+      res.send(data)
+    }
+
+  }catch(err){
+
+  }
+
+})
 
 module.exports = router;

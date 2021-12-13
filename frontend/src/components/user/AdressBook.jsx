@@ -30,6 +30,7 @@ function AdressBook() {
   const [adress, setadress] = useState({});
   const {details,getUser} = useContext(UserContext)
   const handleClose = () => setshowedit(false);
+  const [adressbook, setadressbook] = useState([])
   const handleCloseAdd = () => setshowadd(false);
 //   const getAdressShow = async () => {
 //     const userAdress = await instance.get("/getadress");
@@ -37,6 +38,11 @@ function AdressBook() {
 //       setadress(userAdress.data);
 //     }
 //   };
+const getAdress=async()=>{
+  const UserResult= await instance.get('/getuserdata')
+  console.log("end")
+  setadressbook(UserResult.data)
+}
 const changeState=(e)=>{
    setadress(prev=>({
         ...prev,state:e.target.value
@@ -129,6 +135,7 @@ const changeDistrict=(e)=>{
   };
   useEffect(() => {
     getUser();
+    getAdress()
     
   }, []);
   const addAdress = (e) => {
@@ -173,7 +180,7 @@ const changeDistrict=(e)=>{
               <h6>You can enter maximum of 4 adress</h6>
               <Button onClick={handleShowAdd}>Add new adress</Button>
             </div>
-{details.adress.map((adress)=>{
+{adressbook.adress && adressbook.adress.map((adress)=>{
     return(
         <Card className="adress__book__card mb-2">
               <Card.Body>

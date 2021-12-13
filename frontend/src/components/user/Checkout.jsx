@@ -43,11 +43,20 @@ function Checkout() {
   const [date, setdate] = useState(null);
   const [offerprice, setofferprice] = useState(null)
   const [delivery, setdelivery] = useState(20);
+  const [coupenshow, setcoupenshow] = useState(false)
   const handleCloseAdd = () => setshowadd(false);
+  const [coupenerr, setcoupenerr] = useState("")
+  const [coupen, setcoupen] = useState([])
+  const [coupenCode, setCoupenCode] = useState("")
+  const [coupenAmount, setcoupenAmount] = useState(0)
+  const [coupenDetail, setcoupenDetail] = useState("")
+  const [walletDetail, setwalletDetail] = useState(null)
+  const [wallet, setwallet] = useState(0)
   const handleCloseOrder = () => {
     navigate("/");
     setmodal(false);
   };
+  const handleCoupen=()=>setcoupenshow(false)
   const addData = async () => {
     const UserResult = await instance.get("/getuserdata");
     if (UserResult.data) {
@@ -57,6 +66,27 @@ function Checkout() {
 
     // setadress(details.adress)
   };
+//   const coupens=await instance.get('/showcoupen')
+// if(coupen){
+//     setcoupen(coupens.data)
+//     console.log(coupens)
+// }
+//         }catch(err){
+  //========================== applay coupen====================================
+     const applyCoupen=async()=>{
+      const coupens=await instance.get('/showcoupen')
+      console.log(coupens)
+      if(coupen){
+          setcoupen(coupens.data) 
+      }
+       setcoupenshow(true)
+     }  
+     const checkCoupen=async(check)=>{
+       if(amount<check.limit) return setcoupenerr("Coupen cannot apply")
+       const value=(parseInt(check.offer)*parseInt(amount))/100
+       setcoupenAmount(value)
+       setcoupenDetail(check._id)
+     }
   const getProduct = async () => {
     try {
       const products = await instance.get(`/getorderproduct/${id}`);
@@ -110,11 +140,15 @@ function Checkout() {
     try {
       const data = {
         cartId: id,
-        price: parseInt(amount)+parseInt(delivery),
+        price: parseInt(amount)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet),
         adress: adress,
         payment: payment,
         products: product,
         status: "Placed",
+        coupen:coupenDetail,
+        wallet:walletDetail
+
+        
       };
       console.log(data);
       if (!payment || !adress || !id || !amount || !product)
@@ -127,19 +161,24 @@ function Checkout() {
           if (result.data.order) {
             // const date=response.data.date
             displayRazorpay(result.data.order, result.data.response._id);
-          } else {
+          }
+            if(result.data.method==="cod") {
+            
 
-            // const date=result.data.response.date
-            // setdate(date)
-            
-            swal({
-              title: "Order placed successfully!",
-              // text: `Delivery expect on ${date}`,
-              icon: "success",
-              button: "Aww yiss!",
-              
-            });
-            
+            if(coupenDetail || walletDetail){
+              const data={
+                coupen:coupenDetail,
+                wallet:walletDetail
+              }
+              console.log(data)
+             instance.post('/updatestatus',data).then((response)=>{
+               console.log("update coupen")
+               if(response){
+                 console.log(data)
+               }
+
+             })
+          } 
           }
         });
       }
@@ -252,6 +291,10 @@ function Checkout() {
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult);
   };
+  const takeWallet=()=>{
+
+
+  }
   useEffect(() => {
     addData();
     getProduct();
@@ -268,11 +311,11 @@ function Checkout() {
                   <h1>Price details</h1>
                   <Card className="d-flex m-2 p-2 card__coupen__cart">
                     <Card.Body className="  p-2 coupen__card__body flex-column">
+                      <p style={{background:"green"}} onClick={takeWallet}>Use wallet</p>
                       <p>Apply coupen</p>
-                      <Button className="coupen__btn">Apply</Button>
+                      <Button className="coupen__btn" onClick={applyCoupen}>Apply</Button>
                     </Card.Body>
                   </Card>
-
                   <br />
                   <Form.Select
                     className="selection__checkout"
@@ -299,13 +342,16 @@ function Checkout() {
                       Discount Price : Rs.{offerprice ? parseInt(amount-offerprice):0}
                     </ListGroup.Item>
                     <ListGroup.Item className="list__checkout__coupen">
-                      Coupen discount : Rs.0
+                      Coupen discount : Rs.{coupenAmount && Math.trunc(coupenAmount)}
+                    </ListGroup.Item>
+                    <ListGroup.Item className="list__checkout__wallet">
+                  Wallet : Rs.{wallet && wallet}
                     </ListGroup.Item>
                     <ListGroup.Item className="list__checkout__delivery">
                       Delivery charge : Rs.{delivery && delivery}
                     </ListGroup.Item>
                     <ListGroup.Item className="list__checkout__amount">
-                      Total amount : Rs.{amount && parseInt(offerprice)+parseInt(delivery) }
+                      Total amount : Rs.{amount && parseInt(offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet) }
                     </ListGroup.Item>
                   </ListGroup>
 
@@ -464,6 +510,7 @@ function Checkout() {
                       button: "Aww yiss!",
                     });
                   }
+                  navigate('/success')
                 });
 
                 //
@@ -567,6 +614,73 @@ function Checkout() {
             </Modal.Body>
             <Modal.Footer>
               <Button onClick={handleCloseOrder}>Ok</Button>
+            </Modal.Footer>
+          </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <Modal
+            show={coupenshow}
+            onHide={handleCoupen}
+            backdrop="static"
+            keyboard={false}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Apply Coupen</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <Form.Label>Enter coupen code</Form.Label>
+
+            {coupen.map((data)=>{
+                    return(
+                        <Row className="img__coupen__row__checkout mt-2">
+                    <Col md={4}>
+
+<div className="image__coupen_checkout">
+    
+    <p style={{color:"green"}}>Secret code : {data.coupencode}</p>
+    <a className="coupen__applay__btn" onClick={()=>{
+      checkCoupen(data)
+    }}>Apply</a>
+
+</div>
+                    </Col>
+                    <Col md={8} className="bottom__coupen_checkout">
+                       
+                        <ul>
+                          <li> <strong>{data.coupenname}</strong></li>
+                            <li>Offer :{data.offer}% discound on purchase above {data.limit}</li>
+                           
+                            
+                        </ul>
+                       
+                    </Col>
+                </Row>
+                    )
+                })}
+
+            </Modal.Body>
+            <Modal.Footer>
+  
+              {coupenerr && <p>{coupenerr}</p>}
+              <Button onClick={handleCoupen}>Ok</Button>
             </Modal.Footer>
           </Modal>
         </div>

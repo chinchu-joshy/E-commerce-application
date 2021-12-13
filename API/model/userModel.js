@@ -7,7 +7,10 @@ const userloginSchema=new mongoose.Schema({
     DOB:{type:String,require:true},
     state:{type:Boolean,require:true,default:true},
     adress:{type:Array},
-    image:{type:String}
+    image:{type:String},
+    referal:{type:String},
+    wallet:{type:Number},
+    coupen:{type:Array}
 
 }, {timestamps:true});
 

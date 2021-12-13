@@ -5,7 +5,8 @@ const Product = require("../model/productModel");
 const bcrypt = require("bcrypt");
 var mongoose = require("mongoose");
 const Order = require("../model/orderModel");
-const Offer=require('../model/OfferModal')
+const Offer = require("../model/OfferModal");
+const Coupen = require("../model/coupenModel");
 const newLocal = mongoose.Types.ObjectId;
 var Objid = newLocal;
 module.exports = {
@@ -56,7 +57,7 @@ module.exports = {
   },
   getUser: () => {
     return new Promise(async (resolve, reject) => {
-      const user = await User.find({}).sort({createdAt:-1}).limit(10);
+      const user = await User.find({}).sort({ createdAt: -1 }).limit(10);
       const count = await User.count();
       const value = count / 10;
       const limit = count % 10;
@@ -68,7 +69,10 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       const check = (id - 1) * 10;
 
-      const user = await User.find({}).sort({createdAt:-1}).skip(check).limit(10);
+      const user = await User.find({})
+        .sort({ createdAt: -1 })
+        .skip(check)
+        .limit(10);
       const count = await User.count();
       const value = count / 10;
       const limit = count % 10;
@@ -80,7 +84,10 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       const check = (id - 1) * 6;
 
-      const product = await Product.find({}).sort({createdAt:-1}).skip(check).limit(6);
+      const product = await Product.find({})
+        .sort({ createdAt: -1 })
+        .skip(check)
+        .limit(6);
       const count = await User.count();
       const value = count / 10;
       const limit = count % 10;
@@ -116,7 +123,7 @@ module.exports = {
   },
   getAllCategory: () => {
     return new Promise(async (resolve, reject) => {
-      const category = await Category.find({}).sort({createdAt:-1});
+      const category = await Category.find({}).sort({ createdAt: -1 });
       resolve(category);
     });
   },
@@ -173,12 +180,6 @@ module.exports = {
           return image.filename;
         });
         resolve(url);
-
-        //   const categorydata = new Product({
-
-        //     url
-        //   });
-        //   const product = await categorydata.save();
       }
     });
   },
@@ -217,7 +218,7 @@ module.exports = {
   },
   getProduct: () => {
     return new Promise(async (resolve, reject) => {
-      const product = await Product.find({}).sort({createdAt:-1}).limit(6);
+      const product = await Product.find({}).sort({ createdAt: -1 }).limit(6);
       const count = await Product.count();
       const value = count / 10;
       const limit = count % 10;
@@ -291,437 +292,1363 @@ module.exports = {
     });
   },
   getOrders: (data) => {
-console.log(data.id)
-
     return new Promise(async (resolve, reject) => {
       try {
-
-
-      //   if(id==1){
-      //     const offer = await Offer.find({ product: { $exists: true}}).sort({createdAt:-1}).limit(4);
-         
-      //     const count = await Offer.count();
-      // const value = count / 4;
-      // const limit = count % 10;
-      // const extra = parseInt(value);
-      
-      // resolve({ offers: offer, pageCount: extra, balance: limit });
-      //   }else{
-      //     const check = (id-1) * 4;
-      //     const offer = await Offer.find({ product: { $exists: true}}).sort({createdAt:-1}).skip(check).limit(4);
-      //     const count = await Offer.count();
-      // const value = count / 4;
-      // const limit = count % 10;
-      // const extra = parseInt(value);
-      // resolve({ offers: offer, pageCount: extra, balance: limit });
-      //   }
-      const order= await Order.aggregate([{ $unwind: "$products" },{
-        $count: "passing_scores"
-      }])
-      console.log(order[0].passing_scores)
-const count=order[0].passing_scores
-const value = count / 10;
-      const limit = count % 10;
-      const extra = parseInt(value);
-     
-      if(data.id==1){
-        const orders = await Order.aggregate([
-          // {
-          //   "$project": {
-          //     "userId": {
-          //       "$toObjectId": "$userId"
-          //     }
-          //   }
-          // },
-          {$sort:{"createdAt":-1}},
+        const order = await Order.aggregate([
           { $unwind: "$products" },
           {
-            $project: {
-              userId: { $toObjectId: "$userId" },
-              productId: { $toObjectId: "$products.productId" },
-              "products.orderStatus":1,
-              "products.price":1,
-              "products.size":1,
-              
-              secret: 1,
-              date: 1,
-              payment: 1,
-              orderStatus: 1,
-            },
+            $count: "passing_scores",
           },
-          {
-            $lookup: {
-              from: "userlogins",
-              localField: "userId",
-              foreignField: "_id",
-              as: "role",
-            },
-          },
-          {
-            $lookup: {
-              from: "products",
-              localField: "productId",
-              foreignField: "_id",
-              as: "productdetails",
-            },
-          },
-          { $unwind: "$productdetails" },
-         {$limit:10}
-    
-          
-
-          
-         
-          
         ]);
+        console.log(order[0].passing_scores);
+        const count = order[0].passing_scores;
+        const value = count / 10;
+        const limit = count % 10;
+        const extra = parseInt(value);
 
-      
-        resolve({orders:orders, pageCount: extra, balance: limit });
-      }else{
+        if (data.id == 1) {
+          const orders = await Order.aggregate([
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
 
-
-        const check = (data.id-1) * 10;
-        const orders = await Order.aggregate([
-          // {
-          //   "$project": {
-          //     "userId": {
-          //       "$toObjectId": "$userId"
-          //     }
-          //   }
-          // },
-          {$sort:{"createdAt":-1}},
-          { $unwind: "$products" },
-          {
-            $project: {
-              userId: { $toObjectId: "$userId" },
-              productId: { $toObjectId: "$products.productId" },
-              "products.orderStatus":1,
-              "products.price":1,
-              "products.size":1,
-              
-              secret: 1,
-              date: 1,
-              payment: 1,
-              orderStatus: 1,
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
             },
-          },
-          {
-            $lookup: {
-              from: "userlogins",
-              localField: "userId",
-              foreignField: "_id",
-              as: "role",
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
             },
-          },
-          {
-            $lookup: {
-              from: "products",
-              localField: "productId",
-              foreignField: "_id",
-              as: "productdetails",
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
             },
-          },
-          { $unwind: "$productdetails" },
-        {$skip:check},
-          {$limit:10}
-         
-          
-        ]);
+            { $unwind: "$productdetails" },
+            { $limit: 10 },
+          ]);
 
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        } else {
+          const check = (data.id - 1) * 10;
+          const orders = await Order.aggregate([
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
 
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $skip: check },
+            { $limit: 10 },
+          ]);
 
-
-        resolve({orders:orders, pageCount: extra, balance: limit });
-
-
-      }
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        }
       } catch (err) {}
     });
   },
-  updateOrderStatus:(data)=>{
-    return new Promise(async(resolve,reject)=>{
-      try{
-        // if(data.status==="Cancel"){
-        //   const count=await Order.aggregate([{$match:{_id:Objid(data.id)}},{$project: { count: { $size:"$products" }}}])
-        //   if(count==1){
-        //     Order.deleteOne({_id:Objid(data.id)}).then((response)=>{
-        //       resolve(response)
-        //     })
-        //   }else{
-        //     Order.updateOne({_id:Objid(data.id),"products":{$elemMatch:{"productId":data.productId}}},{
-        //       $pull: { "products": { "productId": data.productId ,"size":data.size} }}).then((response)=>{
-        //         resolve(response)
-        //       })
-        //   } 
-        // }else{
-          Order.updateOne({_id:Objid(data.id),"products":{$elemMatch:{"productId":data.productId,"size":data.size}}},{
-            $set:{"products.$.orderStatus":data.status}
-          }).then((response)=>{
-            console.log(response)
-            resolve(response)
-          })
+  updateOrderStatus: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        Order.updateOne(
+          {
+            _id: Objid(data.id),
+            products: {
+              $elemMatch: { productId: data.productId, size: data.size },
+            },
+          },
+          {
+            $set: { "products.$.orderStatus": data.status },
+          }
+        ).then((response) => {
+          console.log(response);
+          resolve(response);
+        });
         // }
-      }catch(err){
-      }
-    })
+      } catch (err) {}
+    });
   },
-  addOffer:(data)=>{
-   
-    return new Promise(async(resolve,reject)=>{
-      try{
-        
-        if(data.confirm===true){
-         
-          const detail=await Product.aggregate([{$match:{"productname":data.product}},{$project:{_id:1,price:1}}])
-       
-        const offer= (parseInt(data.offerprice) * parseInt(detail[0].price) )/100
-           Offer.updateOne({"productname":data.product},{$set:{
-            "productId":detail[0]._id ,
-            "offerprice":data.offerprice,
-            "offername":data.offername, 
-            "startdate":data.startdate,
-            "enddate": data.enddate,
-            "product": data.product
-                 
-           }}).then((response)=>{
-            Product.updateOne({"productname":data.product},{$set:{"offer":offer}}).then((response)=>{
-              resolve(response)
-            })
+  addOffer: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (data.confirm === true) {
+          const detail = await Product.aggregate([
+            { $match: { productname: data.product } },
+            { $project: { _id: 1, price: 1 } },
+          ]);
 
-           })
-        
-      
-        }else{
-    
-        const checkoffer= await Product.findOne({$and:[{"productname":data.product},{"offer": { $exists: true }}]})
-       
-        if(checkoffer){
-          resolve({confirm:"The product already have an offer do you want to replace it ?"})
-        }
-        else{
-
-        const detail=await Product.aggregate([{$match:{"productname":data.product}},{$project:{_id:1,price:1}}])
-        console.log(detail[0]._id)
-        const offer=(parseInt(data.offerprice) * parseInt(detail[0].price) )/100
-
-        const newOffer=await new Offer({
-          productId:detail[0]._id ,
-    offerprice:data.offerprice,
-    offername:data.offername, 
-    startdate:data.startdate,
-    enddate: data.enddate,
-    product: data.product
-        })
-        const saveOffer=await newOffer.save()
-        if(saveOffer){
-          Product.updateOne({"productname":data.product},{$set:{"offer":offer}}).then((response)=>{
-            resolve(response)
-          })
-        }
-      }
-
-
-      }
-
-      }catch(err){
-
-      }
-    })
-  },
-  getOffer:(id)=>{
-    
-    return new Promise(async(resolve,reject)=>{
-      try{ 
-        if(id==1){
-          const offer = await Offer.find({ product: { $exists: true}}).sort({createdAt:-1}).limit(4);
-         
-          const count = await Offer.count();
-      const value = count / 4;
-      const limit = count % 10;
-      const extra = parseInt(value);
-      
-      resolve({ offers: offer, pageCount: extra, balance: limit });
-        }else{
-          const check = (id-1) * 4;
-          const offer = await Offer.find({ product: { $exists: true}}).sort({createdAt:-1}).skip(check).limit(4);
-          const count = await Offer.count();
-      const value = count / 4;
-      const limit = count % 10;
-      const extra = parseInt(value);
-      resolve({ offers: offer, pageCount: extra, balance: limit });
-        }
-      }catch(err){
-      }
-    })
-  },
-  getSubcategoryOffer:(id)=>{
-    return new Promise(async(resolve,reject)=>{
-      try{ 
-        if(id==1){
-          const offer = await Offer.find({ category: { $exists: true}}).sort({createdAt:-1}).limit(4);
-         
-          const count = await Offer.count();
-      const value = count / 4;
-      const limit = count % 10;
-      const extra = parseInt(value);
-      
-      resolve({ offers: offer, pageCount: extra, balance: limit });
-        }else{
-          const check = (id-1) * 4;
-          const offer = await Offer.find({ category: { $exists: true}}).sort({createdAt:-1}).skip(check).limit(4);
-          const count = await Offer.count();
-      const value = count / 4;
-      const limit = count % 10;
-      const extra = parseInt(value);
-      resolve({ offers: offer, pageCount: extra, balance: limit });
-        }
-      }catch(err){
-      }
-    })
-  },
-  addofferCategory:(data)=>{
-    return new Promise(async(resolve,reject)=>{
-      try{
-
-        
-        if(data.confirm===true){
-          console.log("reached")
-          const list= await Offer.findOne({"subcategory":data.subcategory})
-          console.log(list)
-         
-          const offer=parseInt(data.offerprice)/100
-        //   const detail=await Product.aggregate([{$match:{"productname":data.product}},{$project:{_id:1,price:1}}])
-       
-        // const offer= parseInt(detail[0].price) - (parseInt(data.offerprice) * parseInt(detail[0].price) )/100
-           Offer.updateOne({"subcategory":data.subcategory},{$set:{
-            
-            "offerprice":data.offerprice,
-            "offername":data.offername, 
-            "startdate":data.startdate,
-            "enddate": data.enddate,
-            "category":data.category,
-            "subcategory":data.subcategory
-
-           }}).then(async(response)=>{
-            
-          const out_put=await Product.aggregate([{$match:{"category":data.category,"subcategory":data.subcategory}}, { $project: { _id:1,total: { $multiply: [ "$price", offer ] } } }])
-          console.log(out_put)
-           out_put.forEach(
-             function(x){
-               Product.updateOne({_id:Objid(x._id)},{$set:{"offer":x.total}}).then((response)=>{
-                resolve(response)
-               })
-             }
-           )
+          const offer =
+            (parseInt(data.offerprice) * parseInt(detail[0].price)) / 100;
+          Offer.updateOne(
+            { productname: data.product },
+            {
+              $set: {
+                productId: detail[0]._id,
+                offerprice: data.offerprice,
+                offername: data.offername,
+                startdate: data.startdate,
+                enddate: data.enddate,
+                product: data.product,
+              },
+            }
+          ).then((response) => {
+            Product.updateOne(
+              { productname: data.product },
+              { $set: { offer: offer } }
+            ).then((response) => {
+              resolve(response);
+            });
+          });
+        } else {
+          const checkoffer = await Product.findOne({
+            $and: [{ productname: data.product }, { offer: { $ne: null } }],
           });
 
-           
-        
-      
-        }else{
-          const offer=parseInt(data.offerprice)/100
-    
-        const checkoffer= await Offer.findOne({$and:[{"subcategory":data.subcategory},{"category":data.category}]})
-       
-        if(checkoffer){
-          resolve({confirm:"The category already have an offer do you want to replace it ?"})
+          if (checkoffer) {
+            resolve({
+              confirm:
+                "The product already have an offer do you want to replace it ?",
+            });
+          } else {
+            const detail = await Product.aggregate([
+              { $match: { productname: data.product } },
+              { $project: { _id: 1, price: 1 } },
+            ]);
+            console.log(detail[0]._id);
+            const offer =
+              (parseInt(data.offerprice) * parseInt(detail[0].price)) / 100;
+
+            const newOffer = await new Offer({
+              productId: detail[0]._id,
+              offerprice: data.offerprice,
+              offername: data.offername,
+              startdate: data.startdate,
+              enddate: data.enddate,
+              product: data.product,
+            });
+            const saveOffer = await newOffer.save();
+            if (saveOffer) {
+              Product.updateOne(
+                { productname: data.product },
+                { $set: { offer: offer } }
+              ).then((response) => {
+                resolve(response);
+              });
+            }
+          }
         }
-        else{
-
-        // const detail=await Product.aggregate([{$match:{"productname":data.product}},{$project:{_id:1,price:1}}])
-        // console.log(detail[0]._id)
-        // const offer= parseInt(detail[0].price) - (parseInt(data.offerprice) * parseInt(detail[0].price) )/100
-
-        const newOffer=await new Offer({
-          "offerprice":data.offerprice,
-            "offername":data.offername, 
-            "startdate":data.startdate,
-            "enddate": data.enddate,
-            "category":data.category,
-            "subcategory":data.subcategory
-        })
-        const saveOffer=await newOffer.save()
-        if(saveOffer){
-          const out_put=await Product.aggregate([{$match:{"category":data.category,"subcategory":data.subcategory}}, { $project: { _id:1,total: { $multiply: [ "$price", offer ] } } }])
-          
-           out_put.forEach(
-             function(x){
-               Product.updateOne({_id:Objid(x._id)},{$set:{"offer":x.total}}).then((response)=>{
-                resolve(response)
-               })
-             }
-           )
-         
-        }
-      }
-
-
-      }
-
-
-
-      }catch(err){
-
-      }
-    })
+      } catch (err) {}
+    });
   },
-  editOfferproduct:(data)=>{
-    return new Promise(async(resolve,reject)=>{
-      console.log(data)
-      try{
-        const detail=await Product.aggregate([{$match:{"productname":data.product}},{$project:{_id:1,price:1}}])
-        const offer=(parseInt(data.offerprice) * parseInt(detail[0].price) )/100
-        Offer.updateOne({productId:Objid(data.productId)},{$set:{
-         
-          offerprice:data.offerprice,
-          offername:data.offername, 
-          startdate:data.startdate,
+  getOffer: (id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (id == 1) {
+          const offer = await Offer.find({ product: { $exists: true } })
+            .sort({ createdAt: -1 })
+            .limit(4);
+
+          const count = await Offer.count();
+          const value = count / 4;
+          const limit = count % 10;
+          const extra = parseInt(value);
+
+          resolve({ offers: offer, pageCount: extra, balance: limit });
+        } else {
+          const check = (id - 1) * 4;
+          const offer = await Offer.find({ product: { $exists: true } })
+            .sort({ createdAt: -1 })
+            .skip(check)
+            .limit(4);
+          const count = await Offer.count();
+          const value = count / 4;
+          const limit = count % 10;
+          const extra = parseInt(value);
+          resolve({ offers: offer, pageCount: extra, balance: limit });
+        }
+      } catch (err) {}
+    });
+  },
+  getSubcategoryOffer: (id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (id == 1) {
+          const offer = await Offer.find({ category: { $exists: true } })
+            .sort({ createdAt: -1 })
+            .limit(4);
+
+          const count = await Offer.count();
+          const value = count / 4;
+          const limit = count % 10;
+          const extra = parseInt(value);
+
+          resolve({ offers: offer, pageCount: extra, balance: limit });
+        } else {
+          const check = (id - 1) * 4;
+          const offer = await Offer.find({ category: { $exists: true } })
+            .sort({ createdAt: -1 })
+            .skip(check)
+            .limit(4);
+          const count = await Offer.count();
+          const value = count / 4;
+          const limit = count % 10;
+          const extra = parseInt(value);
+          resolve({ offers: offer, pageCount: extra, balance: limit });
+        }
+      } catch (err) {}
+    });
+  },
+  addofferCategory: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (data.confirm === true) {
+          console.log("reached");
+          const list = await Offer.findOne({ subcategory: data.subcategory });
+          console.log(list);
+
+          const offer = parseInt(data.offerprice) / 100;
+          //   const detail=await Product.aggregate([{$match:{"productname":data.product}},{$project:{_id:1,price:1}}])
+
+          // const offer= parseInt(detail[0].price) - (parseInt(data.offerprice) * parseInt(detail[0].price) )/100
+          Offer.updateOne(
+            { subcategory: data.subcategory },
+            {
+              $set: {
+                offerprice: data.offerprice,
+                offername: data.offername,
+                startdate: data.startdate,
+                enddate: data.enddate,
+                category: data.category,
+                subcategory: data.subcategory,
+              },
+            }
+          ).then(async (response) => {
+            const out_put = await Product.aggregate([
+              {
+                $match: {
+                  category: data.category,
+                  subcategory: data.subcategory,
+                },
+              },
+              { $project: { _id: 1, total: { $multiply: ["$price", offer] } } },
+            ]);
+            console.log(out_put);
+            out_put.forEach(function (x) {
+              Product.updateOne(
+                { _id: Objid(x._id) },
+                { $set: { offer: x.total } }
+              ).then((response) => {
+                resolve(response);
+              });
+            });
+          });
+        } else {
+          const offer = parseInt(data.offerprice) / 100;
+
+          const checkoffer = await Offer.findOne({
+            $and: [
+              { subcategory: data.subcategory },
+              { category: data.category },
+            ],
+          });
+
+          if (checkoffer) {
+            resolve({
+              confirm:
+                "The category already have an offer do you want to replace it ?",
+            });
+          } else {
+            const newOffer = await new Offer({
+              offerprice: data.offerprice,
+              offername: data.offername,
+              startdate: data.startdate,
+              enddate: data.enddate,
+              category: data.category,
+              subcategory: data.subcategory,
+            });
+            const saveOffer = await newOffer.save();
+            if (saveOffer) {
+              const out_put = await Product.aggregate([
+                {
+                  $match: {
+                    category: data.category,
+                    subcategory: data.subcategory,
+                  },
+                },
+                {
+                  $project: { _id: 1, total: { $multiply: ["$price", offer] } },
+                },
+              ]);
+
+              out_put.forEach(function (x) {
+                Product.updateOne(
+                  { _id: Objid(x._id) },
+                  { $set: { offer: x.total } }
+                ).then((response) => {
+                  resolve(response);
+                });
+              });
+            }
+          }
+        }
+      } catch (err) {}
+    });
+  },
+  editOfferproduct: (data) => {
+    return new Promise(async (resolve, reject) => {
+      console.log(data);
+      try {
+        const detail = await Product.aggregate([
+          { $match: { productname: data.product } },
+          { $project: { _id: 1, price: 1 } },
+        ]);
+        const offer =
+          (parseInt(data.offerprice) * parseInt(detail[0].price)) / 100;
+        Offer.updateOne(
+          { productId: Objid(data.productId) },
+          {
+            $set: {
+              offerprice: data.offerprice,
+              offername: data.offername,
+              startdate: data.startdate,
+              enddate: data.enddate,
+            },
+          },
+          { new: true }
+        ).then((res) => {
+          console.log("raeched to edit");
+          console.log(res);
+
+          Product.updateOne(
+            { productname: data.product },
+            { $set: { offer: offer } }
+          ).then((response) => {
+            resolve(response);
+          });
+        });
+      } catch (err) {}
+    });
+  },
+  getSubcategoryToadd: (value) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await Category.aggregate([
+          { $match: { category: value } },
+          { $project: { subcategory: 1 } },
+        ]);
+        console.log(data);
+        resolve(data);
+      } catch (err) {}
+    });
+  },
+
+  deleteOffer: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        Offer.deleteOne({ _id: Objid(data.id) }).then((response) => {
+          Product.updateOne(
+            { _id: Objid(data.productId) },
+            { $set: { offer: "" } }
+          ).then((res) => {
+            resolve(response);
+          });
+        });
+      } catch (err) {}
+    });
+  },
+  editOfferCategory: (data) => {
+    return new Promise(async (resolve, reject) => {
+      console.log(data);
+      try {
+        const offer = parseInt(data.offerprice) / 100;
+        Offer.updateOne(
+          { _id: Objid(data._id) },
+          {
+            $set: {
+              offerprice: data.offerprice,
+              offername: data.offername,
+              startdate: data.startdate,
+              enddate: data.enddate,
+            },
+          }
+        ).then(async (res) => {
+          const out_put = await Product.aggregate([
+            {
+              $match: {
+                category: data.category,
+                subcategory: data.subcategory,
+              },
+            },
+            { $project: { _id: 1, total: { $multiply: ["$price", offer] } } },
+          ]);
+          console.log(out_put);
+          out_put.forEach(function (x) {
+            Product.updateOne(
+              { _id: Objid(x._id) },
+              { $set: { offer: x.total } }
+            ).then((response) => {
+              resolve(response);
+            });
+          });
+        });
+      } catch (err) {}
+    });
+  },
+  deleteCategoryOffer: (data) => {
+    return new Promise((resolve, reject) => {
+      try {
+        Offer.deleteOne({ _id: Objid(data.id) }).then((response) => {
+          Product.updateMany(
+            {
+              $and: [
+                { category: data.category },
+                { subcategory: data.subcategory },
+              ],
+            },
+            { $set: { offer: "" } }
+          ).then((res) => {
+            resolve(response);
+          });
+        });
+      } catch (err) {}
+    });
+  },
+  // *************************************COUPEN*******************************************************
+  addCoupen: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const coupendata = new Coupen({
+          coupenname: data.coupenname,
+          offer: data.offer,
+          startdate: data.startdate,
           enddate: data.enddate,
-         
+          coupencode: data.coupencode,
 
-        }}, { new: true }).then((res)=>{
-          console.log("raeched to edit")
-          console.log(res)
-          
-          
-          Product.updateOne({"productname":data.product},{$set:{"offer":offer}}).then((response)=>{
-            resolve(response)
-          })
-          
-        })
-      }catch(err){
+          limit: data.limit,
+        });
 
-      }
-    })
+        const coupen = await coupendata.save();
+        resolve(coupen);
+      } catch (err) {}
+    });
   },
-  getSubcategoryToadd:(value)=>{
-    return new Promise(async(resolve,reject)=>{
-      try{
-const data=await Category.aggregate([{$match:{"category":value}},{$project:{"subcategory":1}}])
-console.log(data)
-resolve(data)
-      }catch(err){
 
-      }
-    })
+  editCoupen: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        Coupen.updateOne(
+          { _id: Objid(data._id) },
+          {
+            $set: {
+              coupenname: data.coupenname,
+              offer: data.offer,
+              startdate: data.startdate,
+              enddate: data.enddate,
+              coupencode: data.coupencode,
+
+              limit: data.limit,
+            },
+          }
+        ).then((response) => {
+          resolve(response);
+        });
+      } catch (err) {}
+    });
   },
-  
+  deleteCoupen: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        Coupen.deleteOne({ _id: Objid(data.id) }).then((response) => {
+          console.log(response);
+          resolve(response);
+        });
+      } catch (err) {}
+    });
+  },
+  getCoupen: (id) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (id == 1) {
+          const coupen = await Coupen.find({}).sort({ createdAt: -1 }).limit(4);
 
+          const count = await Coupen.count();
+          const value = count / 4;
+          const limit = count % 10;
+          const extra = parseInt(value);
 
+          resolve({ coupen: coupen, pageCount: extra, balance: limit });
+        } else {
+          const check = (id - 1) * 4;
+          const offer = await Coupen.find({})
+            .sort({ createdAt: -1 })
+            .skip(check)
+            .limit(4);
+          const count = await Coupen.count();
+          const value = count / 4;
+          const limit = count % 10;
+          const extra = parseInt(value);
+          resolve({ coupen: coupen, pageCount: extra, balance: limit });
+        }
+      } catch (err) {}
+    });
+  },
 
+  // *************************************COUPEN*******************************************************
+  //===================================== SALES QUICK SORT===========================================
+  getQuickSortOneDay: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const order = await Order.aggregate([
+          {
+            $match: {
+              createdAt: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+            },
+          },
+          { $unwind: "$products" },
+          {
+            $count: "passing_scores",
+          },
+        ]);
 
+        const count = order[0].passing_scores;
+        const value = count / 10;
+        const limit = count % 10;
+        const extra = parseInt(value);
 
-  deleteOffer:(id)=>{
-     return new Promise(async(resolve,reject)=>{
-      try{
-const data=await Category.aggregate([{$match:{"category":value}},{$project:{"subcategory":1}}])
-console.log(data)
-resolve(data)
-      }catch(err){
+        if (data.id == 1) {
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
 
-      }
-    })
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $limit: 10 },
+          ]);
 
-  }
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        } else {
+          const check = (data.id - 1) * 10;
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
 
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $skip: check },
+            { $limit: 10 },
+          ]);
+
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        }
+      } catch (err) {}
+    });
+  },
+  getQuickSortWeek: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const order = await Order.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          { $unwind: "$products" },
+          {
+            $count: "passing_scores",
+          },
+        ]);
+        console.log(order);
+        const count = order[0].passing_scores;
+        const value = count / 10;
+        const limit = count % 10;
+        const extra = parseInt(value);
+
+        if (data.id == 1) {
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: {
+                  $gt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+                },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
+
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $limit: 10 },
+          ]);
+
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        } else {
+          const check = (data.id - 1) * 10;
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: {
+                  $gt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+                },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
+
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $skip: check },
+            { $limit: 10 },
+          ]);
+
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        }
+      } catch (err) {}
+    });
+  },
+  getQuickSortMonth: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const order = await Order.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          { $unwind: "$products" },
+          {
+            $count: "passing_scores",
+          },
+        ]);
+        console.log(order[0].passing_scores);
+        const count = order[0].passing_scores;
+        const value = count / 10;
+        const limit = count % 10;
+        const extra = parseInt(value);
+
+        if (data.id == 1) {
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: {
+                  $gt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
+
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $limit: 10 },
+          ]);
+
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        } else {
+          const check = (data.id - 1) * 10;
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: {
+                  $gt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
+
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $skip: check },
+            { $limit: 10 },
+          ]);
+
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        }
+      } catch (err) {}
+    });
+  },
+  getQuickSortYear: (data) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const order = await Order.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          { $unwind: "$products" },
+          {
+            $count: "passing_scores",
+          },
+        ]);
+        console.log(order[0].passing_scores);
+        const count = order[0].passing_scores;
+        const value = count / 10;
+        const limit = count % 10;
+        const extra = parseInt(value);
+
+        if (data.id == 1) {
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: {
+                  $gt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+                },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
+
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $limit: 10 },
+          ]);
+
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        } else {
+          const check = (data.id - 1) * 10;
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: {
+                  $gt: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
+                },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
+
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $skip: check },
+            { $limit: 10 },
+          ]);
+          console.log(orders);
+
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        }
+      } catch (err) {}
+    });
+  },
+  getOrderByRange: (data, start, end) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const look = parseInt(data);
+
+        console.log(start);
+        console.log(end);
+        const order = await Order.aggregate([
+          {
+            $match: {
+              createdAt: { $gte: new Date(end), $lt: new Date(start) },
+            },
+          },
+          { $unwind: "$products" },
+          { $count: "passing_scores" },
+        ]);
+
+        console.log(order);
+        const count = order[0].passing_scores;
+        const value = count / 10;
+        const limit = count % 10;
+        const extra = parseInt(value);
+        if (look == 1) {
+          console.log("reached");
+
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: { $gte: new Date(end), $lt: new Date(start) },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
+
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $limit: 10 },
+          ]);
+          console.log("jskkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+          console.log(orders);
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        } else {
+          const check = (data.id - 1) * 10;
+          const orders = await Order.aggregate([
+            {
+              $match: {
+                createdAt: { $gte: new Date(end), $lt: new Date(start) },
+              },
+            },
+            { $sort: { createdAt: -1 } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                userId: { $toObjectId: "$userId" },
+                productId: { $toObjectId: "$products.productId" },
+                "products.orderStatus": 1,
+                "products.price": 1,
+                "products.size": 1,
+
+                secret: 1,
+                date: 1,
+                payment: 1,
+                orderStatus: 1,
+              },
+            },
+            {
+              $lookup: {
+                from: "userlogins",
+                localField: "userId",
+                foreignField: "_id",
+                as: "role",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "productId",
+                foreignField: "_id",
+                as: "productdetails",
+              },
+            },
+            { $unwind: "$productdetails" },
+            { $skip: check },
+            { $limit: 10 },
+          ]);
+          console.log(orders);
+
+          resolve({ orders: orders, pageCount: extra, balance: limit });
+        }
+      } catch (err) {}
+    });
+  },
+  findUserStatus: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const present = await User.aggregate([
+          {
+            $match: {
+              state: true,
+            },
+          },
+          {
+            $count: "active",
+          },
+        ]);
+        const notpresent = await User.aggregate([
+          {
+            $match: {
+              state: false,
+            },
+          },
+          {
+            $count: "notactive",
+          },
+        ]);
+
+        // const latestOrder = await Order.aggregate([
+        //   {
+        //     $match: {
+        //       createdAt: {
+        //         $gt: new Date(Date.now() - 7* 24 * 60 * 60 * 1000),
+        //       },
+        //     },
+        //   },
+
+        // ]);
+
+        resolve({ block: present[0].active, blocked: notpresent[0].notactive });
+      } catch (err) {}
+    });
+  },
+  getDatabyMonth: () => {
+    console.log("heloooooooooooooooooooooo");
+    return new Promise(async (resolve, reject) => {
+      try {
+        const data = await Order.aggregate([
+          {
+            $group: {
+              _id: { day: { $dayOfWeek: "$createdAt" } },
+              count: { $sum: 1 },
+            },
+          },
+          {
+            $sort: { "_id.day": 1 },
+          },
+        ]);
+
+        resolve(data);
+      } catch (err) {}
+    });
+  },
+  getInfo: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log("stage-1");
+        const newUser = await User.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          {
+            $count: "newuser",
+          },
+        ]);
+        console.log(newUser);
+        console.log("stage-2");
+        const newOrders = await Order.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          {
+            $count: "neworder",
+          },
+        ]);
+        console.log(newOrders);
+        console.log("stage-3");
+        const totalproducts = await Product.find({}).count();
+        console.log(totalproducts);
+        console.log("stage-4");
+        const totalamount = await Order.aggregate([
+          { $group: { _id: null, total: { $sum: "$amount" } } },
+          { $project: { _id: 0, total: 1 } },
+        ]);
+        console.log(totalamount);
+
+        resolve({
+          newuser: newUser[0],
+          neworder: newOrders[0],
+          count: totalproducts,
+          amount: totalamount[0],
+        });
+      } catch (err) {}
+    });
+  },
+  getrecentOrder: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const orders = await Order.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          { $sort: { createdAt: -1 } },
+          { $unwind: "$products" },
+          {
+            $project: {
+              userId: { $toObjectId: "$userId" },
+              productId: { $toObjectId: "$products.productId" },
+              "products.orderStatus": 1,
+              "products.price": 1,
+              "products.size": 1,
+
+              secret: 1,
+              date: 1,
+              payment: 1,
+              orderStatus: 1,
+            },
+          },
+          {
+            $lookup: {
+              from: "userlogins",
+              localField: "userId",
+              foreignField: "_id",
+              as: "role",
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "productId",
+              foreignField: "_id",
+              as: "productdetails",
+            },
+          },
+          { $unwind: "$productdetails" },
+
+          { $limit: 10 },
+        ]);
+        resolve(orders);
+      } catch (err) {}
+    });
+  },
+  topSellingProduct: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const orders = await Order.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          
+          { $unwind: "$products" },
+          {
+            $project: {
+              userId: { $toObjectId: "$userId" },
+              productId: { $toObjectId: "$products.productId" },
+              "products.orderStatus": 1,
+              "products.price": 1,
+              "products.size": 1,
+              "products.quantity": 1,
+
+              secret: 1,
+              date: 1,
+              payment: 1,
+              orderStatus: 1,
+            },
+          },
+          {
+            $group:
+              {
+                _id: "$productId",
+               
+              
+                count: { $sum: 1 }
+              }
+          },
+          {$sort:{"count":-1}},
+
+          {
+            $lookup: {
+              from: "products",
+              localField: "_id",
+              foreignField: "_id",
+              as: "productdetails",
+            },
+          },
+          { $unwind: "$productdetails" },
+
+        
+          
+          { $limit: 10 },
+        ]);
+       
+        resolve(orders);
+      } catch (err) {}
+    });
+  },
 };

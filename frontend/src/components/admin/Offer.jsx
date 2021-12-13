@@ -23,7 +23,7 @@ import EditCategoryOffer from "./EditCategoryOffer";
 
 function Offer() {
   const [search, setsearch] = useState("");
-  
+
   const [err, seterr] = useState();
   const [show, setshow] = useState(false);
   const [dateerror, setdateerror] = useState("");
@@ -44,10 +44,9 @@ function Offer() {
   const [display, setdisplay] = useState(false);
   const [filter, setfilter] = useState("product");
   const [editcategoryshow, seteditcategoryshow] = useState(false);
-  const [categorymode, setcategorymode] = useState(false)
-  const [productmode, setproductmode] = useState(true)
-  
-  ;
+  const [categorymode, setcategorymode] = useState(false);
+  const [productmode, setproductmode] = useState(true);
+
   const [offer, setoffer] = useState({
     offername: "",
     startdate: "",
@@ -55,7 +54,7 @@ function Offer() {
     offerprice: null,
     product: "",
   });
-  
+
   const [number, setnumber] = useState(null);
   let active = 1;
   let items = [];
@@ -105,7 +104,7 @@ function Offer() {
       setpage(offer.data.pageCount);
     }
   };
-  
+
   const getOffer = async () => {
     setfilter("product");
     setspin(true);
@@ -133,9 +132,7 @@ function Offer() {
       console.log(err);
     }
   };
-  
- 
-  
+
   // =============================add offer==============================
   const addOfferCategory = async (e) => {
     e.preventDefault();
@@ -379,47 +376,6 @@ function Offer() {
         </Spinner>
       ) : (
         <div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           <Container>
             <div className="container__offer">
               <div className="offer__heading">
@@ -444,61 +400,66 @@ function Offer() {
                   </FloatingLabel>
                 </Form>
                 <div className="select__container__offer">
-                <select
-                  class="form-select"
-                  aria-label="Default select example"
-                  onChange={(e) => {
-                    console.log(e.target.value);
-                    console.log("reached");
-                    setmode(e.target.value);
-                  }}
-                >
-                  <option selected>Add offer</option>
-                  <option value="product">Add offer to product</option>
-                  <option value="category">Add offer to category</option>
-                </select>
-                <Button
-                  className="mb-2 btn-offer-select"
-                  onClick={() => {
-                    if (!mode) return swal("Please select one option");
-                    if (mode === "product") {
-                      setshow(true);
-                      setmode("");
-                    } else {
-                      setcategoryShow(true);
-                      setmode("");
-                    }
-                  }}
-                >
-                  Add
-                </Button>
+                  <select
+                    class="form-select"
+                    aria-label="Default select example"
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      console.log("reached");
+                      setmode(e.target.value);
+                    }}
+                  >
+                    <option selected>Add offer</option>
+                    <option value="product">Add offer to product</option>
+                    <option value="category">Add offer to category</option>
+                  </select>
+                  <Button
+                    className="mb-2 btn-offer-select"
+                    onClick={() => {
+                      if (!mode) return swal("Please select one option");
+                      if (mode === "product") {
+                        setshow(true);
+                        setmode("");
+                      } else {
+                        setcategoryShow(true);
+                        setmode("");
+                      }
+                    }}
+                  >
+                    Add
+                  </Button>
                 </div>
-                
-               
+
                 <ButtonGroup aria-label="Basic example">
-                  <Button variant="secondary" onClick={()=>{
-                    setproductmode(true)
-                    setcategorymode(false)
-                  }}>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      setproductmode(true);
+                      setcategorymode(false);
+                    }}
+                  >
                     Product
                   </Button>
 
-                  <Button variant="secondary" onClick={()=>{
-                    setproductmode(false)
-                    setcategorymode(true)
-                  }}>
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      setproductmode(false);
+                      setcategorymode(true);
+                    }}
+                  >
                     Category
                   </Button>
                 </ButtonGroup>
               </div>
             </div>
             <div className="offer__table">
-              {categorymode===true &&<EditCategoryOffer/>} 
-              {productmode===true &&<ProductOffer/>} 
+              {categorymode === true && <EditCategoryOffer />}
+              {productmode === true && <ProductOffer />}
             </div>
-           
           </Container>
           <div>
+            
             <Modal
               show={show}
               onHide={handleClose}
@@ -553,7 +514,7 @@ function Offer() {
                   {dateenderr && (
                     <p className="date__error__offer">{dateenderr}</p>
                   )}
-                  <Form.Label>Offer price</Form.Label>
+                  <Form.Label>Offer percentage</Form.Label>
 
                   <Form.Control
                     type="number"
@@ -589,7 +550,7 @@ function Offer() {
               <p></p> */}
             </Modal>
             {/*========================== edit offer======================= */}
-            
+
             {/* ============================modal for category================================ */}
             <Modal
               show={categoryShow}
@@ -652,10 +613,9 @@ function Offer() {
                   <option selected>select subcategory</option>
 
                   {subcategorylist.map((data) => {
-
                     return (
                       <>
-                      {console.log(data)}
+                        {console.log(data)}
                         <option value={data}>{data}</option>
                       </>
                     );
@@ -711,7 +671,7 @@ function Offer() {
                     }}
                   ></Form.Control>
                   <Button className="mt-2" variant="secondary" type="submit">
-                  edit
+                    edit
                   </Button>
                 </Form>
               </Modal.Body>
@@ -733,7 +693,6 @@ function Offer() {
               <p></p> */}
             </Modal>
             {/* ===============================edit offer category ============================*/}
-           
           </div>
         </div>
       )}
