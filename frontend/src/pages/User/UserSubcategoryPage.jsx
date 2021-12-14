@@ -6,7 +6,12 @@ import {useParams,Link} from 'react-router-dom'
 import Navbar from '../../components/user/Navbar'
 import Footer from '../../components/user/Footer'
 
-
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
+import IconButton from '@mui/material/IconButton';
+// import InfoIcon from '@mui/icons-material/Info';
 function UserSubcategoryPage() {
     const [category, setcategory] = useState([])
     const [spin, setspin] = useState(false)
@@ -43,24 +48,36 @@ useEffect(() => {
            
             <div className="body_subcategory">
 
-                {category.map((data)=>{
-                    return(
-                        <Link className="link_subcategory" style={{textDecoration:"none"}} to={`/viewproduct/${data._id}`}>
-                      <Card className="card" >
-                          
-                      <Card.Img className="subimage" variant="top" src={data.url[0].image1}/>
-                      <Card.Body>
-                        <Card.Text>{data.productname}</Card.Text>
-                        {/* <Card.Text className="subcategory_description">
-                          {data.description}
-                        </Card.Text> */}
-                        <Card.Text className="price_subcategory">Rs.{data.price}</Card.Text>
-                      </Card.Body>
-                    </Card>
-                    </Link>
-                    )
-                
-                })}
+                <ImageList sx={{ width: 450, height: 350 }}>
+      <ImageListItem key="Subheader" cols={2}>
+        <ListSubheader component="div">December</ListSubheader>
+      </ImageListItem>
+      {category.map((item) => (
+            <Link className="link_subcategory" style={{textDecoration:"none"}} to={`/viewproduct/${item._id}`}>
+        <ImageListItem key={item.img}>
+          <img
+            src={`${item.url[0].image1}?w=248&fit=crop&auto=format`}
+            srcSet={`${item.url[0].image1}?w=248&fit=crop&auto=format&dpr=2 2x`}
+            alt={item.title}
+            loading="lazy"
+          />
+          <ImageListItemBar
+            title={item.productname}
+            subtitle={item.price}
+            actionIcon={
+              <IconButton
+                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                aria-label={`info about ${item.productname}`}
+              >
+                {/* <InfoIcon /> */}
+              </IconButton>
+              
+            }
+          />
+        </ImageListItem>
+        </Link>
+      ))}
+    </ImageList>
             
             </div>
            

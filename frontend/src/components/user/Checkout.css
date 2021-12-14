@@ -83,4 +83,10 @@
   border: 1px solid black;
   cursor: pointer;
 }
+.wallet__use{
+  border: 2px solid black;
+  cursor: pointer;
+  color: white;
+  padding: 2px;
+}
 

@@ -5,9 +5,13 @@ const userHelpers = require("../helpers/userHelpers");
 const userHelper = require("../helpers/userHelpers");
 const shortid = require("shortid");
 const { cloudinary } = require("../cloudinary/cloudinary");
-
+const dotenv=require('dotenv')
+dotenv.config()
 
 /* GET home page. */
+router.get('/',(req,res)=>{
+  res.send("welcome")
+})
 
 router.get("/logged", async (req, res) => {
   const token = req.cookies.usertoken;
@@ -185,10 +189,14 @@ router.post("/addnewpassword", (req, res) => {
   } catch (err) {}
 });
 router.post("/addtocart", (req, res) => {
+ 
   const secret = shortid.generate();
   const token = req.cookies.usertoken;
   const verify = jwt.verify(token, process.env.jwt_PASSWORD_USER);
   userId = verify.client.id;
+  console.log(secret)
+  console.log(userId)
+ 
   try {
     userHelpers.addToCart(req.body, secret, userId).then((response) => {
       res.send(response);
@@ -391,7 +399,7 @@ router.post('/successpayment',(req,res)=>{
 // router.get('/cancel', (req, res) => res.send('Cancelled'));
 router.get('/getpaypal',(req,res)=>{
  
-  const data="AYbFwlKTKFDURTefOs4wn0Kv9rJort0nCSVA8iAGMo9MHcJfbUjX_v2haOoLeirBd6K6YEzlRfxPQWXl"
+  const data=process.env.secret
   res.send({id:data})
 })
 router.post('/validatereferal',(req,res)=>{

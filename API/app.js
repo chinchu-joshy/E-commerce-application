@@ -23,9 +23,10 @@ mongoose.connect(process.env.MDB_CONNECT,{
 })
 
 app.use(core({
-  origin:['http://localhost:3000'],
+  origin:['http://shoppyshop.chinchu.tech'],
   credentials:true
 }))
+
 
 app.use(logger('dev'));
 app.use(express.json());

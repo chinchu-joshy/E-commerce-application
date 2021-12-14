@@ -52,6 +52,7 @@ function Checkout() {
   const [coupenDetail, setcoupenDetail] = useState("")
   const [walletDetail, setwalletDetail] = useState(null)
   const [wallet, setwallet] = useState(0)
+  const [user, setuser] = useState({})
   const handleCloseOrder = () => {
     navigate("/");
     setmodal(false);
@@ -62,6 +63,9 @@ function Checkout() {
     if (UserResult.data) {
       setadress(UserResult.data.adress[0]);
       setalladress(UserResult.data.adress);
+      setuser(UserResult.data)
+
+      
     }
 
     // setadress(details.adress)
@@ -223,13 +227,8 @@ function Checkout() {
     var rzp1 = new Razorpay(options);
     rzp1.open();
     rzp1.on("payment.failed", function (response) {
-      // alert(response.error.code);
-      // alert(response.error.description);
-      // alert(response.error.source);
-      // alert(response.error.step);
-      // alert(response.error.reason);
-      // alert(response.error.metadata.order_id);
-      // alert(response.error.metadata.payment_id);
+      navigate('/failure')
+     
     });
   };
   const verifyPayment = (payment, order, id) => {
@@ -311,7 +310,7 @@ function Checkout() {
                   <h1>Price details</h1>
                   <Card className="d-flex m-2 p-2 card__coupen__cart">
                     <Card.Body className="  p-2 coupen__card__body flex-column">
-                      <p style={{background:"green"}} onClick={takeWallet}>Use wallet</p>
+                      <p className="wallet__use" style={{background:"green"}} onClick={takeWallet}>Use wallet</p>
                       <p>Apply coupen</p>
                       <Button className="coupen__btn" onClick={applyCoupen}>Apply</Button>
                     </Card.Body>

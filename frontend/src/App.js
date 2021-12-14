@@ -36,6 +36,7 @@ import OfferPage from './pages/Admin/OfferPage';
 import Success from "./components/user/Success"
 import CoupenPage from './pages/Admin/CoupenPage';
 import SalesReportPage from './pages/Admin/SalesReportPage';
+import Failure from './components/user/Failure';
 function App() {
   const [state, setstate] = useState('')
   const {logged} =useContext(AuthContext)
@@ -50,7 +51,8 @@ function App() {
       <Route  path='/login' element= {userlogged===true ? <Navigate to="/" /> : <UserLoginPage></UserLoginPage>}></Route>
       <Route  path='/checkout/:id/:amount' element= {userlogged===false ? <Navigate to="/login"/>  :<CheckoutPage/>}></Route>
       <Route  path='/account' element= {userlogged===false ? <Navigate to="/login"/>  :<UserProfilePage/>}></Route>
-      <Route  path='/success' element={userlogged===true ?<AdminHome/>:<Success/>}></Route>
+      <Route  path='/success' element={<Success/>}></Route>
+      <Route  path='/failure' element={<Failure/>}></Route>
       <Route  path='admin/sales' element={logged===false ?<AdminHome/>:<SalesReportPage/>}></Route>
       {/* <Route  path='/men' element= {<MenCategoryPage></MenCategoryPage>}></Route>
       <Route  path='/women' element= { <WomenCategoryPage></WomenCategoryPage>}></Route> */}

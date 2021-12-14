@@ -12,16 +12,18 @@ var Objid = mongoose.Types.ObjectId;
 const Razorpay = require("razorpay");
 const paypal = require("paypal-rest-sdk");
 const Coupen = require("../model/coupenModel");
+const dotenv=require('dotenv')
+dotenv.config()
 var instance = new Razorpay({
-  key_id: "rzp_test_OyHJLEVWBe3X4E",
-  key_secret: "c8Y2ceJAh6fnimfCw3JnIZ2D",
+  key_id: process.env.key_id,
+  key_secret:process.env.key_secret,
 });
 paypal.configure({
   mode: "sandbox", //sandbox or live
   client_id:
-    "AfpqY_fO1YK43C3Et4TeelvSlkBeafKP3qJChFUt31LtTNkwhvePZbSTmCwFR1_5rpIyQB_5froO6_lk",
+    process.env.paypal_client_id,
   client_secret:
-    "EHk7F3pvs5N2AD-6ivaLWjcKp4xea565ZysI2h2Pr_LPxglkLv2cI5KRUzq3wXH4TkazzuHtrhi_3uwd",
+   process.env.paypal_client_secret,
 });
 module.exports = {
   registerUser: (data) => {
@@ -344,6 +346,8 @@ module.exports = {
     });
   },
   addToCart: (data, secret, userId) => {
+    console.log("what is this")
+    // console.log(data)
     const result = parseInt(data.price - data.offer);
     const value = {
       productId: Objid(data.id),
