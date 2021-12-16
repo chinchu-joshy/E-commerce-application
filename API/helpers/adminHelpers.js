@@ -2,7 +2,7 @@ const Admin = require("../model/adminModel");
 const Category = require("../model/categoryModel");
 const User = require("../model/userModel");
 const Product = require("../model/productModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 var mongoose = require("mongoose");
 const Order = require("../model/orderModel");
 const Offer = require("../model/OfferModal");
@@ -11,6 +11,8 @@ const Coupen = require("../model/coupenModel");
 const newLocal = mongoose.Types.ObjectId;
 var Objid = newLocal;
 module.exports = {
+ 
+     
   checkLogin: (data) => {
     return new Promise(async (resolve, reject) => {
       const value = {};
@@ -19,7 +21,7 @@ module.exports = {
       const check = await Admin.findOne({ email });
       if (check) {
         bcrypt
-          .compare(data.password, check.passwordHash)
+          .compareSync(data.password, check.passwordHash)
           .then(function (result) {
             if (result === true) {
               value.user = check;
@@ -1698,7 +1700,7 @@ module.exports = {
 
         console.log(data.password);
         const salt = await bcrypt.genSalt();
-        const val = await bcrypt.hash(data.password, salt);
+        const val = await bcrypt.hashSync(data.password, salt);
         Admin.updateOne({} , { passwordHash: val }).then(
           (response) => {
             resolve(response);

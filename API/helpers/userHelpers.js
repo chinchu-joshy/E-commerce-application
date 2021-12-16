@@ -1,5 +1,5 @@
 const User = require("../model/userModel");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const shortId = require("shortid");
 var mongoose = require("mongoose");
 const Product = require("../model/productModel");
@@ -40,12 +40,14 @@ module.exports = {
           wallet = 0;
         }
         const secret = shortId.generate();
-        const salt = await bcrypt.genSalt();
-        const val = await bcrypt.hash(data.password, salt);
-        console.log(val);
+        var salt = bcrypt.genSaltSync(10);
+var hash = bcrypt.hashSync(data.password, salt);
+        // const salt = await bcrypt.genSalt();
+        // const val = await bcrypt.hash(data.password, salt);
+        
         const userdata = new User({
           email: data.email,
-          passwordHash: val,
+          passwordHash: hash,
           username: data.username,
           DOB: data.dob,
           phone: data.phone,
@@ -89,9 +91,9 @@ module.exports = {
             //       reject({error:"You are blocked"})
 
             //   }
-
+           
             bcrypt
-              .compare(Password, check.passwordHash)
+              .compareSync(Password, check.passwordHash)
               .then(function (result) {
                 if (result === true) {
                   value.user = check;
@@ -317,7 +319,7 @@ module.exports = {
       try {
         const user = await User.findOne({ _id: Objid(userId) });
         if (user) {
-          bcrypt.compare(password, user.passwordHash).then((result) => {
+          bcrypt.compareSync(password, user.passwordHash).then((result) => {
             if (result === true) {
               resolve({ status: true });
             } else {
@@ -333,9 +335,9 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         console.log(data.password);
-        const salt = await bcrypt.genSalt();
-        const val = await bcrypt.hash(data.password, salt);
-        User.updateOne({ _id: Objid(id) }, { passwordHash: val }).then(
+        var salt = bcrypt.genSaltSync(10);
+        var hash = bcrypt.hashSync(data.password, salt);
+        User.updateOne({ _id: Objid(id) }, { passwordHash: hash }).then(
           (response) => {
             resolve(response);
           }

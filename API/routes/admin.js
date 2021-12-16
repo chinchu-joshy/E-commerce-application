@@ -17,10 +17,10 @@ var storage = multer.diskStorage([]);
 var upload = multer({ storage: storage });
 
 /* GET users listing. */
-router.get("/", adminMiddleware.Auth, (req, res) => {
-  console.log(req.cookies);
-  res.send("ok");
-});
+// router.get("/", adminMiddleware.Auth, (req, res) => {
+//   console.log(req.cookies);
+//   res.send("ok");
+// });
 
 router.post("/login", (req, res) => {
   console.log("fdf");
@@ -517,5 +517,6 @@ router.post('/addnewpasswordadmin',(req,res)=>{
   } catch (err) {}
 
 })
+
 
 module.exports = router;
