@@ -7,6 +7,7 @@ var mongoose = require("mongoose");
 const Order = require("../model/orderModel");
 const Offer = require("../model/OfferModal");
 const Coupen = require("../model/coupenModel");
+
 const newLocal = mongoose.Types.ObjectId;
 var Objid = newLocal;
 module.exports = {
@@ -1651,4 +1652,62 @@ module.exports = {
       } catch (err) {}
     });
   },
+  getAdminDetails:()=>{
+    return new Promise(async(resolve,reject)=>{
+      try{
+        const admin = await Admin.findOne();
+      resolve(admin);
+
+      }catch(err){
+
+      }
+
+    })
+  },
+  addUserImageAdmin: (data) => {
+    return new Promise((resolve, reject) => {
+      try {
+        Admin.updateOne({}, { $set: { image: data } }).then(
+          (response) => {
+            resolve(response);
+          }
+        );
+      } catch (err) {}
+    });
+  },
+  checkPassword:(password)=>{
+    return new Promise(async (resolve, reject) => {
+      try {
+        const admin = await Admin.findOne();
+        if (admin) {
+          bcrypt.compare(password, admin.passwordHash).then((result) => {
+            if (result === true) {
+              resolve({ status: true });
+            } else {
+              resolve({ status: false });
+            }
+          });
+        }
+      } catch (err) {}
+    });
+
+  },
+  updateAdminPassword:(data)=>{
+    return new Promise(async (resolve, reject) => {
+      try {
+
+        console.log(data.password);
+        const salt = await bcrypt.genSalt();
+        const val = await bcrypt.hash(data.password, salt);
+        Admin.updateOne({} , { passwordHash: val }).then(
+          (response) => {
+            resolve(response);
+          }
+        );
+      } catch (err) {
+        reject(err);
+      }
+    });
+
+  }
 };

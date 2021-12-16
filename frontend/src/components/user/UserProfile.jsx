@@ -112,57 +112,12 @@ function UserProfile() {
   };
   const uploadProfilepic = (e) => {
     const data = e.target.files;
-    // const  {files}=e.target
-    // if(files && files.length>0){
-    //   const reader=FileReader()
-    //   reader.readasDataURL(files[0])
-    //   reader.addEventListener("load",()=>{
-    //     setimage(reader.result)
-    //   })
-    // }
+    
     setimage(URL.createObjectURL(e.target.files[0]));
 
-    // cropImage(URL.createObjectURL(e.target.files[0]))
-    //       const reader=FileReader()
-    // cropImage(e.target.files[0])
-
-    // const cropper =new Cropper(e.target.files[0],{
-    //   zoomable:false,
-    //   scalable:false,
-    //   aspectRatio:1,
-    //   crop:()=>{
-    //     const canvas=cropper.getCroppedCanvas()
-    //     setcrop(canvas.toDataURL('image/png'))
-    //   }
-
-    // })
-    // instance.post('/uploadimage',data).then((response)=>{
-    //   if(response){
-
-    //   }
-    // })
+   
   };
-  //     const cropImage=(image)=>{
-  // console.log(inputEl.current)
-  //            const cropper =new Cropper(inputEl.current,{
-  //         zoomable:false,
-  //         scalable:false,
-  //         aspectRatio:1,
-
-  //         crop:(e)=>{
-  //   console.log(e.detail.x);
-  //   console.log(e.detail.y);
-  //  console.log(inputEl)
-
-  //       const canvas=cropper.getCroppedCanvas()
-  //       console.log(canvas)
-  //       console.log(canvas.toDataURL('image/png'))
-
-  //       setcrop(canvas.toDataURL('image/png'))
-  //     }
-
-  //   })
-  // }
+ 
   const handleOnload = useCallback((img) => {
     ref.current = img;
   }, []);
@@ -415,12 +370,7 @@ function UserProfile() {
               name="file"
               accept="image/*"
             />
-            {/* <Button onClick={()=>{
-  inputEl.current.click()
-  console.log(inputEl.current.click())
-}}>Add</Button> */}
-
-            {/* <img className="image__preview" src={crop}  /> */}
+           
             <div className="cropper">
               {image && (
                 <ReactCrop

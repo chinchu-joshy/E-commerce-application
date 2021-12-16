@@ -7,12 +7,14 @@ import { instance } from '../../axios/axios';
 import SpinContext from "../../context/spinnerContext";
 import swal from 'sweetalert'
 import {Link} from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 function OrderView() {
     const {spin,setspin} = useContext(SpinContext)
     const [order, setorder] = useState([])
     const [show, setShow] = useState(false)
     const [view, setview] = useState({})
     const handleClose=()=> setShow(false)
+    const navigate=useNavigate()
     const viewOrder=async(data)=>{
           setview(data)
           setShow(true)
@@ -61,6 +63,9 @@ function OrderView() {
         }catch{
 
         }
+    }
+    const repeatOrder=async(id)=>{
+      navigate(`/viewproduct/${id}`)
     }
     useEffect(() => {
        getData()
@@ -129,7 +134,12 @@ function OrderView() {
                            }}>View order</Button>} 
                           
                           
-                         {data.products.orderStatus==="Cancelled" ? <Button>Order again</Button> : <Button className="btn" onClick={()=>{
+                         {data.products.orderStatus==="Cancelled" ? <Button onClick={()=>{
+                            
+                           
+                           repeatOrder(data.productId)
+                         }}>Order again</Button> : <Button className="btn" onClick={()=>{
+                          
                                const datas={
                                 
                                 id:data._id,

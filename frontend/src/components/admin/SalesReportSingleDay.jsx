@@ -1,6 +1,6 @@
 
 import "./SalesReport.css";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext,useRef } from "react";
 import {
   Form,
   Table,
@@ -14,7 +14,7 @@ import { instanceAdmin } from "../../axios/axios";
 import SpinContext from "../../context/spinnerContext";
 
 
-function SalesReportSingleDay() {
+export const SalesReportSingleDay = React.forwardRef((props, ref) => {
     const [search, setsearch] = useState("");
     const [orderdata, setorderdata] = useState([]);
     const [number, setnumber] = useState(null);
@@ -89,13 +89,13 @@ function SalesReportSingleDay() {
       getOrders();
     }, []);
     return (
-      <Container fluid>
+      <Container fluid ref={ref}>
         {spin === true ? (
           <Spinner className="spinner" animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
           </Spinner>
         ) : (
-          <div className="">
+          <div className="" >
             <div className="">
               <div className="">
                 {/* <div className="head">
@@ -179,6 +179,6 @@ function SalesReportSingleDay() {
         )}
       </Container>
     );
-}
+})
 
-export default SalesReportSingleDay
+

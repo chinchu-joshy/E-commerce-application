@@ -1,11 +1,11 @@
 .landing_page{
-    height: 100vh;
-    padding: 70px;
+    min-height: 100vh;
+    /* padding: 70px; */
     width: 100vw;
 }
 .landing_carousel{
   width: 100vw;
-  height: 40vh;
+  height: 350px;
   background-color: tomato;
 }
 .new_arrivals{
@@ -30,73 +30,46 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 15vw;
-    height: 40vh;
+    width: 250px;
+    height: 350px;
+    position: relative;
+  
 }
 .arrival_image{
   
-    width: 15vw;
-    height: 30vh;
+  width: 250px;
+  height: 350px;
 
 }
+.new_arrivals .sub_heading{
+width: 100%;
+
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 2%;
+}
+.landing__row{
+  width: 100%;
+}
+.card__body{
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.342);
+  width: 100%;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+
+}
+.heart__landing{
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  color:whitesmoke;
+ 
+}
+
 
  
-/* .dropdown {
-    margin-top: 0vh;
-    position: absolute;
-    display: inline-block;
-    
-    min-height: 50vh;
-    
-  }
-  .dropdown::-webkit-scrollbar {
-    display: none;
-  }
-  .drop_content{
-      z-index: 100;
-      max-height: 100vh;
-       */
-  /* }
-  .dropdown {
-    margin-top: 0vh;
-    position: absolute;
-    display: inline-block;
-    
-    min-height: 50vh;
-    
-  }
-  .dropdown::-webkit-scrollbar {
-    display: none;
-  }
-  .drop_content{
-      z-index: 100;
-      max-height: 100vh;
-      
-  }
-  
-  
-  
-  .dropdown {
-    margin-top: 0vh;
-    position: absolute;
-    display: inline-block;
-    
-    min-height: 50vh;
-    
-  }
-  .dropdown::-webkit-scrollbar {
-    display: none;
-  }
-  .drop_content{
-      z-index: 100;
-      max-height: 100vh;
-      
-  } */
-  
-  
-  
-  
-  
-  
-  
-  

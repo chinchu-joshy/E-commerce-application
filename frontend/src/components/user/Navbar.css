@@ -112,14 +112,16 @@ padding: 20px;
 border-radius: 20px;
 border: var(--blue);
 z-index: 1000;
+position: absolute;
 
 
 
   }
   .category_container{
       color: var(--blue);
-      z-index: 1000;
+      z-index: 100;
       font-weight: bold;
+      
     
       
   }
@@ -153,6 +155,12 @@ z-index: 1000;
 }
 .search_container_box  .search_btn{
     background-color: var(--blue);
+    color: white;
+}
+.drop_item{
+   
+}
+.mail__content__footer{
     color: white;
 }
   

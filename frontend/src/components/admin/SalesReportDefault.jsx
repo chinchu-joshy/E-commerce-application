@@ -1,5 +1,5 @@
 import "./SalesReport.css";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext ,useRef} from "react";
 import {
   Form,
   Table,
@@ -9,22 +9,25 @@ import {
   Container,
   Row,Col
 } from "react-bootstrap";
+
 import { instanceAdmin } from "../../axios/axios";
 import swal from "sweetalert";
 import SpinContext from "../../context/spinnerContext";
 import SalesReport from "./SalesReport";
-import SalesReportSingleDay from "./SalesReportSingleDay";
+import {SalesReportSingleDay} from "./SalesReportSingleDay";
 import SalesReportSingleWeek from "./SalesReportSingleWeek";
 import SalesReportSIngleMonth from "./SalesReportSIngleMonth";
 import SalesReportSingleYear from "./SalesReportSingleYear";
 import Button from "@restart/ui/esm/Button";
 import SalesReportRange from "./SalesReportRange";
-
+import PrintProvider, { Print, NoPrint } from 'react-easy-print';
+import {useReactToPrint} from 'react-to-print'
 function SalesReportDefault() {
   const [state, setstate] = useState("0");
   const [startDate, setStartDate] = useState("");
   const [endDate, setendDate] = useState("");
   const [dateerror, setdateerror] = useState("");
+  
    const sortWithRange=()=>{
       
     window.localStorage.setItem("state", "5");
@@ -40,7 +43,22 @@ function SalesReportDefault() {
     };
   }, [state]);
 
+
+
+
+  
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+      content: () => componentRef.current,
+    });
+  
+
+
+
+
+
   return (
+    
     <Container fluid>
 
       <Row>
@@ -99,17 +117,21 @@ function SalesReportDefault() {
       </div>
 
         </Col>
+      
         <Col md={10}>
-            <div className="sort__things">
+            
             {state === "0" && <SalesReport />}
-        {state === "1" && <SalesReportSingleDay />}
+            <button onClick={handlePrint}>Print this out!</button>
+        {state === "1" && <SalesReportSingleDay ref={componentRef}/>}
         {state === "2" && <SalesReportSingleWeek />}
         {state === "3" && <SalesReportSIngleMonth />}
         {state === "4" && <SalesReportSingleYear />}
         {state === "5" && <SalesReportRange startdate={startDate} enddate={endDate}/>}
-            </div>
+       
+       
 
         </Col>
+       
       </Row>
       
       

@@ -472,5 +472,50 @@ router.get('/trending',async(req,res)=>{
   }
 
 })
+//===================================== ADMIN DATA =======================================================
+router.get('/admindetail',async(req,res)=>{
+  try{
+   const detail=await adminHelpers.getAdminDetails()
+   res.send(detail)
+
+  }catch(err){
+
+  }
+})
+router.post('/uploadimageadmin',async(req,res)=>{
+  try{
+
+    const uploadResult = await cloudinary.uploader.upload(req.body.url, {
+      upload_presets: "cwbd4hh7",
+    });
+  console.log(uploadResult.secure_url)
+  adminHelpers.addUserImageAdmin(uploadResult.secure_url).then((response)=>{
+    res.send(response)
+  })
+
+   
+
+  }catch(err){
+
+  }
+})
+router.post('/checkpasswordadmin',(req,res)=>{
+  console.log(req.body)
+  try{
+adminHelpers.checkPassword(req.body.adminpassword).then((response)=>{
+  res.send(response)
+})
+  }catch(err){
+
+  }
+})
+router.post('/addnewpasswordadmin',(req,res)=>{
+  try {
+    adminHelpers.updateAdminPassword(req.body).then((response) => {
+      res.send(response);
+    });
+  } catch (err) {}
+
+})
 
 module.exports = router;

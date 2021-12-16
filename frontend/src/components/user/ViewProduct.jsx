@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { Button, Container, Form, Modal, Row, Col,ButtonGroup,Image } from "react-bootstrap";
 import "./ViewProduct.css";
 import StarBorder from "@material-ui/icons/StarBorder";
+import Heart from '@material-ui/icons/Favorite'
+import swal from 'sweetalert'
 function ViewProduct(props) {
   const id = props.id;
   const [show, setshow] = useState(false);
@@ -47,6 +49,22 @@ function ViewProduct(props) {
       
     });
   };
+ const addToWishList=async(id)=>{
+   try{
+     const data={
+       id
+     }
+    await instance.post("/addtowish/",data).then((response) => {
+      if (response.data.status===false) return seterr("Product already present")
+       swal("Added successfully")
+      
+    });
+
+   }catch(err){
+
+   }
+
+  }
   const getProduct = async () => {
     const datas = await instance.get(`/getviewproduct/${id}`);
     if (datas) {
@@ -112,8 +130,16 @@ function ViewProduct(props) {
               return (
                 <>
                   <img src={main} alt="" />
-                 
+                  <div className="btn-container">
                   <Button className="buy_now_button mt-4">Buy now</Button>
+                  <Heart onClick={()=>{
+                    addToWishList(product._id)
+                  }}/>
+
+                  </div>
+                 
+                 
+                 
                   <p style={{ color: "green" }}>
                     {product.deliverymethod === "Free"
                       ? "Free delivery"

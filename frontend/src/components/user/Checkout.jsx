@@ -51,6 +51,7 @@ function Checkout() {
   const [coupenAmount, setcoupenAmount] = useState(0)
   const [coupenDetail, setcoupenDetail] = useState("")
   const [walletDetail, setwalletDetail] = useState(null)
+  const [walleterr, setwalleterr] = useState()
   const [wallet, setwallet] = useState(0)
   const [user, setuser] = useState({})
   const handleCloseOrder = () => {
@@ -61,6 +62,7 @@ function Checkout() {
   const addData = async () => {
     const UserResult = await instance.get("/getuserdata");
     if (UserResult.data) {
+     
       setadress(UserResult.data.adress[0]);
       setalladress(UserResult.data.adress);
       setuser(UserResult.data)
@@ -291,6 +293,15 @@ function Checkout() {
     console.log(paymentResult);
   };
   const takeWallet=()=>{
+   
+   if(!user.wallet) return setwalleterr("No money in wallet")
+   if(parseInt(user.wallet) >amount) {
+     const value=(parseInt(amount)*70)/100
+     setwallet(value)
+   }else{
+    const data=(parseInt(wallet)*70)/100
+    setwallet(data)
+   }
 
 
   }
@@ -310,7 +321,9 @@ function Checkout() {
                   <h1>Price details</h1>
                   <Card className="d-flex m-2 p-2 card__coupen__cart">
                     <Card.Body className="  p-2 coupen__card__body flex-column">
+                    <p style={{color:"red"}}>{walleterr && walleterr}</p>
                       <p className="wallet__use" style={{background:"green"}} onClick={takeWallet}>Use wallet</p>
+                      
                       <p>Apply coupen</p>
                       <Button className="coupen__btn" onClick={applyCoupen}>Apply</Button>
                     </Card.Body>
@@ -645,7 +658,7 @@ function Checkout() {
               <Modal.Title>Apply Coupen</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-            <Form.Label>Enter coupen code</Form.Label>
+            
 
             {coupen.map((data)=>{
                     return(

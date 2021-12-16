@@ -35,7 +35,7 @@ function Home() {
         </Navbar.Brand>
        
 
-        <PersonIcon />
+        <Link to='/admin/adminprofile'><PersonIcon /></Link>
         <Notification />
         <Chat />
 

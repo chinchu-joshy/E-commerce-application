@@ -783,7 +783,63 @@ module.exports = {
       } catch (err) {}
     });
 
-  }
+  },
+  topSellingProduct: () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const orders = await Order.aggregate([
+          {
+            $match: {
+              createdAt: {
+                $gt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          
+          { $unwind: "$products" },
+          {
+            $project: {
+              userId: { $toObjectId: "$userId" },
+              productId: { $toObjectId: "$products.productId" },
+              "products.orderStatus": 1,
+              "products.price": 1,
+              "products.size": 1,
+              "products.quantity": 1,
+
+              secret: 1,
+              date: 1,
+              payment: 1,
+              orderStatus: 1,
+            },
+          },
+          {
+            $group:
+              {
+                _id: "$productId",
+               
+              
+                count: { $sum: 1 }
+              }
+          },
+          {$sort:{"count":-1}},
+
+          {
+            $lookup: {
+              from: "products",
+              localField: "_id",
+              foreignField: "_id",
+              as: "productdetails",
+            },
+          },
+          { $unwind: "$productdetails" },
+          { $limit: 4 },
+        ]);
+        resolve(orders);
+      } catch (err) {
+
+      }
+    });
+  },
   // generatePaypal:(secret,data)=>{
   //   return new Promise((resolve,reject)=>{
   //     try{

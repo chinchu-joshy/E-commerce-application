@@ -413,8 +413,11 @@ router.post('/validatereferal',(req,res)=>{
 })
 // =============================================================Coupen========================================================
 router.get('/showcoupen',async(req,res)=>{
+  const token = req.cookies.usertoken;
+    const verify = jwt.verify(token, process.env.jwt_PASSWORD_USER);
+    userId = verify.client.id;
   try{
-    const data=await userHelpers.getCoupen()
+    const data=await userHelpers.getCoupen(userId)
     console.log(data)
     res.send(data)
     
@@ -449,5 +452,33 @@ router.post('/updatestatus',(req,res)=>{
   }catch(err){
 
   }
+})
+// ================================================WISHLIST======================================================
+router.get('/addtowish',(req,res)=>{
+  try{
+
+  }catch(err){
+    userHelpers.addToWishList(req.body).then((response)=>{
+      res.send(response)
+    })
+  }
+
+})
+// *************************************************Landing Page*******************************************
+router.get('/trending',async(req,res)=>{
+  try{
+    
+    const data=await userHelpers.topSellingProduct()
+   
+    if(data){
+      console.log(data)
+    
+      res.send(data)
+    }
+
+  }catch(err){
+
+  }
+
 })
 module.exports = router;

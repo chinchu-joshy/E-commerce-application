@@ -5,9 +5,16 @@ import { Carousel, Card, Spinner, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { instance } from "../../axios/axios";
 
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
+import IconButton from '@mui/material/IconButton';
+import Favorite from "@material-ui/icons/Favorite";
 function LandingPage() {
   const [spin, setspin] = useState(false);
   const [newarrival, setnewarrival] = useState([]);
+  const [trending, settrending] = useState([])
   const getNewArrival = async () => {
     setspin(true);
     try {
@@ -20,8 +27,17 @@ function LandingPage() {
       console.log(err);
     }
   };
+  const getTrending=async()=>{
+    const trending=await instance.get('/trending')
+    if(trending){
+      console.log("reached")
+      console.log(trending.data)
+      settrending(trending.data)
+    }
+  }
   useEffect(() => {
     getNewArrival();
+    getTrending()
   }, []);
   return (
     <>
@@ -60,15 +76,24 @@ function LandingPage() {
               />
             </Carousel.Item>
           </Carousel>
-          <Row>
+          <Row className="landing__row">
             <Col md={12}>
               <div className="new_arrivals">
                 <div className="sub_heading">
                   <h1>New arrivals</h1>
                 </div>
+
                 <div className="card_container_banner">
+
+
+
+               
+
+
+
                   {newarrival.map((data) => {
                     return (
+                     
                       <Link
                         className="link_arrival"
                         style={{ textDecoration: "none" }}
@@ -80,14 +105,18 @@ function LandingPage() {
                             variant="top"
                             src={data.url[0].image1}
                           />
-                          <Card.Body>
-                            <Card.Text>{data.productname}</Card.Text>
+                          <Favorite className="heart__landing"/>
+                          <Card.Body className="card__body">
+                            <Card.Text>{data.productname}<br/>
+                            ₹{data.price}
+                            </Card.Text>
                           </Card.Body>
                         </Card>
                       </Link>
                     );
                   })}
                 </div>
+
               </div>
             </Col>
             <Col md={12}>
@@ -96,21 +125,24 @@ function LandingPage() {
                   <h1>Trending products</h1>
                 </div>
                 <div className="card_container_banner">
-                  {newarrival.map((data) => {
+                  {trending.map((data) => {
                     return (
                       <Link
                         className="link_arrival"
                         style={{ textDecoration: "none" }}
-                        to={`/viewproduct/${data._id}`}
+                        to={`/viewproduct/${data.productdetails._id}`}
                       >
                         <Card className="arrival_card">
                           <Card.Img
                             className="arrival_image"
                             variant="top"
-                            src={data.url[0].image1}
+                            src={data.productdetails.url[0].image1}
                           />
-                          <Card.Body>
-                            <Card.Title>{data.productname}</Card.Title>
+                         <Favorite className="heart__landing"/>
+                          <Card.Body className="card__body">
+                            <Card.Text>{data.productdetails.productname}<br/>
+                            ₹{data.productdetails.price}
+                            </Card.Text>
                           </Card.Body>
                         </Card>
                       </Link>
@@ -138,8 +170,11 @@ function LandingPage() {
                             variant="top"
                             src={data.url[0].image1}
                           />
-                          <Card.Body>
-                            <Card.Title>{data.productname}</Card.Title>
+                         <Favorite className="heart__landing"/>
+                          <Card.Body className="card__body">
+                            <Card.Text>{data.productname}<br/>
+                            ₹{data.price}
+                            </Card.Text>
                           </Card.Body>
                         </Card>
                       </Link>

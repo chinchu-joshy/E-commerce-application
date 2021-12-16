@@ -37,6 +37,7 @@ import Success from "./components/user/Success"
 import CoupenPage from './pages/Admin/CoupenPage';
 import SalesReportPage from './pages/Admin/SalesReportPage';
 import Failure from './components/user/Failure';
+import AdminProfilePage from './pages/Admin/AdminProfilePage';
 function App() {
   const [state, setstate] = useState('')
   const {logged} =useContext(AuthContext)
@@ -73,6 +74,8 @@ function App() {
       <Route  path='admin/addoffer' element={logged===false ? <Navigate to="/admin" />:<CategoryManagmentPage/>}></Route>
       <Route  path='admin/coupen' element={logged===false ? <Navigate to="/admin" />:<CoupenPage/>}></Route>
       <Route path="/showsearch/:id" element={<SearchPage/>}></Route>
+      <Route  path='admin/adminprofile' element={logged===false ? <Navigate to="/admin" />:<AdminProfilePage/>}></Route>
+     
 
       {/* <Route  path="/*" element={<NotFound/>}></Route>       */}
  </Routes>

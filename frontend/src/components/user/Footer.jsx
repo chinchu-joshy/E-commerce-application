@@ -21,21 +21,21 @@ function Footer() {
       <div class="col-md-3 mx-auto mt-3 mt-md-0 mb-0 mb-md-4">
 
         
-        <h5>Contacts</h5>
+        <h5>About</h5>
         <hr class="color-primary mb-4 mt-0 d-inline-block mx-auto w-60"/>
 
         <ul class="list-unstyled">
           <li>
-            <a href="#!">Very long link 1</a>
+            <a href="#!">Contact Us</a>
           </li>
           <li>
-            <a href="#!">Very long link 2</a>
+            <a href="#!">About Us</a>
           </li>
           <li>
-            <a href="#!">Very long link 3</a>
+            <a href="#!">Press</a>
           </li>
           <li>
-            <a href="#!">Very long link 4</a>
+            <a href="#!">Corporate</a>
           </li>
         </ul>
 
@@ -48,23 +48,25 @@ function Footer() {
       <div class="col-md-3 mx-auto mt-3 mt-md-0 mb-0 mb-md-4">
 
        
-        <h5>About us</h5>
+        <h5>Help</h5>
         <hr class="color-primary mb-4 mt-0 d-inline-block mx-auto w-60"/>
 
         <ul class="list-unstyled">
           <li>
-            <a href="#!">Link 1</a>
+            <a href="#!">Payments</a>
           </li>
           <li>
-            <a href="#!">Link 2</a>
+            <a href="#!">Shipping</a>
           </li>
           <li>
-            <a href="#!">Link 3</a>
+            <a href="#!">Cancellation</a>
           </li>
           <li>
-            <a href="#!">Link 4</a>
+            <a href="#!">Privacy</a>
           </li>
         </ul>
+        
+        
 
       </div>
     
@@ -80,16 +82,16 @@ function Footer() {
 
         <ul class="list-unstyled">
           <li>
-            <a href="#!">Link 1</a>
+            <a href="#!">Contact Us</a>
           </li>
           <li>
-            <a href="#!">Link 2</a>
+            <a href="#!">Terms of use</a>
           </li>
           <li>
-            <a href="#!">Link 3</a>
+            <a href="#!">Shipping</a>
           </li>
           <li>
-            <a href="#!">Link 4</a>
+            <a href="#!">Blog</a>
           </li>
         </ul>
 
@@ -101,7 +103,16 @@ function Footer() {
      
       <div class="col-md-3 mx-auto mt-3 mt-md-0 mb-0 mb-md-4">
 
-       
+      <h5>Mail Us</h5>
+        <hr class="color-primary mb-4 mt-0 d-inline-block mx-auto w-60"/>
+
+        <ul class="list-unstyled">
+          <li className="mail__content__footer">
+           Shoppy Privet limited,BUildings Alyass,Begonia & Clove Embassy Tech Village,
+           Outer Ring Rpad,Devarabesseri Village,Bengaluru,Karnataka,India
+          </li>
+         
+        </ul>
         
        
 

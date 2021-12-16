@@ -1,12 +1,12 @@
-import React from 'react'
-import WomenCategory from '../../components/user/WomenCategory'
+// import React from 'react'
+// import WomenCategory from '../../components/user/WomenCategory'
 
-function WomenCategoryPage() {
-    return (
-        <div>
-            <WomenCategory></WomenCategory>
-        </div>
-    )
-}
+// function WomenCategoryPage() {
+//     return (
+//         <div>
+//             <WomenCategory></WomenCategory>
+//         </div>
+//     )
+// }
 
-export default WomenCategoryPage
+// export default WomenCategoryPage
