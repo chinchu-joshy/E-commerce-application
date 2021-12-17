@@ -9,3 +9,25 @@
    width: 90%;
    
 }
+.print-button{
+   margin-top: 2%;
+   margin-left: 4%;
+   background-color: var(--blue);
+   color: white;
+}
+.sort_btn{
+    margin-top: 3%;
+   width: 80px;
+    background-color: var(--blue);
+    color: white;
+  
+
+}
+.small__contents{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+   
+}

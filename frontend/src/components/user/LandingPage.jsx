@@ -51,7 +51,7 @@ function LandingPage() {
             <Carousel.Item>
               <img
                 className="d-block w-100"
-                src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/11/24/1b31d859-b3c8-48a8-a2a9-2338408dec4b1637766559561-DK-Main-Banner-1920_504_sale-Strats-Midnight.jpg"
+                src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/12/7/53ae79ec-df56-4877-b133-b92f4cfd8c7f1638892785287-EORS-Prebuzz-Banner-DK.gif"
                 alt="First slide"
               />
               <Carousel.Caption></Carousel.Caption>
@@ -59,7 +59,7 @@ function LandingPage() {
             <Carousel.Item>
               <img
                 className="d-block w-100"
-                src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/11/21/73f7163e-0efa-4754-96d8-9ffe29049cf61637512891687-Desktop-banner--5-.gif"
+                src="https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/11/21/73f7163e-0efa-4754-96d8-9ffe29049cf61637512891687-Desktop-banner--5-.https://assets.myntassets.com/f_webp,w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2021/12/11/073805e4-f274-4d37-b5e3-8ef4766a19531639241779767-K_Winterwear_Dk.jpg"
                 alt="Second slide"
               />
 

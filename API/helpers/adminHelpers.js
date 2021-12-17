@@ -11,6 +11,32 @@ const Coupen = require("../model/coupenModel");
 const newLocal = mongoose.Types.ObjectId;
 var Objid = newLocal;
 module.exports = {
+//   addAdmin:()=>{
+//     return new Promise(async (resolve, reject) => {
+//       try {
+         
+        
+//         var salt = bcrypt.genSalt(10);
+// var hash = bcrypt.hash("123", salt);
+        
+        
+//         const userdata = new User({
+//           email: data.email,
+//           passwordHash: hash,
+//           username: data.username,
+//           DOB: data.dob,
+//           phone: data.phone,
+//           state: data.state,
+//           referal: secret,
+//           wallet: wallet,
+//         });
+//         const saveUser = await userdata.save();
+//         resolve(saveUser);
+//       } catch (err) {
+//         reject({ err: "Some unknown error occured" });
+//       }
+//     });
+//   }
  
      
   checkLogin: (data) => {
@@ -20,9 +46,11 @@ module.exports = {
       const Password = data.password;
       const check = await Admin.findOne({ email });
       if (check) {
+        console.log(check)
         bcrypt
-          .compareSync(data.password, check.passwordHash)
+          .compare(Password, check.passwordHash)
           .then(function (result) {
+            console.log(result)
             if (result === true) {
               value.user = check;
               value.status = true;
@@ -1700,7 +1728,7 @@ module.exports = {
 
         console.log(data.password);
         const salt = await bcrypt.genSalt();
-        const val = await bcrypt.hashSync(data.password, salt);
+        const val = await bcrypt.hashS(data.password, salt);
         Admin.updateOne({} , { passwordHash: val }).then(
           (response) => {
             resolve(response);

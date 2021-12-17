@@ -28,6 +28,7 @@ setblocked(block.data.blocked)
             }
     return (
         <div className="round_chart">
+             <h3>Active Users</h3>
              <Doughnut data={data}/>
             
         </div>

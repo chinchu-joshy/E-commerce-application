@@ -6,6 +6,8 @@ import "./ViewProduct.css";
 import StarBorder from "@material-ui/icons/StarBorder";
 import Heart from '@material-ui/icons/Favorite'
 import swal from 'sweetalert'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 function ViewProduct(props) {
   const id = props.id;
   const [show, setshow] = useState(false);
@@ -129,12 +131,14 @@ function ViewProduct(props) {
             {product.map((product) => {
               return (
                 <>
+                <Zoom>
                   <img src={main} alt="" />
+                  </Zoom>
                   <div className="btn-container">
                   <Button className="buy_now_button mt-4">Buy now</Button>
-                  <Heart onClick={()=>{
+                  {/* <Heart onClick={()=>{
                     addToWishList(product._id)
-                  }}/>
+                  }}/> */}
 
                   </div>
                  

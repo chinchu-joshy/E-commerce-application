@@ -13,7 +13,7 @@ import swal from "sweetalert";
 import SpinContext from "../../context/spinnerContext";
 import SalesReportDefault from "./SalesReportDefault";
 
-function SalesReport() {
+  export const SalesReport= React.forwardRef((props, ref) => {
   const [search, setsearch] = useState("");
   const [orderdata, setorderdata] = useState([]);
   const [number, setnumber] = useState(null);
@@ -109,7 +109,7 @@ function SalesReport() {
     getOrders();
   }, []);
   return (
-    <Container fluid>
+    <Container fluid ref={ref}> 
       {spin === true ? (
         <Spinner className="spinner" animation="border" role="status">
           <span className="visually-hidden">Loading...</span>
@@ -201,4 +201,4 @@ function SalesReport() {
   );
 }
 
-export default SalesReport;
+  )

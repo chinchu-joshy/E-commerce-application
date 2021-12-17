@@ -53,6 +53,7 @@ function Checkout() {
   const [walletDetail, setwalletDetail] = useState(null)
   const [walleterr, setwalleterr] = useState()
   const [wallet, setwallet] = useState(0)
+  
   const [user, setuser] = useState({})
   const handleCloseOrder = () => {
     navigate("/");
@@ -82,8 +83,10 @@ function Checkout() {
      const applyCoupen=async()=>{
       const coupens=await instance.get('/showcoupen')
       console.log(coupens)
-      if(coupen){
+      if(coupen.data){
           setcoupen(coupens.data) 
+      }else{
+        setcoupenerr("no coupen available")
       }
        setcoupenshow(true)
      }  
@@ -323,9 +326,9 @@ function Checkout() {
                     <Card.Body className="  p-2 coupen__card__body flex-column">
                     <p style={{color:"red"}}>{walleterr && walleterr}</p>
                       <p className="wallet__use" style={{background:"green"}} onClick={takeWallet}>Use wallet</p>
-                      
                       <p>Apply coupen</p>
                       <Button className="coupen__btn" onClick={applyCoupen}>Apply</Button>
+                      {coupenerr && coupenerr}
                     </Card.Body>
                   </Card>
                   <br />

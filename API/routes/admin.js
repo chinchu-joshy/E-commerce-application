@@ -492,9 +492,6 @@ router.post('/uploadimageadmin',async(req,res)=>{
   adminHelpers.addUserImageAdmin(uploadResult.secure_url).then((response)=>{
     res.send(response)
   })
-
-   
-
   }catch(err){
 
   }

@@ -37,6 +37,7 @@ function BarChart() {
   return (
     <div>
       <div className="barchart">
+      <h3>Last week sales</h3>
         <Bar data={data} options={options} />
       </div>
     </div>

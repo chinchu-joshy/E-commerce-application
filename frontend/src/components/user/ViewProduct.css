@@ -126,3 +126,6 @@
         align-items: center;
         justify-content: center;
     }
+    .offer__box__user{
+        height: 100px;
+    }

@@ -12,7 +12,7 @@ import { instanceAdmin } from "../../axios/axios";
 
 import SpinContext from "../../context/spinnerContext";
 
-function SalesReportSingleWeek() {
+  export const SalesReportSingleWeek= React.forwardRef((props, ref) => {
     const [search, setsearch] = useState("");
     const [orderdata, setorderdata] = useState([]);
     const [number, setnumber] = useState(null);
@@ -87,7 +87,7 @@ function SalesReportSingleWeek() {
       getOrders();
     }, []);
     return (
-      <Container fluid>
+      <Container fluid ref={ref}>
         {spin === true ? (
           <Spinner className="spinner" animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -179,4 +179,5 @@ function SalesReportSingleWeek() {
     );
 }
 
-export default SalesReportSingleWeek
+  )
+

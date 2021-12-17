@@ -21,7 +21,7 @@
     display: flex;
     padding: 10px;
     /* justify-content: center; */
-   width: 1000px;
+   width: 100%;
     
    min-height: 100vh;
    
@@ -79,17 +79,6 @@
     justify-content: center;
     box-sizing: border-box;
 }
-.card-main-category{
-    position: absolute;
-bottom: 0;
-background-color: rgba(0, 0, 0, 0.342);
-width: 100%;
-color: white;
-white-space: nowrap;
-overflow: hidden;
-text-overflow: clip;
-
-}
 .card-body-category{
     position: absolute;
     bottom: 0;
@@ -99,8 +88,9 @@ text-overflow: clip;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: clip;
-  
-
+}
+.offer__box_user{
+    height: 70px;
 }
 
 

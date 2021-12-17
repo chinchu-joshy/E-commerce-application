@@ -27,6 +27,7 @@ paypal.configure({
 });
 module.exports = {
   registerUser: (data) => {
+   
     return new Promise(async (resolve, reject) => {
       try {
          if (data.referal) {
@@ -40,14 +41,14 @@ module.exports = {
           wallet = 0;
         }
         const secret = shortId.generate();
-        var salt = bcrypt.genSaltSync(10);
-var hash = bcrypt.hashSync(data.password, salt);
-        // const salt = await bcrypt.genSalt();
-        // const val = await bcrypt.hash(data.password, salt);
+//         var salt = bcrypt.genSalt(10);
+// var hash = bcrypt.hash(data.password, salt);
+        const salt = await bcrypt.genSalt();
+        const val = await bcrypt.hash(data.password, salt);
         
         const userdata = new User({
           email: data.email,
-          passwordHash: hash,
+          passwordHash: val,
           username: data.username,
           DOB: data.dob,
           phone: data.phone,
@@ -56,9 +57,10 @@ var hash = bcrypt.hashSync(data.password, salt);
           wallet: wallet,
         });
         const saveUser = await userdata.save();
+        console.log(saveUser)
         resolve(saveUser);
       } catch (err) {
-        reject({ err: "Some unknown error occured" });
+        reject("");
       }
     });
   },
@@ -93,7 +95,7 @@ var hash = bcrypt.hashSync(data.password, salt);
             //   }
            
             bcrypt
-              .compareSync(Password, check.passwordHash)
+              .compare(Password, check.passwordHash)
               .then(function (result) {
                 if (result === true) {
                   value.user = check;
@@ -319,7 +321,7 @@ var hash = bcrypt.hashSync(data.password, salt);
       try {
         const user = await User.findOne({ _id: Objid(userId) });
         if (user) {
-          bcrypt.compareSync(password, user.passwordHash).then((result) => {
+          bcrypt.compare(password, user.passwordHash).then((result) => {
             if (result === true) {
               resolve({ status: true });
             } else {
@@ -335,8 +337,8 @@ var hash = bcrypt.hashSync(data.password, salt);
     return new Promise(async (resolve, reject) => {
       try {
         console.log(data.password);
-        var salt = bcrypt.genSaltSync(10);
-        var hash = bcrypt.hashSync(data.password, salt);
+        var salt = bcrypt.genSalt(10);
+        var hash = bcrypt.hash(data.password, salt);
         User.updateOne({ _id: Objid(id) }, { passwordHash: hash }).then(
           (response) => {
             resolve(response);
@@ -734,13 +736,17 @@ var hash = bcrypt.hashSync(data.password, salt);
       } catch (err) {}
     });
   },
-  getCoupen:()=>{
+  getCoupen:(id)=>{
     console.log("coupen djhdbhm")
     return new Promise(async (resolve, reject) => {
       try {
-        const coupen = await Coupen.find();
+        const user=await User.findOne({_id:Objid(id)})
+        const data=user.coupen
+
+        const coupen = await Coupen.find({_id:{$nin:data}});
        
         if (coupen) {
+
           resolve(coupen);
         }
       } catch (err) {}

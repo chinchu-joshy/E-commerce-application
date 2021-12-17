@@ -30,6 +30,7 @@ function Offer() {
   const { spin, setspin } = useContext(SpinContext);
   const [page, setpage] = useState(null);
   const [offerdata, setofferdata] = useState([]);
+  const [offererr, setoffererr] = useState("")
   const [state, setState] = useState("");
   const [searchproduct, setsearchproduct] = useState("");
   const [dateenderr, setdateenderr] = useState("");
@@ -147,6 +148,7 @@ function Offer() {
         subcategory: subcategory,
       };
       console.log(data);
+      if(parseInt(offer.offerprice) >100) return setoffererr("Not possible")
       if (
         !offer.offername ||
         !offer.startdate ||
@@ -529,6 +531,7 @@ function Offer() {
                       }));
                     }}
                   ></Form.Control>
+                  {offererr && offererr}
                   <Button className="mt-2" variant="secondary" type="submit">
                     Add
                   </Button>

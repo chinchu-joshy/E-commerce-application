@@ -122,12 +122,13 @@ getCategory()
                       <Card.Body className="card-body-category">
                         <Card.Text className="cart_name_size">{data.productname}</Card.Text>
                        
-                 { data.offer && <div className="offer__box__user">
-                        <Card.Text className="price_category"><p>Rs.{data.price}</p><p>Rs.{Math. trunc(data.price-data.offer)}</p></Card.Text>
+                 { data.offer && <div className="offer__box_user">
+                        <Card.Text className="price_category">Rs.{data.price}
+                        </Card.Text>
                         <Card.Text className="price_category_offer">Rs.{Math. trunc(data.price-data.offer)}</Card.Text>
 
                         </div>}
-                        { !data.offer && <div className="offer__box__user">
+                        { !data.offer && <div className="offer__box_user">
                         <Card.Text className="price_category__without__offer">Rs.{data.price}</Card.Text>
                         
 

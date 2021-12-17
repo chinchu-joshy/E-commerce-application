@@ -16,7 +16,7 @@ import SpinContext from "../../context/spinnerContext";
 import Button from "@restart/ui/esm/Button";
 
 
-function SalesReportRange(props) {
+  export const SalesReportRange= React.forwardRef((props, ref) => {
     const [search, setsearch] = useState("");
     const [orderdata, setorderdata] = useState([]);
     const [number, setnumber] = useState(null);
@@ -93,7 +93,7 @@ function SalesReportRange(props) {
       getOrders(props.startdate,props.enddate);
     }, []);
     return (
-      <Container fluid>
+      <Container fluid ref={ref}>
         {spin === true ? (
           <Spinner className="spinner" animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -185,4 +185,4 @@ function SalesReportRange(props) {
     );
 }
 
-export default SalesReportRange
+  )

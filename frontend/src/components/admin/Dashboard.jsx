@@ -179,11 +179,11 @@ useEffect(() => {
               </div>
             </div>
           </div>
-          <div className="bottom__content__main">
-          <canvas id="myChart" width="400" height="400"></canvas>
-          </div>
+         
           <div className="graph_area">
+           
           <Doughnut/>
+          
        <BarChart/>
           </div>
         </section>

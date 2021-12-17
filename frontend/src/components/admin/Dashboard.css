@@ -417,3 +417,15 @@ nav .profile-details i{
 .round_chart{
     width: 500px;
 }
+.graph_area{
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  
+ 
+}
+.barchart{
+  width: 500px;
+}
