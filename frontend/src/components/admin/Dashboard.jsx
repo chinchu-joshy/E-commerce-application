@@ -74,6 +74,12 @@ useEffect(() => {
       ) : (
       <Container>
         <section class="home-section">
+        <div className="graph_area">
+           
+           <Doughnut/>
+           
+        <BarChart/>
+           </div>
           <div class="home-content">
             <div class="overview-boxes">
               <div class="box">
@@ -180,12 +186,7 @@ useEffect(() => {
             </div>
           </div>
          
-          <div className="graph_area">
-           
-          <Doughnut/>
-          
-       <BarChart/>
-          </div>
+        
         </section>
       </Container>
       )}

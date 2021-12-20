@@ -26,6 +26,7 @@
     "nodemon": "^2.0.15",
     "paypal-rest-sdk": "^1.8.1",
     "razorpay": "^2.8.0",
+    "react-dropdown": "^1.9.2",
     "shortid": "^2.2.16"
   }
 }

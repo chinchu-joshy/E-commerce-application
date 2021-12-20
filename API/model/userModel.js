@@ -10,7 +10,8 @@ const userloginSchema=new mongoose.Schema({
     image:{type:String},
     referal:{type:String},
     wallet:{type:Number},
-    coupen:{type:Array}
+    coupen:{type:Array},
+    offer:{type:Boolean}
 
 }, {timestamps:true});
 

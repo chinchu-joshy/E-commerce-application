@@ -160,7 +160,7 @@ function Usercart() {
                     <h3 >Sub total :<span className={reduction ? "sub__total":"no__offer"}> ₹{amount && amount}</span> </h3>
                     <h3><span>{reduction && "₹"}{reduction && amount-reduction}</span></h3>
 
-                    
+          
                     <br />
                     
                     <Button className="checkout__btn mt-3" onClick={()=>{

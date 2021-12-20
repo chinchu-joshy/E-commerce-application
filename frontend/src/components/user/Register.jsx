@@ -209,13 +209,13 @@ function Register() {
             onChange={addEmail}
           ></input>
           {emailerror && <p className="emailerror">{emailerror}</p>}
-          <input
+          {/* <input
             type="string"
             value={referal}
             placeholder="Referal code"
             onChange={addReferal}
           ></input>
-          {referaleerror && <p className="referalerror">{referaleerror}</p>}
+          {referaleerror && <p className="referalerror">{referaleerror}</p>} */}
           <input
             type="password"
             value={password}

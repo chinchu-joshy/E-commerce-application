@@ -36,9 +36,11 @@ module.exports = {
             { $inc: { wallet: 20 } }
           ).then((response) => {
             wallet = 50;
+            offer=true;
           });
         } else {
           wallet = 0;
+          offer=false;
         }
         const secret = shortId.generate();
 //         var salt = bcrypt.genSalt(10);
@@ -55,6 +57,7 @@ module.exports = {
           state: data.state,
           referal: secret,
           wallet: wallet,
+          offer:offer
         });
         const saveUser = await userdata.save();
         console.log(saveUser)
@@ -79,20 +82,7 @@ module.exports = {
           if (check.state === false) {
             resolve({ status: false, error: "You are blocked" });
           } else {
-            //   try{
-            //       if(check.state===false){
-
-            //       }catch(err){
-
-            //       }
-            //     //       throw new Error({error:"You are blocked"})
-            //     //     // resolve({error:"You are blocked"})
-            //     //   }
-            //       }
-            //   }catch(err){
-            //       reject({error:"You are blocked"})
-
-            //   }
+           
            
             bcrypt
               .compare(Password, check.passwordHash)
@@ -487,24 +477,17 @@ module.exports = {
           console.log(response);
           resolve(response);
         });
-      } catch (err) {}
+      }
+       catch (err) {}
     });
   },
   placeOrder: (userId, data, secret) => {
     return new Promise(async (resolve, reject) => {
+      User.updateOne({_id:Objid(userId)},{
+       $set:{"offer":false}
+      })
       try {
         const date = new Date();
-
-        // if(data.payment==="COD"){
-        //   pay.check="Placed"
-        // }
-        // else {
-        //   pay.check="Pending"
-        // }
-        // const pay={
-        //   check:""
-        // }
-        //         date.setDate(date.getDate() + 7);
         var newdate = moment(date).format("YYYY-MM-DD");
 
         const order = new Order({

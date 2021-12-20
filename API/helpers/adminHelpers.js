@@ -1739,5 +1739,17 @@ module.exports = {
       }
     });
 
+  },
+  
+  getSearchingProduct:()=>{
+    return new Promise(async (resolve, reject) => {
+      try {
+           const data=await Product.find()   
+           resolve(data)   
+      } catch (err) {
+        reject(err);
+      }
+    });
+
   }
 };

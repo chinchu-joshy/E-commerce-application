@@ -37,3 +37,22 @@
     align-items: center;
     justify-content: center;
 }
+
+.offer__product__select__container{
+    background-color: rgb(192, 190, 187);
+    position: absolute;
+    width: 100%;
+    padding: 2%;
+ 
+}
+.offer__product__select__container p{
+    cursor: pointer;
+    
+}
+.vissibility_product{
+    display: none;
+}
+#vissibility{
+    display: none;
+
+}

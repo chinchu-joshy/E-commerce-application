@@ -514,6 +514,14 @@ router.post('/addnewpasswordadmin',(req,res)=>{
   } catch (err) {}
 
 })
+router.get('/productsearch',async(req,res)=>{
+  try{
+const data=await adminHelpers.getSearchingProduct()
+res.send(data)
+  }catch(err){
+
+  }
+})
 
 
 module.exports = router;

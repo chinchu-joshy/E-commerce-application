@@ -53,7 +53,7 @@ function Checkout() {
   const [walletDetail, setwalletDetail] = useState(null)
   const [walleterr, setwalleterr] = useState()
   const [wallet, setwallet] = useState(0)
-  
+  const [extra, setextra] = useState(1)
   const [user, setuser] = useState({})
   const handleCloseOrder = () => {
     navigate("/");
@@ -67,7 +67,7 @@ function Checkout() {
       setadress(UserResult.data.adress[0]);
       setalladress(UserResult.data.adress);
       setuser(UserResult.data)
-
+console.log(UserResult.data)
       
     }
 
@@ -146,17 +146,19 @@ function Checkout() {
   };
   const placeOrder = async (e) => {
     e.preventDefault();
+    if(user.offer===true){
+    setextra(.1)
+    }
     try {
       const data = {
         cartId: id,
-        price: parseInt(amount)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet),
+        price: (parseInt(amount)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet))*parseInt(extra),
         adress: adress,
         payment: payment,
         products: product,
         status: "Placed",
         coupen:coupenDetail,
         wallet:walletDetail
-
         
       };
       console.log(data);
@@ -367,7 +369,12 @@ function Checkout() {
                     </ListGroup.Item>
                     <ListGroup.Item className="list__checkout__amount">
                       Total amount : Rs.{amount && parseInt(offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet) }
+                     
                     </ListGroup.Item>
+                    {user.offer &&  <ListGroup.Item className="list__checkout__amount">
+                    First puchase offer : Rs.{amount && (parseInt(offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet))*.1 }
+                     
+                    </ListGroup.Item>}
                   </ListGroup>
 
                   {err && <p>{err}</p>}

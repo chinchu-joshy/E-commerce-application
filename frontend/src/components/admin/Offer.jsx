@@ -20,10 +20,10 @@ import swal from "sweetalert";
 import SpinContext from "../../context/spinnerContext";
 import ProductOffer from "./ProductOffer";
 import EditCategoryOffer from "./EditCategoryOffer";
-
+import SelectSearch,{ useSelect } from 'react-select-search';
 function Offer() {
   const [search, setsearch] = useState("");
-
+const [vissibility, setvissibility] = useState(false)
   const [err, seterr] = useState();
   const [show, setshow] = useState(false);
   const [dateerror, setdateerror] = useState("");
@@ -47,7 +47,8 @@ function Offer() {
   const [editcategoryshow, seteditcategoryshow] = useState(false);
   const [categorymode, setcategorymode] = useState(false);
   const [productmode, setproductmode] = useState(true);
-
+const [drop, setdrop] = useState("")
+const [products, setproducts] = useState([])
   const [offer, setoffer] = useState({
     offername: "",
     startdate: "",
@@ -366,9 +367,34 @@ function Offer() {
     console.log(datas);
     setcategorylist(datas.data);
   };
+
+
+
+
+
+
+  ////////////////////////////////////select search/////////////////////////////////////
+ const filterProduct=(e)=>{
+   setdrop(e.target.value)
+   setvissibility(true)
+   setoffer((prev) => ({ ...prev, product:""}));
+  
+ }
+ 
+ const getProduct=async()=>{
+  const products=await instanceAdmin.get('/productsearch')
+  if(products){
+    setproducts(products.data)
+    
+  }
+ }
+
+  ///////////////////////////////////////////////////////////select search///////////////////////
+  
   useEffect(() => {
     getAllCategory();
     getOffer();
+    getProduct()
   }, []);
   return (
     <>
@@ -381,6 +407,14 @@ function Offer() {
           <Container>
             <div className="container__offer">
               <div className="offer__heading">
+                {/* ******************select search option ************************/}
+               
+
+
+
+
+
+            {/* /////////////////////////////////////// */}
                 <h2 className="offer__head__style">Offer managemant</h2>
               </div>
               <div className="offer__search">
@@ -473,15 +507,49 @@ function Offer() {
               </Modal.Header>
               <Modal.Body>
                 <Form.Label>Product name</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Product name"
-                  value={offer.product}
-                  onChange={(e) => {
-                    seterr("");
-                    setoffer((prev) => ({ ...prev, product: e.target.value }));
-                  }}
-                ></Form.Control>
+
+
+
+
+                <div id="myDropdown" class="dropdown-content">
+    <input type="text" placeholder="Search.." id="myInput" value={drop} onChange={filterProduct}/>
+    <div className={drop ?"offer__product__select__container":"vissibility_product" } id={offer.product && "vissibility"}>
+    {products.filter((val)=>{
+       if (drop === "") {
+        return null;
+      } else if (
+        val.productname.toLowerCase().includes(drop.toLowerCase())
+      ) {
+        return val;
+      }
+
+    }).map((data)=>{
+      return(
+        <p className="search_product_offer" onClick={()=>{
+          setdrop(data.productname)
+          seterr("");
+          setoffer((prev) => ({ ...prev, product:data.productname}));
+        }}>{data.productname}</p>
+
+      )
+     
+
+    })}
+
+    </div>
+    
+  
+  </div>
+
+
+
+
+
+
+
+
+
+
                 <Form onSubmit={addOffer}>
                   <Form.Label>Offer name</Form.Label>
                   <Form.Control

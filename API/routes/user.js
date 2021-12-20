@@ -118,14 +118,23 @@ router.post("/addadress", async (req, res) => {
   }
 });
 router.get("/getuserdata", async (req, res) => {
-  const token = req.cookies.usertoken;
-  const verify = jwt.verify(token, process.env.jwt_PASSWORD_USER);
-  userId = verify.client.id;
 
-  const adress = await userHelpers.getAdressUser(userId);
-  if (adress) {
-    res.send(adress);
+
+  try{
+    const token = req.cookies.usertoken;
+    const verify = jwt.verify(token, process.env.jwt_PASSWORD_USER);
+    console.log(verify)
+    userId = verify.client.id;
+  
+    const adress = await userHelpers.getAdressUser(userId);
+    if (adress) {
+      res.send(adress);
+    }
+
+  }catch(err){
+
   }
+ 
 });
 router.get("/geteditadress/:id", (req, res) => {
   const token = req.cookies.usertoken;

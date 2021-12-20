@@ -1,31 +1,20 @@
-/* .get_given_category_head{
-    display: flex;
-    
-    justify-content: center;
-    align-items: center;
-    width: 100vw;
-    
-    flex-direction: column;
-    
-} */
-/* .image{
-    width: 15vw;
-    height: 30vh;
-}
-.subimage{
-    width: 15vw;
-    height: 30vh;
-} */
+
 
 .body_category{
     display: flex;
     padding: 10px;
     /* justify-content: center; */
    width: 100%;
+   position: relative;
     
    min-height: 100vh;
    
     
+}
+.content__card{
+    display: flex;
+    justify-content: space-between;
+   
 }
 .cart_name_size{
     font-size: 12px;
@@ -36,7 +25,7 @@
     box-shadow: 2px 2px 2px 2px rgb(199, 189, 189);
     display: flex;
     justify-content: center;
-   
+   flex-wrap: wrap;
     width: 250px;
     height: 350px;
     position: relative;
@@ -45,6 +34,11 @@
 .price_category{
     font-weight: bold;
     text-decoration: line-through
+}
+.offer__area_card{
+    text-decoration: none !important;
+    color: green;
+    margin-left: 2%;
 }
 .price_category__without__offe{
     font-weight: bold;
@@ -91,6 +85,23 @@
 }
 .offer__box_user{
     height: 70px;
+}
+.card_bottom_contents{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    color: black;
+    width: 200px;
+}
+.card_bottom_contents .left{
+width: 65%;
+}
+.card-main-category .heart{
+position: absolute;
+top: 20px;
+left: 20px;
+color: white;
+font-size: 30px;
 }
 
 

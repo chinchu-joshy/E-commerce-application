@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     width: 100vw;
-    padding: 2%;
+    padding: 3%;
     flex-direction: column;
     
     }
@@ -13,8 +13,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 70vh;
-        width: 50vw;
+       
         
 
     }
@@ -47,12 +46,16 @@
         color: white;
     }
     .large_image{
-        height: 70vh;
+        height: 700px;
+        width: 400px;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
 
+    }
+    .large_img_style{
+        height: 450px;
     }
     .content{
         background-color: white;
