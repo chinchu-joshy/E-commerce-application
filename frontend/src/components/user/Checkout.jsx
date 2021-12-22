@@ -333,7 +333,7 @@ console.log(UserResult.data)
                       {coupenerr && coupenerr}
                     </Card.Body>
                   </Card>
-                  <br />
+                  <br/>
                   <Form.Select
                     className="selection__checkout"
                     size="sm"
@@ -369,11 +369,9 @@ console.log(UserResult.data)
                     </ListGroup.Item>
                     <ListGroup.Item className="list__checkout__amount">
                       Total amount : Rs.{amount && parseInt(offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet) }
-                     
                     </ListGroup.Item>
                     {user.offer &&  <ListGroup.Item className="list__checkout__amount">
                     First puchase offer : Rs.{amount && (parseInt(offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet))*.1 }
-                     
                     </ListGroup.Item>}
                   </ListGroup>
 

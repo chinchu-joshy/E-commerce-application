@@ -161,9 +161,13 @@ if(admindetail){
             
             <div className="subdiv_admin_profile">
             <Row className="profile__top__row-admin">
-          <Col md={4} className="mt-2">
-            <Card>
-              <Card.Body>
+          <Col md={12} className="mt-2">
+            <Card className='card_admin-profile'>
+              <Card.Body className="card_body_admin_profile">
+              <Image className="profile__pic-admin" src={admin.image} roundedCircle/>
+           <AddIcon onClick={()=>{
+            setshowimg(true)
+          }}/>
                   <h4>Hi {admin.username}</h4>
                   <p>{admin.email}</p>
                   <Button onClick={()=>{
@@ -172,15 +176,7 @@ if(admindetail){
                   </Card.Body>
             </Card>
           </Col>
-          <Col md={8} className="d-flex right__top__profile-admin">
-           <Image className="profile__pic-admin" src={admin.image} roundedCircle/>
-           <AddIcon onClick={()=>{
-            setshowimg(true)
-          }}/>
          
-          <h2>My account</h2>
-           
-          </Col>
         </Row>
 
             </div>

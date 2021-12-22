@@ -45,8 +45,7 @@
         background-color: var(--blue);
         color: white;
     }
-    .large_image{
-        height: 700px;
+    .large_image{ 
         width: 400px;
         display: flex;
         justify-content: center;

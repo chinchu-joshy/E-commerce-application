@@ -91,7 +91,7 @@ function ViewProduct(props) {
   return (
     <Container>
 <Row>
-  <Col md={6}>
+  {/* <Col md={6}>
   <div className="view_product_image">
             <div className="small_image">
               {product.map((product) => {
@@ -140,23 +140,14 @@ function ViewProduct(props) {
                     <Zoom>
                       <img className="large_img_style" src={main} alt="" />
                     </Zoom>
-                    {/* <div className="btn-container">
-                      <Button className="buy_now_button mt-4">Buy now</Button>
-                     
-                    </div>
-
-                    <p style={{ color: "green" }}>
-                      {product.deliverymethod === "Free"
-                        ? "Free delivery"
-                        : "Free delivery not available"}
-                    </p> */}
+                   
                   </>
                 );
               })}
             </div>
           </div>
 
-  </Col>
+  </Col> */}
   <Col>
   </Col>
 </Row>

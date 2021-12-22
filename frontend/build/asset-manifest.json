@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.9dc5caa3.chunk.css",
-    "main.js": "/static/js/main.bc9a937b.chunk.js",
-    "main.js.map": "/static/js/main.bc9a937b.chunk.js.map",
+    "main.css": "/static/css/main.9f15eaf7.chunk.css",
+    "main.js": "/static/js/main.105954d0.chunk.js",
+    "main.js.map": "/static/js/main.105954d0.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.f5cfbed7.js",
     "runtime-main.js.map": "/static/js/runtime-main.f5cfbed7.js.map",
-    "static/css/2.11e8df4c.chunk.css": "/static/css/2.11e8df4c.chunk.css",
-    "static/js/2.30c43b18.chunk.js": "/static/js/2.30c43b18.chunk.js",
-    "static/js/2.30c43b18.chunk.js.map": "/static/js/2.30c43b18.chunk.js.map",
+    "static/css/2.0170cbcb.chunk.css": "/static/css/2.0170cbcb.chunk.css",
+    "static/js/2.abab51d2.chunk.js": "/static/js/2.abab51d2.chunk.js",
+    "static/js/2.abab51d2.chunk.js.map": "/static/js/2.abab51d2.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/2.11e8df4c.chunk.css.map": "/static/css/2.11e8df4c.chunk.css.map",
-    "static/css/main.9dc5caa3.chunk.css.map": "/static/css/main.9dc5caa3.chunk.css.map",
-    "static/js/2.30c43b18.chunk.js.LICENSE.txt": "/static/js/2.30c43b18.chunk.js.LICENSE.txt",
+    "static/css/2.0170cbcb.chunk.css.map": "/static/css/2.0170cbcb.chunk.css.map",
+    "static/css/main.9f15eaf7.chunk.css.map": "/static/css/main.9f15eaf7.chunk.css.map",
+    "static/js/2.abab51d2.chunk.js.LICENSE.txt": "/static/js/2.abab51d2.chunk.js.LICENSE.txt",
     "static/media/Register.css": "/static/media/shopping-in-trivendram-1280x720.6fd626dc.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.f5cfbed7.js",
-    "static/css/2.11e8df4c.chunk.css",
-    "static/js/2.30c43b18.chunk.js",
-    "static/css/main.9dc5caa3.chunk.css",
-    "static/js/main.bc9a937b.chunk.js"
+    "static/css/2.0170cbcb.chunk.css",
+    "static/js/2.abab51d2.chunk.js",
+    "static/css/main.9f15eaf7.chunk.css",
+    "static/js/main.105954d0.chunk.js"
   ]
 }
