@@ -174,7 +174,7 @@ console.log(UserResult.data)
             displayRazorpay(result.data.order, result.data.response._id);
           }
             if(result.data.method==="cod") {
-            
+              navigate('/success')
 
             if(coupenDetail || walletDetail){
               const data={
@@ -186,6 +186,7 @@ console.log(UserResult.data)
                console.log("update coupen")
                if(response){
                  console.log(data)
+                 
                }
 
              })
@@ -317,8 +318,15 @@ console.log(UserResult.data)
   }, []);
   return (
     <>
-      <Container>
+      <Container className="main-container-checkout">
+     
         <Row className="proceed__page__row">
+
+       
+
+
+
+
         <Col sm={12} md={6}>
             <Col sm={12} md={12}>
               <Card className="d-flex m-2 p-2 card__main__cart align-items-center">
@@ -368,10 +376,10 @@ console.log(UserResult.data)
                       Delivery charge : Rs.{delivery && delivery}
                     </ListGroup.Item>
                     <ListGroup.Item className="list__checkout__amount">
-                      Total amount : Rs.{amount && parseInt(offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet) }
+                      Total amount : Rs.{amount && parseInt(amount-offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet) }
                     </ListGroup.Item>
                     {user.offer &&  <ListGroup.Item className="list__checkout__amount">
-                    First puchase offer : Rs.{amount && (parseInt(offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet))*.1 }
+                    First puchase offer : Rs.{amount &&( parseInt(amount-offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet)) -( parseInt(amount-offerprice)+parseInt(delivery)-parseInt(coupenAmount)-parseInt(wallet))*.1 }
                     </ListGroup.Item>}
                   </ListGroup>
 

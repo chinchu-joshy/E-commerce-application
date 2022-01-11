@@ -12,58 +12,64 @@ var Objid = mongoose.Types.ObjectId;
 const Razorpay = require("razorpay");
 const paypal = require("paypal-rest-sdk");
 const Coupen = require("../model/coupenModel");
-const dotenv=require('dotenv')
-dotenv.config()
+const dotenv = require("dotenv");
+dotenv.config();
 var instance = new Razorpay({
   key_id: process.env.key_id,
-  key_secret:process.env.key_secret,
+  key_secret: process.env.key_secret,
 });
 paypal.configure({
-  mode: "sandbox", //sandbox or live
-  client_id:
-    process.env.paypal_client_id,
-  client_secret:
-   process.env.paypal_client_secret,
+  mode: "sandbox",
+  client_id: process.env.paypal_client_id,
+  client_secret: process.env.paypal_client_secret,
 });
 module.exports = {
   registerUser: (data) => {
-   
+    console.log(data);
     return new Promise(async (resolve, reject) => {
       try {
-         if (data.referal) {
+        const secret = shortId.generate();
+
+        const salt = await bcrypt.genSalt();
+        const val = await bcrypt.hash(data.password, salt);
+        if (data.referal) {
           User.updateOne(
             { referal: data.referal },
             { $inc: { wallet: 20 } }
-          ).then((response) => {
-            wallet = 50;
-            offer=true;
+          ).then(async (response) => {
+            const userdata = new User({
+              email: data.email,
+              passwordHash: val,
+              username: data.username,
+              DOB: data.dob,
+              phone: data.phone,
+              state: data.state,
+              referal: secret,
+              wallet: 50,
+              offer: true,
+            });
+            const saveUser = await userdata.save();
+            console.log(saveUser);
+            resolve(saveUser);
           });
         } else {
-          wallet = 0;
-          offer=false;
+          const userdata = new User({
+            email: data.email,
+            passwordHash: val,
+            username: data.username,
+            DOB: data.dob,
+            phone: data.phone,
+            state: data.state,
+            referal: secret,
+            wallet: 0,
+            offer: false,
+          });
+          const saveUser = await userdata.save();
+          console.log(saveUser);
+          resolve(saveUser);
         }
-        const secret = shortId.generate();
-//         var salt = bcrypt.genSalt(10);
-// var hash = bcrypt.hash(data.password, salt);
-        const salt = await bcrypt.genSalt();
-        const val = await bcrypt.hash(data.password, salt);
-        
-        const userdata = new User({
-          email: data.email,
-          passwordHash: val,
-          username: data.username,
-          DOB: data.dob,
-          phone: data.phone,
-          state: data.state,
-          referal: secret,
-          wallet: wallet,
-          offer:offer
-        });
-        const saveUser = await userdata.save();
-        console.log(saveUser)
-        resolve(saveUser);
       } catch (err) {
-        reject("");
+        console.log(err);
       }
     });
   },
@@ -71,7 +77,7 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         const value = {};
-        //    const email=data.email
+
         console.log(data);
         const Password = data.password;
         const Email = data.email;
@@ -82,8 +88,6 @@ module.exports = {
           if (check.state === false) {
             resolve({ status: false, error: "You are blocked" });
           } else {
-           
-           
             bcrypt
               .compare(Password, check.passwordHash)
               .then(function (result) {
@@ -112,11 +116,18 @@ module.exports = {
   },
   findBlocked: (id) => {
     return new Promise(async (resolve, reject) => {
-      const data = await User.findOne({ _id: Objid(id) });
-      if (data.state === false) return resolve({ status: false });
-      return resolve({ status: true, user: data });
+      try {
+        console.log("reached");
+        const data = await User.findOne({ _id: Objid(id) });
+        console.log(data);
+        if (data.state === false) return resolve({ status: false });
+        return resolve({ status: true, user: data });
+      } catch (err) {
+        console.log(err);
+      }
     });
   },
+
   userFind: (id) => {
     return new Promise(async (resolve, reject) => {
       const data = await Product.find({ _id: Objid(id) });
@@ -137,7 +148,9 @@ module.exports = {
   findTheCategory: (id) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const product = await Product.find({ category: id });
+        const product = await Product.find({ category: id }).sort({
+          createdAt: -1,
+        });
 
         resolve(product);
       } catch (err) {}
@@ -148,6 +161,8 @@ module.exports = {
       try {
         const product = await Product.find({
           $and: [{ category: id }, { subcategory: sub }],
+        }).sort({
+          createdAt: -1,
         });
 
         resolve(product);
@@ -187,7 +202,6 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       const user = await User.aggregate([
         { $match: { _id: Objid(id) } },
-
         {
           $project: {
             numberOfAdress: {
@@ -340,7 +354,7 @@ module.exports = {
     });
   },
   addToCart: (data, secret, userId) => {
-    console.log("what is this")
+    console.log("what is this");
     // console.log(data)
     const result = parseInt(data.price - data.offer);
     const value = {
@@ -477,15 +491,11 @@ module.exports = {
           console.log(response);
           resolve(response);
         });
-      }
-       catch (err) {}
+      } catch (err) {}
     });
   },
   placeOrder: (userId, data, secret) => {
     return new Promise(async (resolve, reject) => {
-      User.updateOne({_id:Objid(userId)},{
-       $set:{"offer":false}
-      })
       try {
         const date = new Date();
         var newdate = moment(date).format("YYYY-MM-DD");
@@ -500,11 +510,18 @@ module.exports = {
           date: newdate,
           secret: secret,
           products: data.products,
-         
         });
         const saveOrder = await order.save();
 
         if (saveOrder) {
+          User.updateOne(
+            { _id: Objid(userId) },
+            {
+              $set: { offer: false },
+            }
+          ).then((res) => {
+            console.log(res);
+          });
           Cart.updateOne(
             { userId: userId },
             {
@@ -598,29 +615,6 @@ module.exports = {
         ).then((response) => {
           resolve(response);
         });
-        // const count = await Order.aggregate([
-        //   { $match: { _id: Objid(data.id) } },
-        //   { $project: { count: { $size: "$products" } } },
-        // ]);
-        // if (count == 1) {
-        //   Order.deleteOne({ _id: Objid(data.id) }).then((response) => {
-        //     resolve(response);
-        //   });
-        // } else {
-        //   Order.updateOne(
-        //     {
-        //       _id: Objid(data.id),
-        //       products: { $elemMatch: { productId: data.productId } },
-        //     },
-        //     {
-        //       $pull: {
-        //         products: { productId: data.productId, size: data.size },
-        //       },
-        //     }
-        //   ).then((response) => {
-        //     resolve(response);
-        //   });
-        // }
       } catch (err) {}
     });
   },
@@ -719,61 +713,60 @@ module.exports = {
       } catch (err) {}
     });
   },
-  getCoupen:(id)=>{
-    console.log("coupen djhdbhm")
+  getCoupen: (id) => {
+    console.log("coupen djhdbhm");
     return new Promise(async (resolve, reject) => {
       try {
-        const user=await User.findOne({_id:Objid(id)})
-        const data=user.coupen
+        const user = await User.findOne({ _id: Objid(id) });
+        const data = user.coupen;
 
-        const coupen = await Coupen.find({_id:{$nin:data}});
-       
+        const coupen = await Coupen.find({ _id: { $nin: data } });
+
         if (coupen) {
-
           resolve(coupen);
         }
       } catch (err) {}
     });
   },
-  checkCoupen:(user,coupen)=>{
+  checkCoupen: (user, coupen) => {
     return new Promise(async (resolve, reject) => {
       try {
         const coupen = await Coupen.find({});
-       
+
         if (coupen) {
           resolve(coupen);
         }
       } catch (err) {}
     });
-
   },
-  updateTheDiscount:(id,data)=>{
+  updateTheDiscount: (id, data) => {
     return new Promise(async (resolve, reject) => {
       try {
-       if(data.wallet){
-         console.log("wallet ok")
-         const val=parseInt(data.wallet*-1)
-         console.log(val)
-         User.updateOne({_id:Objid(id)},
-          {$inc:{"wallet":val}}
-         ).then((response)=>{
-           console.log(response)
-          resolve({status:true})
-         })
-       }
-       if(data.coupen){
-        console.log("coupen ok")
-        User.updateOne({_id:Objid(id)},{
-           $addToSet: { "coupen": data.coupen } 
-        }).then((response)=>{
-          console.log(response)
-          resolve({status:true})
-        })
-      }
-    
+        if (data.wallet) {
+          console.log("wallet ok");
+          const val = parseInt(data.wallet * -1);
+          console.log(val);
+          User.updateOne({ _id: Objid(id) }, { $inc: { wallet: val } }).then(
+            (response) => {
+              console.log(response);
+              resolve({ status: true });
+            }
+          );
+        }
+        if (data.coupen) {
+          console.log("coupen ok");
+          User.updateOne(
+            { _id: Objid(id) },
+            {
+              $addToSet: { coupen: data.coupen },
+            }
+          ).then((response) => {
+            console.log(response);
+            resolve({ status: true });
+          });
+        }
       } catch (err) {}
     });
-
   },
   topSellingProduct: () => {
     return new Promise(async (resolve, reject) => {
@@ -786,7 +779,7 @@ module.exports = {
               },
             },
           },
-          
+
           { $unwind: "$products" },
           {
             $project: {
@@ -796,7 +789,6 @@ module.exports = {
               "products.price": 1,
               "products.size": 1,
               "products.quantity": 1,
-
               secret: 1,
               date: 1,
               payment: 1,
@@ -804,15 +796,13 @@ module.exports = {
             },
           },
           {
-            $group:
-              {
-                _id: "$productId",
-               
-              
-                count: { $sum: 1 }
-              }
+            $group: {
+              _id: "$productId",
+
+              count: { $sum: 1 },
+            },
           },
-          {$sort:{"count":-1}},
+          { $sort: { count: -1 } },
 
           {
             $lookup: {
@@ -826,60 +816,7 @@ module.exports = {
           { $limit: 4 },
         ]);
         resolve(orders);
-      } catch (err) {
-
-      }
+      } catch (err) {}
     });
   },
-  // generatePaypal:(secret,data)=>{
-  //   return new Promise((resolve,reject)=>{
-  //     try{
-  //       const create_payment_json = {
-  //         "intent": "sale",
-  //         "payer": {
-  //             "payment_method": "paypal"
-  //         },
-  //         "redirect_urls": {
-  //             "return_url": "http://localhost:8000/success",
-  //             "cancel_url": "http://localhost:8000/cancel"
-  //         },
-  //         "transactions": [{
-  //             "item_list": {
-  //                 "items": [{
-  //                     "name": "Shoppy",
-  //                     "sku": "001",
-  //                     "price": data,
-  //                     "currency": "INR",
-  //                     "quantity": 1
-  //                 }]
-  //             },
-  //             "amount": {
-  //                 "currency": "INR",
-  //                 "total": data
-  //             },
-  //             "description": "Thank you for the purchase"
-  //         }]
-  //     };
-
-  //     paypal.payment.create(create_payment_json, function (error, payment) {
-  //       if (error) {
-  //           console.log(error)
-  //       } else {
-  //           for(let i = 0;i < payment.links.length;i++){
-  //             if(payment.links[i].rel === 'approval_url'){
-
-  //               resolve(payment.links[i].href)
-  //             }
-  //           }
-  //           console.log(payment)
-
-  //       }
-  //     });
-
-  //     }catch(err){
-  //       console.log(err.message)
-
-  //     }
-  //   })
-  // }
 };

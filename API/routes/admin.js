@@ -519,7 +519,7 @@ router.get('/productsearch',async(req,res)=>{
 const data=await adminHelpers.getSearchingProduct()
 res.send(data)
   }catch(err){
-
+  
   }
 })
 

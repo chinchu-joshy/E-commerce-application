@@ -54,7 +54,7 @@ const [trending, settrending] = useState([])
   const getTrendingOrder=async()=>{
     const trending=await instanceAdmin.get('/trending')
     if(trending){
-      console.log(trending.data[0].productdetails.url[0])
+     
       settrending(trending.data)
     }
   }

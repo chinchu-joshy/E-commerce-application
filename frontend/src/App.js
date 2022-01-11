@@ -39,6 +39,7 @@ import CoupenPage from './pages/Admin/CoupenPage';
 import SalesReportPage from './pages/Admin/SalesReportPage';
 import Failure from './components/user/Failure';
 import AdminProfilePage from './pages/Admin/AdminProfilePage';
+import Testing from './components/user/Testing';
 function App() {
   const [state, setstate] = useState('')
   const {logged} =useContext(AuthContext)
@@ -76,7 +77,7 @@ function App() {
       <Route  path='admin/coupen' element={logged===false ? <Navigate to="/admin" />:<CoupenPage/>}></Route>
       <Route path="/showsearch/:id" element={<SearchPage/>}></Route>
       <Route  path='admin/adminprofile' element={logged===false ? <Navigate to="/admin" />:<AdminProfilePage/>}></Route>
-     
+      <Route  path='/look' element={<Testing/>}></Route>
 
       {/* <Route  path="/*" element={<NotFound/>}></Route>       */}
  </Routes>

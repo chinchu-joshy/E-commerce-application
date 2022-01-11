@@ -27,14 +27,13 @@ import Cropper from "cropperjs";
 import "cropperjs/dist/cropper.min.css";
 import AuthUserContext from "../../context/UserContext";
 import ReactCrop from "react-image-crop";
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from "@material-ui/icons/Add";
 import Wallet from "./Wallet";
 import Coupen from "./Coupen";
 
-
 function UserProfile() {
-  const [showimg, setshowimg] = useState(false)
-  const [url, seturl] = useState("")
+  const [showimg, setshowimg] = useState(false);
+  const [url, seturl] = useState("");
   const [image, setimage] = useState("");
   const [cropdata, setcropdata] = useState({ aspect: 9 / 10 });
   const [completed, setcompleted] = useState(null);
@@ -47,17 +46,17 @@ function UserProfile() {
   const [crop, setcrop] = useState("");
   const [detail, setdetail] = useState(true);
   const [err, seterr] = useState("");
-  const [wallet, setwallet] = useState(false)
+  const [wallet, setwallet] = useState(false);
   const [confirmerr, setconfirmerr] = useState("");
-  const [coupen, setcoupen] = useState(false)
+  const [coupen, setcoupen] = useState(false);
   const inputEl = useRef(null);
   const ref = useRef();
   const canvasref = useRef();
   const [changepassword, setchangepassword] = useState(false);
-  const {getUserLoggedIn, username } = useContext(AuthUserContext);
+  const { getUserLoggedIn, username } = useContext(AuthUserContext);
   const handleClose = () => setpassword(false);
   const handleSubmit = () => setchangepassword(false);
-  const handleCloseImg=()=>setshowimg(false)
+  const handleCloseImg = () => setshowimg(false);
   const checkPassword = (e) => {
     e.preventDefault();
     try {
@@ -112,12 +111,10 @@ function UserProfile() {
   };
   const uploadProfilepic = (e) => {
     const data = e.target.files;
-    
-    setimage(URL.createObjectURL(e.target.files[0]));
 
-   
+    setimage(URL.createObjectURL(e.target.files[0]));
   };
- 
+
   const handleOnload = useCallback((img) => {
     ref.current = img;
   }, []);
@@ -158,16 +155,14 @@ function UserProfile() {
     }
     const imgUrl = canvasref.current.toDataURL("image/jpeg");
     console.log(imgUrl);
-    const data={url:imgUrl}
-    instance.post('/uploadimage',data).then((response)=>{
-        if(response){
-          getUserLoggedIn()
-          swal("Uploaded successfully")
-          setshowimg(false)
-
-  
-        }
-      })
+    const data = { url: imgUrl };
+    instance.post("/uploadimage", data).then((response) => {
+      if (response) {
+        getUserLoggedIn();
+        swal("Uploaded successfully");
+        setshowimg(false);
+      }
+    });
   };
   return (
     <>
@@ -179,13 +174,18 @@ function UserProfile() {
             </Card>
           </Col>
           <Col md={8} className="d-flex right__top__profile">
-           <Image className="profile__pic" src={username.image} roundedCircle/>
-           <AddIcon onClick={()=>{
-            setshowimg(true)
-          }}/>
-         
-          <h2>My account</h2>
-           
+            <Image
+              className="profile__pic"
+              src={username.image}
+              roundedCircle
+            />
+            <AddIcon
+              onClick={() => {
+                setshowimg(true);
+              }}
+            />
+
+            <h2>My account</h2>
           </Col>
         </Row>
         <Row>
@@ -197,8 +197,8 @@ function UserProfile() {
                   setorder(false);
                   setdetail(true);
                   setpassword(false);
-                  setwallet(false)
-                  setcoupen(false)
+                  setwallet(false);
+                  setcoupen(false);
                 }}
               >
                 My details
@@ -210,8 +210,8 @@ function UserProfile() {
                     setorder(false);
                     setdetail(false);
                     setpassword(false);
-                    setwallet(false)
-                    setcoupen(false)
+                    setwallet(false);
+                    setcoupen(false);
                   }}
                 >
                   Adress Book
@@ -231,28 +231,36 @@ function UserProfile() {
                   setdetail(false);
                   setorder(true);
                   setpassword(false);
-                  setwallet(false)
-                  setcoupen(false)
+                  setwallet(false);
+                  setcoupen(false);
                 }}
               >
                 My orders
               </ListGroup.Item>
-              <ListGroup.Item  onClick={() => {
+              <ListGroup.Item
+                onClick={() => {
                   setadress(false);
                   setdetail(false);
                   setorder(false);
                   setpassword(false);
-                  setwallet(false)
-                  setcoupen(true)
-                }}>Coupens</ListGroup.Item>
-              <ListGroup.Item  onClick={() => {
+                  setwallet(false);
+                  setcoupen(true);
+                }}
+              >
+                Coupens
+              </ListGroup.Item>
+              <ListGroup.Item
+                onClick={() => {
                   setadress(false);
                   setdetail(false);
                   setorder(false);
                   setpassword(false);
-                  setwallet(true)
-                  setcoupen(false)
-                }}>Wallet</ListGroup.Item>
+                  setwallet(true);
+                  setcoupen(false);
+                }}
+              >
+                Wallet
+              </ListGroup.Item>
               <ListGroup.Item>Wishlist</ListGroup.Item>
               <ListGroup.Item>View your reviews</ListGroup.Item>
             </ListGroup>
@@ -263,8 +271,10 @@ function UserProfile() {
                 {order && <OrderView />}
                 {adress && <AdressBook />}
                 {detail && <Details />}
-                {wallet && <Wallet value={username.referal} wallet={username.wallet}/>}
-                {coupen &&<Coupen/>}
+                {wallet && (
+                  <Wallet value={username.referal} wallet={username.wallet} />
+                )}
+                {coupen && <Coupen />}
               </div>
             </Container>
           </Col>
@@ -342,35 +352,24 @@ function UserProfile() {
           <Modal.Footer>{newpasserr && <p>{newpasserr}</p>}</Modal.Footer>
         </Modal>
 
-
-
-
-
-
-
-
-
-
-
-
         <Modal
-        show={showimg}
-        onHide={handleCloseImg}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Upload image</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <input
+          show={showimg}
+          onHide={handleCloseImg}
+          backdrop="static"
+          keyboard={false}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Upload image</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <input
               onChange={uploadProfilepic}
               type="file"
               id="filefield"
               name="file"
               accept="image/*"
             />
-           
+
             <div className="cropper">
               {image && (
                 <ReactCrop
@@ -393,30 +392,8 @@ function UserProfile() {
             >
               upload
             </Button>
-        
-        </Modal.Body>
-      </Modal>
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          </Modal.Body>
+        </Modal>
       </div>
     </>
   );

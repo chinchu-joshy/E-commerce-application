@@ -204,7 +204,7 @@ const [products, setproducts] = useState([])
                           });
                           setcategory("");
                           setsubcategory("");
-                          setshow(false);
+                          categoryShow(false);
                         }
                       });
                   } else {
@@ -216,7 +216,7 @@ const [products, setproducts] = useState([])
                       offerprice: "",
                       product: "",
                     });
-                    setshow(false);
+                    categoryShow(false);
                   }
                 });
               } else {
@@ -229,7 +229,7 @@ const [products, setproducts] = useState([])
                   product: "",
                 });
                 swal("offer added successfully");
-                setshow(false);
+                categoryShow(false);
               }
             });
         }
@@ -742,7 +742,7 @@ const [products, setproducts] = useState([])
                     }}
                   ></Form.Control>
                   <Button className="mt-2" variant="secondary" type="submit">
-                    edit
+                    Add
                   </Button>
                 </Form>
               </Modal.Body>

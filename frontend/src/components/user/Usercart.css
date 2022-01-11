@@ -56,8 +56,61 @@
 }
 .btn__wish__count__container{
     display: flex;
-    justify-content: space-between;
+    justify-content:flex-end;
+    position: absolute;
+    width: 700px;
+    bottom: 5%;
+    right: 2%;
+   
 }
 .caart_main_container{
     height: 100vh;
+}
+.card__submain__cart .card-body-cart{
+    display: flex !important;
+    flex-direction: column;
+   
+
+}
+.contents_of_cart{
+    display: flex !important;
+    width: 100%;
+    justify-content: start;
+
+}
+.card__price_main__cart{
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.cart_main_box{
+    border: 3px solid rgba(102, 94, 94, 0.507);
+    padding: 3%;
+    box-sizing: border-box;
+    width: 80%;
+    height: 150px;
+    display: flex;
+    position: relative;
+    margin-top: 2%;
+   
+}
+.cart-foto{
+    width: 30%;
+
+}
+.price-cart{
+    display: flex;
+    font-size: small;
+
+}
+.close-btn-cart{
+  position: absolute;
+    top: 0;
+    right: 0;margin: 2%;
+   
+}
+.cart-content{
+    font-size: small;
+    width: 100%;
+}
+.add__to__bag__btn{
+ margin-right: 2%;
 }

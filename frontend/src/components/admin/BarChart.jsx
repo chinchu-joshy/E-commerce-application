@@ -5,7 +5,7 @@ function BarChart() {
   const label = [];
   const val = [];
   const [day, setday] = useState([]);
-  const [count, setcount] = useState([]);
+  const [count, setcount] = useState([0,0,0,0,0,0,0]);
   const activeUserFind = async () => {
     const result = await instanceAdmin.get("/monthlyorder");
     setday(result.data.day);

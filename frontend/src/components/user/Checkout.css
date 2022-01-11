@@ -12,7 +12,6 @@
 .proceed__page__card__body {
   display: flex;
   justify-content: center;
-
   flex-direction: column;
   width: 100%;
 }
@@ -20,61 +19,56 @@
   text-align: center;
 }
 .selection__adress {
-    margin-bottom: 10px;
-    margin-top: 10px;
-    width: 30%;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 30%;
 }
-.proceed__btn{
-    width: 20%;
+.proceed__btn {
+  width: 20%;
 }
-.proceed__adress__show{
-    position: absolute;
-    right: 0;
-    margin-right: 10%;
-
+.proceed__adress__show {
+  position: absolute;
+  right: 0;
+  margin-right: 10%;
 }
-.proceed__adress__show{
-    line-height: 2.5;
+.proceed__adress__show {
+  line-height: 2.5;
 }
-.add__new__adress{
-    background-color: black;
-    color: white;
+.add__new__adress {
+  background-color: black;
+  color: white;
+}
+.main-container-checkout {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.check-row {
+  display: flex;
+ 
+  justify-content: center;
+  background-color: rgba(238, 228, 228, 0.034);
+}
+.check-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.img__coupen__row__checkout{
+.img__coupen__row__checkout {
   border: 2px solid black;
   box-sizing: border-box;
   padding: 4%;
   font-size: smaller;
 }
 
-
-.bottom__coupen_checkout{
+.bottom__coupen_checkout {
   display: flex;
   flex-direction: column;
   justify-content: start;
 }
-.coupen__applay__btn{
+.coupen__applay__btn {
   background-color: green;
   color: white;
   padding: 2%;
@@ -83,10 +77,9 @@
   border: 1px solid black;
   cursor: pointer;
 }
-.wallet__use{
+.wallet__use {
   border: 2px solid black;
   cursor: pointer;
   color: white;
   padding: 2px;
 }
-
