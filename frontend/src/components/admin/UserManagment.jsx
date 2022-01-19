@@ -144,7 +144,7 @@ const getUserbyPage=async()=>{
                 </tr>
               </thead>
               <tbody>
-                {userdata
+                {userdata && userdata
                   .filter((val) => {
                     if (search === "") {
                       return val;
