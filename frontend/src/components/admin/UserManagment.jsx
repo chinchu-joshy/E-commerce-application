@@ -15,7 +15,7 @@ function UserManagment() {
   const [search, setsearch] = useState("");
   const {spin,setspin} = useContext(SpinContext)
 const [page, setpage] = useState('')
-const [number, setnumber] = useState('')
+const [number, setnumber] = useState(1)
 const [alert, setalert] = useState('')
 
 
@@ -51,7 +51,7 @@ const getUserbyPage=async()=>{
  
   setspin(true)
   try{
-    if(number){
+    // if(number){
     const user=await instanceAdmin.get(`/getuserpage/${number}`)
     
     if(user.data) { 
@@ -60,15 +60,15 @@ const getUserbyPage=async()=>{
       setuserdata(user.data.users);
       // setpage(user.data.pageCount)
       }
-  }else{
+  // }else{
    
-    const user=await instanceAdmin.get("/getuser")
-    if(user.data) { setspin(false)
-        setnumber(number)
-        setuserdata(user.data.users);
-        setpage(user.data.pageCount)
-        }
-  }
+  //   const user=await instanceAdmin.get("/getuser")
+  //   if(user.data) { setspin(false)
+  //       setnumber(number)
+  //       setuserdata(user.data.users);
+  //       setpage(user.data.pageCount)
+  //       }
+  // }
   }catch(err){
     console.log(err)
   }
